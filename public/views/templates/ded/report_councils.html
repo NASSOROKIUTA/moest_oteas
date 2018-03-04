@@ -1,0 +1,252 @@
+ <md-content class="md-padding">
+				
+				
+				<md-tabs md-dynamic-height md-border-bottom>
+                
+				<md-tab label="FIRST APPOINTMENTS" ng-click="getListSelectedToThisCouncil()">
+                <md-content class="md-padding">
+				
+				 <div layout="row">
+                         
+                            <md-autocomplete flex  flex
+                            md-search-text="search"
+                            md-input-name="patient"
+                            md-no-cache="false"
+                            md-items="item in getRegion(search)"
+                            md-item-text="item.region_name"
+                            md-selected-item-change="selectedRegion(item)"
+                            md-floating-label="Search Candidate"
+                            md-min-length="3" md-autofocus>
+                            <md-item-template>
+                              <span md-highlight-text="searchText">{{item.region_name}}</span>
+                            </md-item-template>
+                          </md-autocomplete>
+                         
+                          
+                        </div> 
+                 			
+					 <div layout-gt-sm="row">
+                 	<span ng-if="selectedApplicantsToDEDS.length ==0"><h2 align="center">&nbsp;&nbsp;&nbsp;&nbsp; NO LIST OF FIRST APPOITMENTS AVAILABLE</h2> </span>
+						
+						<table class="table table-bordered table-stripped" width="100%" ng-if="selectedApplicantsToDEDS.length >0">
+                                           <tbody>
+                      <tr>
+                   <td>S/No </td>
+             <td>Applicant Name</td>  
+             <td>Gender</td>  
+             <td>Reg #</td>  
+             <td>Region</td>  
+             <td>Council Posted</td> 
+             <td>School</td> 
+             <td>ACTION</td> 
+             </tr> 
+			 
+			<tr ng-repeat="selectedApplicantsToDED in selectedApplicantsToDEDS track by $index">
+            <td>{{$index +1}}</td>
+            <td>{{selectedApplicantsToDED.first_name+' '+selectedApplicantsToDED.last_name}}</td>
+            <td>{{selectedApplicantsToDED.gender}}</td>
+      <td>{{selectedApplicantsToDED.form_four_index}}/{{selectedApplicantsToSchool.year_certified}}</td>
+            <td>{{selectedApplicantsToDED.region_name}}</td>
+            <td>{{selectedApplicantsToDED.council_name}}</td>
+            <td>{{selectedApplicantsToDED.school_name}}</td>
+            <td> <md-button class="md-raised md-primary pull-right" ng-click="viewMoreDetails(selectedApplicantsToDED)">View</md-button>
+</td>
+                                            
+    
+                                            </tr>
+                                            </tbody>
+                                        </table>
+	
+						
+                        </div> 
+					 	
+				   
+				   
+				   
+                </md-content>
+                </md-tab>
+				
+				
+				
+				<md-tab label="Report">
+                <md-content class="md-padding">
+                  <div layout-gt-sm="row">
+                         
+                            <md-autocomplete flex  flex
+                            md-search-text="search"
+                            md-input-name="patient"
+                            md-no-cache="false"
+                            md-items="item in getRegion(search)"
+                            md-item-text="item.region_name"
+                            md-selected-item-change="selectedRegion(item)"
+                            md-floating-label="Search Region"
+                            md-min-length="3" md-autofocus>
+                            <md-item-template>
+                              <span md-highlight-text="searchText">{{item.region_name}}</span>
+                            </md-item-template>
+                          </md-autocomplete>
+                         
+                          <md-input-container class="md-block" flex-gt-sm>
+                            <label>Council</label>
+           <md-select ng-model="choice" ng-change="getSelectedCouncil(choice)" required>
+                              <md-option value="">Please select Council</md-option>
+                  <md-option ng-repeat="council in councils"  value="{{council.id}}">{{council.council_name}}</md-option>
+                               </md-select>
+                          </md-input-container>
+						  <md-input-container>
+                            
+ <md-button class="md-raised md-primary pull-right" ng-click="addSelections(choice)">ADD</md-button>
+
+                          </md-input-container>
+                        </div> 
+						
+						
+					 <div layout-gt-sm="row">
+                 	
+						
+						<table class="table table-bordered table-stripped" width="100%" ng-if="selectionsDone.length >0">
+                                           <tbody>
+                      <tr>
+                   <td>Choice # </td>
+             <td>Region Name</td>  
+             <td>Council Name</td>  
+             <td>Action</td> </tr> 
+			 
+			<tr ng-repeat="selection in selectionsDone track by $index">
+            <td>{{$index +1}}</td>
+            <td>{{selection.region_name}}</td>
+            <td>{{selection.council_name}}</td>
+                                               
+    <td >
+                                                                                    <span
+                                                                                            ng-click="removeFromSelection(selection,selectionsDone)"
+                                                                                            style="cursor: pointer;">Remove</span>
+                                                </td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+	
+						
+                        </div> 
+					  <div layout-gt-sm="row">
+                 	<md-button ng-if="selectionsDone.length ==5" class="md-raised md-primary pull-right" ng-click="saveSelections(selectionsDone)">SAVE</md-button>
+
+						
+                        </div> 
+						
+						
+						
+				   
+				   
+				   
+                </md-content>
+                </md-tab>
+				
+				<md-tab label="Registered List">
+                <md-content class="md-padding">
+                  <div layout-gt-sm="row">
+                         
+                            <md-autocomplete flex  flex
+                            md-search-text="search"
+                            md-input-name="patient"
+                            md-no-cache="false"
+                            md-items="item in getRegion(search)"
+                            md-item-text="item.region_name"
+                            md-selected-item-change="selectedRegion(item)"
+                            md-floating-label="Search Region"
+                            md-min-length="3" md-autofocus>
+                            <md-item-template>
+                              <span md-highlight-text="searchText">{{item.region_name}}</span>
+                            </md-item-template>
+                          </md-autocomplete>
+                         
+                          <md-input-container class="md-block" flex-gt-sm>
+                            <label>Council</label>
+           <md-select ng-model="choice" ng-change="getSelectedCouncil(choice)" required>
+                              <md-option value="">Please select Council</md-option>
+                  <md-option ng-repeat="council in councils"  value="{{council.id}}">{{council.council_name}}</md-option>
+                               </md-select>
+                          </md-input-container>
+						  <md-input-container>
+                            
+ <md-button class="md-raised md-primary pull-right" ng-click="addSelections(choice)">ADD</md-button>
+
+                          </md-input-container>
+                        </div> 
+						
+						
+					 <div layout-gt-sm="row">
+                 	
+						
+						<table class="table table-bordered table-stripped" width="100%" ng-if="selectionsDone.length >0">
+                                           <tbody>
+                      <tr>
+                   <td>Choice # </td>
+             <td>Region Name</td>  
+             <td>Council Name</td>  
+             <td>Action</td> </tr> 
+			 
+			<tr ng-repeat="selection in selectionsDone track by $index">
+            <td>{{$index +1}}</td>
+            <td>{{selection.region_name}}</td>
+            <td>{{selection.council_name}}</td>
+                                               
+    <td >
+                                                                                    <span
+                                                                                            ng-click="removeFromSelection(selection,selectionsDone)"
+                                                                                            style="cursor: pointer;">Remove</span>
+                                                </td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+	
+						
+                        </div> 
+					  <div layout-gt-sm="row">
+                 	<md-button ng-if="selectionsDone.length ==5" class="md-raised md-primary pull-right" ng-click="saveSelections(selectionsDone)">SAVE</md-button>
+
+						
+                        </div> 
+						
+						
+						
+				   
+				   
+				   
+                </md-content>
+                </md-tab>	
+				<md-tab label="Register">
+                <md-content class="md-padding">
+                 <div layout-gt-sm="row">
+				<md-input-container class="md-block" flex>
+                             
+    <input type="file"  name="file"   ng-files="getExcelFiles($files)" >
+                </md-input-container>
+				
+				<md-input-container>
+
+  <md-button class="md-raised md-primary pull-right" ng-click="applicantsUpload()">Upload</md-button>   
+   </md-input-container>
+                        </div> 	   
+				   
+                </md-content>
+                </md-tab>
+			    </md-tabs>	
+				
+				
+				
+				
+				
+				
+				
+														
+								
+       
+       
+        
+				                             
+                          				
+                   
+                </md-content>
+           
+</div>

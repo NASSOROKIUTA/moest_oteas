@@ -1,0 +1,71 @@
+<md-dialog>
+        <md-dialog-content>
+            <div class="md-dialog-content">
+
+                <md-content class="md-padding">
+
+                      <table class="table table-bordered" border="1" width="100%">
+                                                        <caption> <b class="">
+                                                            <div  class="text-center"><h8>JAMHURI YA MUUNGANO WA TANZANIA</h8></div>
+                                                            <div  class="text-center"><h8> WIZARA YA AFYA MAENDELEO YA JAMII JINSIA WAZEE NA WATOTO</h8></div>
+                                                            <div  class="text-center"> <img alt="image" class="img-circle" src="/img/arm.png" width="40px" height="40px" /></div>
+                                                            <div  class="text-center"> <h8> {{patientData.	sender_facility| uppercase}} </h8></div>
+                                                            <div  class="text-center"><h8> <i>REFFERAL FORM</i></h8></div>
+                                                                                                        <hr>
+
+                                                            <b class="col-md-4">PATIENT'S NAME: {{patientData.first_name}}  {{patientData.middle_name}} {{patientData.last_name}}</b>
+                                                            <b class="col-md-4">REG : {{patientData.medical_record_number}}  </b>
+                                                            <P></P>
+                                                            <P></P>
+                                                            <P></P>
+                                                            <b class="col-md-4"> </b>
+                                                            <b class="col-md-4">Age:{{patientData.age}} </b>
+                                                            <b class="col-md-4">DATE REFFERED: {{patientData.created_at}} </b>
+                                                            <b class="col-md-4"></b>
+                                                            <hr>
+                                                        </b></caption>
+
+                                                         <tr style="background-color:#c1c1c1">
+                                                         <th>REASON FOR TRANSFER</th><th>REFFERED BY</th> <th>DOCTOR MOBILE</th> <th>REFFERAL STATUS</th>  </tr>
+                                                        <tr> <td>{{patientData.summary}}</td>
+														<td>{{patientData.doctor_name}}</td>
+														<td>{{patientData.doctor_number}}</td>
+														<td>
+											<span ng-if='patientData.status==1'>PENDING </span>
+							                <span ng-if='patientData.status==0'>RECEIVED </span>
+							                <span ng-if='patientData.status==2'>CONSULTED </span>
+														</td>  </tr>
+
+
+                                                    </table>
+
+                                                     <div layout="row">
+                              <div flex=40>
+                                  <md-select ng-model="refferal_status"  placeholder="Select" class="md-no-underline">
+          <md-option value='0'>RECEIVED</md-option>
+          <md-option value='2'>CONSULTED</md-option>
+          </md-select>
+                                </div>
+                                                              
+                            </div>
+
+                    </md-content>
+
+                        
+            </div>
+        </md-dialog-content>
+
+        <md-dialog-actions layout="row">
+            <span flex></span>
+            <md-button ng-click="cancel()">
+                Cancel
+            </md-button>
+
+             <md-button  class="md-raised md-primary"    ng-click="saveReferralStatus(refferal_status)" class="md-primary">
+                Save Changes
+            </md-button>
+           
+        </md-dialog-actions>
+  </md-dialog>
+
+

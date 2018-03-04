@@ -1,0 +1,108 @@
+<style>
+.md-dialog-content{
+min-width:950px;
+min-height:40px;
+}
+#snapshot{
+ position: absolute;
+    top: 1px;
+    right: 0px;
+    font-size: 18px;
+	}
+	#my_camera{
+ position: absolute;
+    top: 1px;
+    right: 0px;
+    font-size: 18px;
+	}
+	
+</style>
+
+<md-dialog>
+    <form name="projectForm" autocomplete="off" ng-cloak>
+     
+        <md-dialog-content>
+            <div class="md-dialog-content">
+
+                <md-content class="md-padding">
+
+                      <table class="table table-bordered" border="1">
+                                                        <caption> <b class="">
+                                                            <div  class="text-center"><h8>JAMHURI YA MUUNGANO WA TANZANIA</h8></div>
+                                                            <div  class="text-center"><h8> OFISI YA RAIS TAWALA ZA MIKOA NA SERIKALI ZA MITAA</h8></div>
+                                                            <div  class="text-center"> <img alt="image" class="img-circle" src="/img/arm.png" width="40px" height="40px" /></div>
+
+                                                            <div  class="text-center"> <h8>
+{{applicant.council_name}} ,{{applicant.region_name}}<br/>
+															</h8></div>
+                                                            <div  class="text-center"><h8> <i> FOMU YA TAARIFA YA KUWASILI KWA WALIOPANGIWA AJIRA ZA WALIMU</i></h8></div>
+                                                                                                        <hr>
+
+                  <b class="col-md-5">CANDIDATE'S NAME: {{applicant.first_name}} {{applicant.middle_name}}  {{applicant.last_name}} </b>
+                                                            <b class="col-md-3">ADM No : {{applicant.registration_number}}  </b>
+                                                            <P></P>
+                                                            <P></P>
+                                                            <P></P>
+                                                            <b class="col-md-4"> INDEX No:{{applicant.form_four_index}} </b>
+                                                            <b class="col-md-4"></b>
+                                                            <b class="col-md-4"> </b>
+                                                            <hr>
+                                                        </b></caption>
+
+                                                        <tr style="background-color:#c1c1c1">
+         <th>MKOA ALIOPANGIWA</th><th>HALMASHAURI ALIOPANGIWA</th>
+		 <th>SHULE ALIYOPANGIWA</th> 
+		 <th>MUDA ALIPORIPOTI</th> 
+		 </tr>
+         <tr>
+		 <td>{{applicant.region_name}}</td>
+		 <td>{{applicant.council_name}}</td>
+		 <td>{{applicant.school_name}}</td> 
+		 <td>{{applicant.time_reported}}</td> 
+		 </tr>
+
+
+                                                    </table>
+<img data-ng-src="data:image/png;base64,{{applicant.applicant_image}}" data-err-src="images/png/avatar.png" height="200px"/>			
+																								
+										  <div class="alert alert-error ng-scope" ng-show="webcamError" style="">
+<span>Webcam could not be started. Did you give access to it?</span>
+</div>
+
+    <webcam id="my_camera" ng-if="photoDiscarded" channel="channel" 
+        on-streaming="onSuccess()" 
+        on-error="onError(err)" 
+        on-stream="onStream(stream)"></webcam>
+		
+ <div id="snap_size"><canvas id="snapshot"   width="200" height="200"></canvas></div>
+ 
+													<!--
+													
+													 <div layout-gt-sm="row">
+				 <webcam placeholder="'img/wait.gif'" on-stream="onStream(stream)"
+                 on-streaming="onSuccess()"
+                 on-error="onError(err)" channel="myChannel">
+				 </webcam>
+                       
+                    </div>
+					-->
+
+                    </md-content>
+
+                        
+            </div>
+        </md-dialog-content>
+
+        <md-dialog-actions layout="row">
+            <span flex></span>
+			<md-button  ng-if="!photoDiscarded"  class="md-raised md-primary" ng-click="discardPhoto()">Discard Photo</md-button>
+			
+			<md-button ng-if="photoDiscarded" class="md-raised md-primary" ng-click="makeSnapshot(applicant.id)">Take Photo</md-button>
+			
+            <md-button ng-click="cancel()">
+                Cancel
+            </md-button>
+           
+        </md-dialog-actions>
+    </form>
+</md-dialog>

@@ -1,0 +1,76 @@
+<style>
+.md-dialog-content{
+min-width:650px;
+}
+
+</style>
+
+<md-dialog>
+
+    <md-toolbar>
+        <div class="md-toolbar-tools">
+            <div layout="row"  layout-align="space-between center">
+    <h2 class="md-display-1">Welcome ,{{candidate[0].first_name| uppercase}}&nbsp;{{candidate[0].middle_name| uppercase}}&nbsp;{{candidate[0].last_name| uppercase}}({{candidate[0].registration_number}})</h2>
+
+    <h3 class="md-title">,&nbsp;&nbsp;{{college[0].college_name}}</h3>
+
+    </div>
+            <span flex></span>
+            <md-button class="md-icon-button" ng-click="cancel()">
+                <md-icon md-svg-src="svg/ic_close_24px.svg" aria-label="Close dialog"></md-icon>
+            </md-button>
+        </div>
+    </md-toolbar>
+    <md-dialog-content>
+        <div class="md-dialog-content">
+
+
+
+                  <md-content class="md-padding">
+                        <div layout-gt-sm="row">
+                         
+                            <md-autocomplete flex  flex
+                            md-search-text="search"
+                            md-input-name="patient"
+                            md-no-cache="false"
+                            md-items="item in getResidence(search)"
+                            md-item-text="item.residence_name+' '+item.council_name"
+                            md-selected-item-change="selectedResidence(item)"
+                            md-floating-label="Search Residence"
+                            md-min-length="3" md-autofocus>
+                            <md-item-template>
+                              <span md-highlight-text="searchText">{{item.residence_name}} {{item.council_name}}</span>
+                            </md-item-template>
+                          </md-autocomplete>
+                         
+                          <md-input-container class="md-block" flex-gt-sm>
+                            <label>Mobile Number</label>
+                            <input type="text" ng-model="address.mobile_number" required>
+                          </md-input-container>
+						  <md-input-container class="md-block" flex-gt-sm>
+                            <label>Email</label>
+                            <input type="text" ng-model="address.email" required>
+                          </md-input-container>
+                        </div>
+			
+
+ 
+
+ <md-button class="md-raised md-primary pull-right" ng-click="saveAddress(address,candidate[0])">SAVE</md-button>
+						
+                    </md-content>
+					
+						
+       
+    
+               
+
+
+        </div>
+    </md-dialog-content>
+
+</md-dialog>
+
+
+
+

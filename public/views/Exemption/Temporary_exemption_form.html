@@ -1,0 +1,360 @@
+
+
+<md-tabs md-dynamic-height md-border-bottom>
+
+    <md-tab label="DEBTORS LIST">
+        <md-content class="md-padding">
+
+            <div class=" ">
+                <!--Test-->
+
+                <div class="row">
+
+                    <div class="col-md-12 form-box">
+                        <form >
+
+                            <fieldset>
+
+                                <div class="form-bottom">
+
+                                    <h1 ng-if="tempo_exemptions.length <1">NO DATA SET AVAILABLE</h1>
+
+                                    <a onclick="PrintContent1();" title="Print"  ng-if="tempo_exemptions.length>0"  class="no-print  "><b class="glyphicon glyphicon-print "></b>  </a>
+
+                                    <div id='divtoprint1'>
+
+                                        <input  type="text" class="no-print form-control"   ng-model="search" placeholder="Search or Filtering ">
+
+                                       
+                                        <table class="mdl-data-table mdl-js-data-table mdl-data-table--selectable mdl-shadow--2dp" width="100%"      >
+
+
+                                            <thead ng-if="tempo_exemptions.length>0">
+
+                                            <tr style="background-color:beige">
+                                                <td class="mdl-data-table__cell--non-numeric" >
+
+                                                    No#
+
+                                                </td>
+
+                                                <td class="mdl-data-table__cell--non-numeric" >
+
+                                                    MRN
+
+                                                </td>
+                                                <td class="mdl-data-table__cell--non-numeric" >
+
+                                                    PATIENT NAME
+
+                                                </td>
+                                                <td class="mdl-data-table__cell--non-numeric" >
+
+                                                    GENDER
+
+                                                </td>
+
+
+
+                                                <td class="mdl-data-table__cell--non-numeric" >
+
+                                                    EXEMPTED BY
+
+                                                </td>
+                                                <!--<td class="mdl-data-table__cell--non-numeric" >-->
+
+                                                <!--REASON-->
+
+                                                <!--</td>-->
+
+                                                <td class="mdl-data-table__cell--non-numeric" >
+
+                                                    DATE OF ISSUE
+
+                                                </td>
+<td class="mdl-data-table__cell--non-numeric" ></td>
+
+                                            </tr>
+                                            </thead>
+
+                                            <tbody>
+                                            <tr dir-paginate="exemption in tempo_exemptions|itemsPerPage:200 | filter:search track by $index">
+                                                <td class="mdl-data-table__cell--non-numeric" >{{ $index+1 }}</td>
+
+                                                <td class="mdl-data-table__cell--non-numeric" >
+
+                                                    <b  >{{ exemption.medical_record_number }}</b>
+                                                </td>
+                                                <td class="mdl-data-table__cell--non-numeric" >
+
+                                                    <b  >{{ exemption.first_name +' '+exemption.middle_name+' '+exemption.last_name}}</b>
+                                                </td>
+
+                                                <td class="mdl-data-table__cell--non-numeric" >
+
+                                                    <b  >{{ exemption.gender }}</b>
+                                                </td>
+
+                                                <td class="mdl-data-table__cell--non-numeric" >
+
+                                                    <b  >{{ exemption.name }}</b>
+                                                </td>
+                                                <!--<td class="mdl-data-table__cell--non-numeric" >-->
+
+                                                <!--<b  >{{ exemption.exemption_reason }}</b>-->
+                                                <!--</td>-->
+
+                                                <td class="mdl-data-table__cell--non-numeric" >
+
+                                                    <b  >{{ exemption.created_at }}</b>
+                                                </td>
+
+
+
+                                                <td  >
+                                                    <!--<md-button   class="md-raised md-primary" data-toggle="tooltip" title="Click to Update This Record" ng-click="temporary_exemption_status_update(exemption)">View</md-button>-->
+                                                    <md-button   class="md-raised md-primary" data-toggle="tooltip" title="Click to View" ng-click="temporary_exemption_view(exemption)">View</md-button>
+
+
+                                                </td>
+                                                <!--<td class="mdl-data-table__cell--non-numeric" >{{ region.tastiness }}</td>-->
+                                            </tr>
+                                            </tbody>
+
+                                        </table>
+
+                                        <dir-pagination-controls
+                                                max-size="5"
+                                                direction-links="true"
+                                                boundary-links="true" >
+                                        </dir-pagination-controls>
+
+
+
+                                    </div>
+
+
+                                </div>
+                            </fieldset>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </md-content>
+    </md-tab>
+
+
+
+
+
+        <md-tab label="DISCOUNT">
+            <md-content class='md-padding'>
+
+
+                <!--&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;-->
+                <style>
+
+
+                    label input[type=checkbox]:checked ~ span {
+
+                        background: url('public/img/checked.png');
+
+                        background-size: 100%;
+                    }
+
+                </style>
+
+
+                <div class="wrapper wrapper-content animated fadeInRight"   >
+                    <div class="row">
+
+                        <div class="col-md-12 form-box">
+                            <div class="">
+                                <form>
+                                    <md-input-container class="md-block">
+                                        <input type="text"  class="md-block "  typeahead-on-select="loadBill(selectedPatient)" ng-model="selectedPatient" ng-model="Patient" placeholder="Type medical record number" uib-typeahead ="patient as patient.first_name+' '+patient.last_name+' '+patient.medical_record_number for patient in showSearch($viewValue) | filter:$viewValue">
+
+
+                                    </md-input-container>
+
+
+                                </form>
+                            </div>
+
+                            <p></p>
+                            <p></p>
+
+                            <fieldset>
+                                <div class="form-top">
+                                    <div class="form-top-left ">
+
+                                        <div ng-if="selectedPatient.patient_id && discounts.length>0">
+
+
+                                            <strong> MRN:</strong>&nbsp;&nbsp;&nbsp;{{selectedPatient.medical_record_number}}  &nbsp;&nbsp;&nbsp; <strong>NAME:</strong> &nbsp;&nbsp;&nbsp;{{selectedPatient.first_name +' '+ selectedPatient.middle_name+' '+ selectedPatient.last_name}} &nbsp;&nbsp;&nbsp;<strong> GENDER:</strong>&nbsp;&nbsp;&nbsp;{{selectedPatient.gender}}&nbsp;&nbsp;&nbsp;
+                                            <strong>DOB:</strong>&nbsp;&nbsp;&nbsp;{{selectedPatient.dob}}&nbsp;&nbsp;&nbsp;
+                                            <strong>MOB NUMBER:</strong>  &nbsp;&nbsp;&nbsp;{{selectedPatient.mobile_number}}&nbsp;&nbsp;&nbsp;
+                                        </div>
+                                        <b ng-if="selectedPatient.patient_id && discounts.length<1"> No Transactions For Client: <strong> MRN:</strong>&nbsp;&nbsp;&nbsp;{{selectedPatient.medical_record_number}}  &nbsp;&nbsp;&nbsp; <strong>NAME:</strong> &nbsp;&nbsp;&nbsp;{{selectedPatient.first_name +' '+ selectedPatient.middle_name+' '+ selectedPatient.last_name}} &nbsp;&nbsp;&nbsp;<strong> GENDER:</strong>&nbsp;&nbsp;&nbsp;{{selectedPatient.gender}}&nbsp;&nbsp;&nbsp;
+                                            <strong>DOB:</strong>&nbsp;&nbsp;&nbsp;{{selectedPatient.dob}}&nbsp;&nbsp;&nbsp;
+                                            <strong>MOB NUMBER:</strong>  &nbsp;&nbsp;&nbsp;{{selectedPatient.mobile_number}}&nbsp;&nbsp;&nbsp; </b>
+                                        <div class="text-center">
+                                            <h6 ng-if="selectedPatient.patient_id == nul" >Please Search a client from Search box above to view a list of item for Discount</h6>
+
+                                        </div>
+
+                                        <p></p>
+
+
+
+                                    </div>
+                                </div>
+                                <div class="form-bottom">
+                                    <div>
+
+
+
+
+
+                                        <hr>
+
+                                        <table class="mdl-data-table mdl-js-data-table mdl-data-table--selectable mdl-shadow--2dp" width="100%" ng-if="selectedPatient.patient_id && discounts.length>0">
+                                            {{reducted | currency:"TZS   "}}
+                                            <tr style="background-color:beige">
+                                                <th class="mdl-data-table__cell--non-numeric">Item Name</th>
+                                                <th class="mdl-data-table__cell--non-numeric">Quantity</th>
+                                                <th class="mdl-data-table__cell--non-numeric">Price</th>
+                                                <th class="mdl-data-table__cell--non-numeric">Total</th>
+                                                <th class="mdl-data-table__cell--non-numeric">Pev Discount</th>
+                                                <th class="mdl-data-table__cell--non-numeric">Current Discount</th>
+                                                <th class="mdl-data-table__cell--non-numeric">Balance To Pay </th>
+                                                <th class="mdl-data-table__cell--non-numeric">Create Debt </th>
+
+                                            </tr>
+
+                                            <tr ng-repeat="discount in discounts">
+                                                <td class="mdl-data-table__cell--non-numeric" >{{discount.item_name}}</td>
+                                                <td class="mdl-data-table__cell--non-numeric" >{{discount.quantity}}</td>
+                                                <td class="mdl-data-table__cell--non-numeric" >{{discount.price | currency:"TZS "}}</td>
+                                                <td class="mdl-data-table__cell--non-numeric" >{{discount.price * discount.quantity | currency:"TZS "}} </td>
+                                                <td class="mdl-data-table__cell--non-numeric" >{{discount.discount | currency:"TZS "}} </td>
+
+
+                                                <td class="mdl-data-table__cell--non-numeric" ><input type="number" placeholder="discount" class="form-control"  min="0"  ng-blur="discounting(discount)" ng-model="discount.amount">
+                                                    <strong ng-if="discount.amount >  (discount.price * discount.quantity)" class="fa fa-remove " style="color:maroon" role="alert"> Discount Exceeds Price by {{discount.amount - (discount.price * discount.quantity) | currency:"TZS "}}</strong>
+                                                    <h4 ng-if="discount.amount && discount.amount <= (discount.price * discount.quantity)" style="color:maroon" role="info">{{discount.amount/(discount.price * discount.quantity) * 100 | number:2}}%</h4>
+                                                </td>
+                                                <td class="mdl-data-table__cell--non-numeric" ></td>
+                                                <td class="mdl-data-table__cell--non-numeric" > <md-button  ng-click="Create_debt(discount)" class="md-primary md-raised">Create Debt</md-button></td>
+
+                                            </tr>
+                                            <tr>
+                                                <td class="mdl-data-table__cell--non-numeric" colspan="3"></td>
+
+                                                <td class="mdl-data-table__cell--non-numeric" ><u>{{jumla | currency:"TZS "}}</u></td>
+                                                <th class="mdl-data-table__cell--non-numeric"> <u>{{previusDiscount | currency:"TZS  "}}</u>
+                                                    <h4   style="color:maroon" role="info">{{(previusDiscount/jumla)*100 | number:2}}%</h4>
+                                                </th> <th class="mdl-data-table__cell--non-numeric"> <u>{{TotalDiscount | currency:"TZS   "}}</u>
+                                                <h4  style="color:maroon" role="info">{{(TotalDiscount/jumla)*100 | number:2}}%</h4>
+                                            </th>
+
+                                                <th class="mdl-data-table__cell--non-numeric" class="">
+                                                    <u ng-if="TotalDiscount <1" >{{jumla - previusDiscount | currency:"TZS " }}</u>
+                                                    <h4 ng-if="TotalDiscount < 1"  style="color:maroon" role="info">{{((jumla - previusDiscount)/jumla)*100 | number:2}}%</h4>
+
+                                                    <u ng-if="TotalDiscount>0" >{{jumla - TotalDiscount | currency:"TZS " }}</u>
+
+                                                    <h4  ng-if="TotalDiscount>0"  style="color:maroon" role="info">{{(jumla - TotalDiscount)/jumla *100 | number:2}}%</h4>
+                                                </th>
+                                                <th colspan="2"></th>
+
+
+
+                                            <tr>
+
+                                                <th colspan="8" class="text-center" ng-if="TotalDiscount && jumla - TotalDiscount >=0 "><md-button class="md-raised md-primary" ng-click="CommitDiscount()"> Commit Discount</md-button></th>
+
+
+                                            </tr>
+
+                                            </tr>
+
+
+                                        </table>
+
+
+                                    </div>
+                            </fieldset>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+
+            </md-content>
+        </md-tab>
+    <md-tab label="DEBTS SUMMARY REPORT">
+            <md-content class='md-padding'>
+
+                <div class="pull-right">
+                    <input type="datetime" ng-model="data.start_date" datetime-picker date-only date-format="yyyy-MM-dd hh:mm:ss" placeholder="Start Date">
+                    <input type="datetime"  ng-model="data.end_date" datetime-picker date-only date-format="yyyy-MM-dd hh:mm:ss" placeholder="End Date">
+                    <md-button   ng-click="GetDebts_list_summary(data)" class="md-raised md-raised-search ">Search</md-button>
+                </div>
+
+                <table class="mdl-data-table mdl-js-data-table mdl-data-table--selectable mdl-shadow--2dp" width="100%" ng-if="debt_lists.length>0">
+                    <thead>
+                    <tr style="background-color:beige">
+
+                        <th class="mdl-data-table__cell--non-numeric" colspan="2">Total </th>
+                        <th class="mdl-data-table__cell--non-numeric">{{discount_sum | currency : 'Tshs ' : 2}} </th>
+                        <th class="mdl-data-table__cell--non-numeric"> {{Total_sum | currency : 'Tshs ' : 2}}</th>
+                        <th class="mdl-data-table__cell--non-numeric">{{grandTotal_sum | currency : 'Tshs ' : 2}}</th>
+                    </tr>
+
+                    <tr>
+
+                        <th class="mdl-data-table__cell--non-numeric">#</th>
+                        <th class="mdl-data-table__cell--non-numeric">Item</th>
+                        <th class="mdl-data-table__cell--non-numeric">Discount</th>
+                        <th class="mdl-data-table__cell--non-numeric">Amount</th>
+                        <th class="mdl-data-table__cell--non-numeric">Grand Total</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="exemption in debt_lists | filter:search track by $index">
+
+                        <td class="mdl-data-table__cell--non-numeric">{{$index+1}}</td>
+                        <td class="mdl-data-table__cell--non-numeric">{{exemption.item_name}}</td>
+                        <td class="mdl-data-table__cell--non-numeric">{{exemption.discount | currency : 'Tshs ' : 2}}</td>
+                        <td class="mdl-data-table__cell--non-numeric">{{exemption.price*exemption.quantity | currency : 'Tshs ' : 2}}</td>
+                        <td class="mdl-data-table__cell--non-numeric">{{(exemption.price*exemption.quantity)- (exemption.discount) | currency : 'Tshs ' : 2}}</td>
+
+
+
+                    </tr>
+                    <tr style="background-color:beige">
+
+                        <th class="mdl-data-table__cell--non-numeric text-center" colspan="2">Total </th>
+                        <th class="mdl-data-table__cell--non-numeric">{{discount_sum | currency : 'Tshs ' : 2}} </th>
+                        <th class="mdl-data-table__cell--non-numeric"> {{Total_sum | currency : 'Tshs ' : 2}}</th>
+                        <th class="mdl-data-table__cell--non-numeric">{{grandTotal_sum | currency : 'Tshs ' : 2}}</th>
+                    </tr>
+
+                </table>
+
+
+
+            </md-content>
+        </md-tab>
+
+
+
+   </md-tabs>
+
+
+
+
+
+
+

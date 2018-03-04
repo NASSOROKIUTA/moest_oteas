@@ -1,0 +1,74 @@
+<md-dialog aria-label="Mango (Fruit)" ng-controller="labController">
+    <form name="projectForm" autocomplete="off" ng-cloak>
+        <md-toolbar>
+            <div class="md-toolbar-tools">
+                  <h2>PATIENT NAME: {{patientPaticulars[0].first_name}} {{patientPaticulars[0].middle_name}} {{patientPaticulars[0].last_name}}, MRN:{{patientPaticulars[0].medical_record_number}} Request From:{{patientPaticulars[0].dept}}</h2>
+                <span flex></span>
+                <md-button class="md-icon-button" ng-click="cancel()">
+                    <md-icon md-svg-src="/svg/close_x.svg" aria-label="Close dialog"></md-icon>
+                </md-button>
+            </div>
+        </md-toolbar>
+
+        <md-dialog-content>
+            <div class="md-dialog-content">
+
+                <md-content class="md-padding">
+                    <div layout="row">
+                        <p>      <span ng-if="getTestRequests[0].admission_id > 0">{{getAdmisionInfos.ward_full_name}}, {{getAdmisionInfos.bed_available}}</span>
+                        </p>
+                    </div>
+
+                    <div layout="row">
+                        <table class="table table-striped">
+                            <thead>
+                            <tr>
+                                <th>No.</th>
+                                <th>Test Name</th>
+                                <th>Sub Department</th>
+                                <th></th>
+                                <th>Action</th>
+                            </tr>
+                            </thead>
+                            <tr ng-repeat="getTestRequest in getTestRequest">
+                                <td>{{$index + 1}}</td>
+                                <td>{{getTestRequest.item_name}}</td>
+                                <td>{{getTestRequest.sub_department_name}}</td>
+                                <td>
+                                    <!--Email validation-->
+                                    <div class="md-form">
+
+                                        <md-input-container flex="50">
+                                            <label>Sample Type</label>
+                                            <input required name="clientName"  ng-model="sample_type"  uib-typeahead =" patientCat as patientCat.item_name +' '+ patientCat.price for  patientCat in services | filter:$viewValue">
+                                            <div ng-messages="projectForm.payment_services.$error">
+                                                <div ng-message="required">This is required.</div>
+                                            </div>
+                                        </md-input-container>
+                                           </div>
+                                </td>
+                                <td>
+                                    <md-button  class="md-raised md-primary"    ng-click="generateSampleNumber(getTestRequest.item_name,sample_type,getTestRequest.last_name,getTestRequest.sub_department_name,getTestRequest.request_id)" class="md-primary">
+                                        Sample#
+                                    </md-button>
+
+
+                                </td>
+                            </tr>
+                        </table>
+
+
+                    </div>
+
+            </div>
+        </md-dialog-content>
+
+        <md-dialog-actions layout="row">
+            <span flex></span>
+            <md-button ng-click="cancel()">
+                Cancel
+            </md-button>
+
+        </md-dialog-actions>
+    </form>
+</md-dialog>

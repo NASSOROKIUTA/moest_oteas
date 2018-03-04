@@ -1,0 +1,313 @@
+<style>
+    .md-datepicker-input-container{
+        width:100%;
+    }
+	
+	.not_applicable {
+		background-color:#c1c1c1;
+	}
+</style>
+
+
+<md-dialog  class="fullscreen-dialog">
+    <md-toolbar>
+        <div class="md-toolbar-tools">
+            <h4 >IPD REPORTS SUMMARY</h4>
+            <span flex></span>
+            <md-button class="md-icon-button" ng-click="cancel()">
+                <md-icon md-svg-src="/svg/ic_close_24px.svg" aria-label="Close dialog"></md-icon>
+            </md-button>
+        </div>
+    </md-toolbar>
+    <md-dialog-content>
+        <div layout-padding style="width:90%;margin:0 auto;">
+
+
+
+
+            <div layout-gt-sm="row" flex="75">
+                <md-input-container class="md-block" flex-gt-sm>
+                    <label>Tarehe ya kuanza</label>
+                    <md-datepicker ng-model="dt_start"  style="width:100%" md-hide-icons="calendar" md-open-on-focus
+                                   required></md-datepicker>
+                </md-input-container>
+                <md-input-container class="md-block" flex-gt-sm>
+                    <label>Tarehe ya kumaliza</label>
+                    <md-datepicker ng-model="dt_end" style="width:100%" md-hide-icons="calendar" md-open-on-focus
+                                   required></md-datepicker>
+                </md-input-container>
+                <div>
+                    <md-button class="md-primary md-raised" ng-click="getIPDReportBasedOnthisDate(dt_start,dt_end)">
+                        Load
+                    </md-button>
+					 <md-button class="md-primary md-raised" ng-click="print()">
+                        Print
+                    </md-button>
+                </div>
+            </div>
+
+
+		<div class="to-print"><style>.not_applicable {background-color:#c1c1c1;}"</style>
+        <table class="table table-bordered" border="1">
+            <caption> <b class="">
+                <div class="text-center"> <h8>'SIRI'</h8></div>
+                <div  class="text-center"><h8>JAMHURI YA MUUNGANO WA TANZANIA</h8></div>
+                <div  class="text-center"><h8> WIZARA YA AFYA MAENDELEO YA JAMII,JINSIA,WAZEE NA WATOTO</h8></div>
+                <div  class="text-center"> <img alt="image" class="img-circle" src="/img/arm.png" width="40px" height="40px" /></div>
+
+                <div  class="text-center"> <h8>  MFUMO WA TAARIFA ZA UENDESHAJI WA HUDUMA ZA AFYA</h8></div>
+                <div  class="text-center"><h8> <i> MTUHA TOLEO LA TATU: MWAKA 2014</i></h8></div>
+                <div  class="text-center"> <h5>  FOMU YA TAARIFA YA KITABU CHA 14: REJESTA YA WAGONJWA WA KULAZWA (IPD)</h5></div>
+
+                <hr>
+
+                <b class="col-md-4">Jina la Kituo: {{loginUserFacilityDetails[0].facility_name}} </b>
+                <b class="col-md-4">Wilaya : {{loginUserFacilityDetails[0].council_name}}  </b>
+                <b class="col-md-4">Mkoa : {{loginUserFacilityDetails[0].region_name}} </b>
+                <P></P>
+                <P></P>
+                <P></P>
+                <b class="col-md-4">Tarehe ya Kuanza:{{start_date | date:'dd.MM.yyyy'}} </b>
+                <b class="col-md-4">Tarehe ya Kumaliza:{{end_date | date:'dd.MM.yyyy'}} </b>
+                <hr>
+            </b></caption>
+
+
+
+            <tr style="background-color:#c1c1c1">
+
+                <th rowspan="2"> Na </th>
+                <th  rowspan="2"  colspan="2">Maelezo</th>
+                <th colspan="3">Umri chini ya mwezi 1</th>
+
+                <th colspan="3">Umri mwezi 1 hadi umri chini ya mwaka 1</th>
+
+                <th colspan="3">Umri
+                    mwaka 1
+                    hadi umri
+                    chini ya
+                    miaka 5</th>
+
+                <th colspan="3">Miaka 5
+                    hadi
+                    miaka
+                    chini ya 60</th>
+
+                <th colspan="3">Umri
+                    miaka 60
+                    na
+                    kuendelea</th>
+
+                <th colspan="3">Jumla
+                    Kuu</th>
+
+
+            </tr>
+
+            <tr style="background-color:#c1c1c1">
+
+
+                <th>ME</th>
+                <th>KE</th>
+                <th>Jumla</th>
+                <th>ME</th>
+                <th>KE</th>
+                <th>Jumla</th>
+                <th>ME</th>
+                <th>KE</th>
+                <th>Jumla</th>
+                <th>ME</th>
+                <th>KE</th>
+                <th>Jumla</th>
+                <th>ME</th>
+                <th>KE</th>
+                <th>Jumla</th>
+                <th>ME</th>
+                <th>KE</th>
+                <th>Jumla</th>
+            </tr>
+
+            <tr>
+
+                <td style="text-align:right;"> 1 </td>
+                <td  colspan="2">Waliolazwa Wodini</td>
+                <td style="text-align:right;">{{ipd_admissions.male_under_one_month | currency:'':0 }}</td>
+                <td style="text-align:right;">{{ipd_admissions.female_under_one_month  | currency:'':0 }}</td>
+                <td style="text-align:right; font-weight:bold">{{ipd_admissions.total_under_one_month | currency:'':0 }}</td>
+                <td style="text-align:right;">{{ipd_admissions.male_under_one_year | currency:'':0 }}</td>
+                <td style="text-align:right;">{{ipd_admissions.female_under_one_year | currency:'':0 }}</td>
+                <td style="text-align:right; font-weight:bold">{{ipd_admissions.total_under_one_year | currency:'':0 }}</td>
+                <td style="text-align:right;">{{ipd_admissions.male_under_five_year | currency:'':0 }}</td>
+                <td style="text-align:right;">{{ipd_admissions.female_under_five_year  | currency:'':0 }}</td>
+                <td style="text-align:right; font-weight:bold">{{ipd_admissions.total_under_five_year | currency:'':0 }}</td>
+                <td style="text-align:right;">{{ipd_admissions.male_above_five_under_sixty | currency:'':0 }}</td>
+                <td style="text-align:right;">{{ipd_admissions.female_above_five_under_sixty | currency:'':0 }}</td>
+                <td style="text-align:right; font-weight:bold">{{ipd_admissions.total_above_five_under_sixty | currency:'':0 }}</td>
+                <td style="text-align:right;">{{ipd_admissions.male_above_sixty | currency:'':0 }}</td>
+                <td style="text-align:right;">{{ipd_admissions.female_above_sixty | currency:'':0 }}</td>
+                <td style="text-align:right; font-weight:bold">{{ipd_admissions.total_above_sixty | currency:'':0 }}</td>
+                <td style="text-align:right; font-weight:bold">{{ipd_admissions.grand_total_male | currency:'':0 }}</td>
+                <td style="text-align:right; font-weight:bold">{{ipd_admissions.grand_total_female | currency:'':0 }}</td>
+                <td style="text-align:right; font-weight:bold">{{ipd_admissions.grand_total | currency:'':0 }}</td>
+
+            </tr>
+            <tr ng-repeat="ipd_diagnosis in IPDDiagnoses track by $index">
+                <td ng-if="ipd_diagnosis.diagnosis_id <= 12 || 
+				ipd_diagnosis.diagnosis_id > 14" rowspan="{{ipd_diagnosis.diagnosis_id == 12 ? '3' : '1'}}" style="text-align:right;{{ipd_diagnosis.diagnosis_id == 12 ? 'vertical-align:middle' : ''}}"> {{$index + ($index <= 11 ? 2 : 0)}}.</td>
+                <td rowspan="3" colspan="1" ng-if="ipd_diagnosis.diagnosis_id == 12" style="vertical-align:middle">Malaria</td>
+                <td colspan="{{ipd_diagnosis.diagnosis_id < 12 || ipd_diagnosis.diagnosis_id > 14 ? '2' : '1'}}">{{ipd_diagnosis.description}} </td>
+				<td style="text-align:right;" ng-class="{not_applicable: ipd_diagnosis.diagnosis_id == 1 || ipd_diagnosis.diagnosis_id == 4 ||
+				(ipd_diagnosis.diagnosis_id >= 7 && ipd_diagnosis.diagnosis_id <= 9) || (ipd_diagnosis.diagnosis_id >= 15 && ipd_diagnosis.diagnosis_id <= 22) || ipd_diagnosis.diagnosis_id == 24 || ipd_diagnosis.diagnosis_id == 26 || ipd_diagnosis.diagnosis_id == 28 || ipd_diagnosis.diagnosis_id == 29 || (ipd_diagnosis.diagnosis_id >= 31 && ipd_diagnosis.diagnosis_id <= 33) || (ipd_diagnosis.diagnosis_id >= 36 && ipd_diagnosis.diagnosis_id <= 38) || ipd_diagnosis.diagnosis_id == 40 || 
+				ipd_diagnosis.diagnosis_id == 41 || (ipd_diagnosis.diagnosis_id >= 48 && ipd_diagnosis.diagnosis_id <= 50) ||
+				ipd_diagnosis.diagnosis_id == 52 ||
+				ipd_diagnosis.diagnosis_id == 55 ||
+				ipd_diagnosis.diagnosis_id == 65 ||
+				ipd_diagnosis.diagnosis_id == 73 ||
+				(ipd_diagnosis.diagnosis_id >= 79 &&
+				ipd_diagnosis.diagnosis_id <= 81)}">{{ (ipd_diagnosis.diagnosis_id == 1 || ipd_diagnosis.diagnosis_id == 4 ||
+				(ipd_diagnosis.diagnosis_id >= 7 && ipd_diagnosis.diagnosis_id <= 9) || (ipd_diagnosis.diagnosis_id >= 15 && ipd_diagnosis.diagnosis_id <= 22) || ipd_diagnosis.diagnosis_id == 24 || ipd_diagnosis.diagnosis_id == 26 || ipd_diagnosis.diagnosis_id == 28 || ipd_diagnosis.diagnosis_id == 29 || (ipd_diagnosis.diagnosis_id >= 31 && ipd_diagnosis.diagnosis_id <= 33) || (ipd_diagnosis.diagnosis_id >= 36 && ipd_diagnosis.diagnosis_id <= 38) || ipd_diagnosis.diagnosis_id == 40 || 
+				ipd_diagnosis.diagnosis_id == 41 || (ipd_diagnosis.diagnosis_id >= 48 && ipd_diagnosis.diagnosis_id <= 50) ||
+				ipd_diagnosis.diagnosis_id == 52 ||
+				ipd_diagnosis.diagnosis_id == 55 ||
+				ipd_diagnosis.diagnosis_id == 65 ||
+				ipd_diagnosis.diagnosis_id == 73 ||
+				(ipd_diagnosis.diagnosis_id >= 79 &&
+				ipd_diagnosis.diagnosis_id <= 81)) ? '' : (ipd_diagnosis.male_under_one_month | currency:'':0) }}</td>
+				<td style="text-align:right;" ng-class="{not_applicable: ipd_diagnosis.diagnosis_id == 1 || ipd_diagnosis.diagnosis_id == 4 ||
+				(ipd_diagnosis.diagnosis_id >= 7 && ipd_diagnosis.diagnosis_id <= 9) || (ipd_diagnosis.diagnosis_id >= 15 && ipd_diagnosis.diagnosis_id <= 22) || ipd_diagnosis.diagnosis_id == 24 || ipd_diagnosis.diagnosis_id == 26 || ipd_diagnosis.diagnosis_id == 28 || ipd_diagnosis.diagnosis_id == 29 || (ipd_diagnosis.diagnosis_id >= 31 && ipd_diagnosis.diagnosis_id <= 33) || (ipd_diagnosis.diagnosis_id >= 36 && ipd_diagnosis.diagnosis_id <= 38) || ipd_diagnosis.diagnosis_id == 40 || 
+				ipd_diagnosis.diagnosis_id == 41 || (ipd_diagnosis.diagnosis_id >= 48 && ipd_diagnosis.diagnosis_id <= 50) ||
+				ipd_diagnosis.diagnosis_id == 52 ||
+				ipd_diagnosis.diagnosis_id == 55 ||
+				ipd_diagnosis.diagnosis_id == 65 ||
+				ipd_diagnosis.diagnosis_id == 73 ||
+				(ipd_diagnosis.diagnosis_id >= 79 &&
+				ipd_diagnosis.diagnosis_id <= 81)}">{{ (ipd_diagnosis.diagnosis_id == 1 || ipd_diagnosis.diagnosis_id == 4 ||
+				(ipd_diagnosis.diagnosis_id >= 7 && ipd_diagnosis.diagnosis_id <= 9) || (ipd_diagnosis.diagnosis_id >= 15 && ipd_diagnosis.diagnosis_id <= 22) || ipd_diagnosis.diagnosis_id == 24 || ipd_diagnosis.diagnosis_id == 26 || ipd_diagnosis.diagnosis_id == 28 || ipd_diagnosis.diagnosis_id == 29 || (ipd_diagnosis.diagnosis_id >= 31 && ipd_diagnosis.diagnosis_id <= 33) || (ipd_diagnosis.diagnosis_id >= 36 && ipd_diagnosis.diagnosis_id <= 38) || ipd_diagnosis.diagnosis_id == 40 || 
+				ipd_diagnosis.diagnosis_id == 41 || (ipd_diagnosis.diagnosis_id >= 48 && ipd_diagnosis.diagnosis_id <= 50) ||
+				ipd_diagnosis.diagnosis_id == 52 ||
+				ipd_diagnosis.diagnosis_id == 55 ||
+				ipd_diagnosis.diagnosis_id == 65 ||
+				ipd_diagnosis.diagnosis_id == 73 ||
+				(ipd_diagnosis.diagnosis_id >= 79 &&
+				ipd_diagnosis.diagnosis_id <= 81)) ? '' : (ipd_diagnosis.female_under_one_month | currency:'':0) }}</td>
+                <td style="text-align:right; font-weight:bold" ng-class="{not_applicable: ipd_diagnosis.diagnosis_id == 1 || ipd_diagnosis.diagnosis_id == 4 ||
+				(ipd_diagnosis.diagnosis_id >= 7 && ipd_diagnosis.diagnosis_id <= 9) || (ipd_diagnosis.diagnosis_id >= 15 && ipd_diagnosis.diagnosis_id <= 22) || ipd_diagnosis.diagnosis_id == 24 || ipd_diagnosis.diagnosis_id == 26 || ipd_diagnosis.diagnosis_id == 28 || ipd_diagnosis.diagnosis_id == 29 || (ipd_diagnosis.diagnosis_id >= 31 && ipd_diagnosis.diagnosis_id <= 33) || (ipd_diagnosis.diagnosis_id >= 36 && ipd_diagnosis.diagnosis_id <= 38) || ipd_diagnosis.diagnosis_id == 40 || 
+				ipd_diagnosis.diagnosis_id == 41 || (ipd_diagnosis.diagnosis_id >= 48 && ipd_diagnosis.diagnosis_id <= 50) ||
+				ipd_diagnosis.diagnosis_id == 52 ||
+				ipd_diagnosis.diagnosis_id == 55 ||
+				ipd_diagnosis.diagnosis_id == 65 ||
+				ipd_diagnosis.diagnosis_id == 73 ||
+				(ipd_diagnosis.diagnosis_id >= 79 &&
+				ipd_diagnosis.diagnosis_id <= 81)}">{{ (ipd_diagnosis.diagnosis_id == 1 || ipd_diagnosis.diagnosis_id == 4 ||
+				(ipd_diagnosis.diagnosis_id >= 7 && ipd_diagnosis.diagnosis_id <= 9) || (ipd_diagnosis.diagnosis_id >= 15 && ipd_diagnosis.diagnosis_id <= 22) || ipd_diagnosis.diagnosis_id == 24 || ipd_diagnosis.diagnosis_id == 26 || ipd_diagnosis.diagnosis_id == 28 || ipd_diagnosis.diagnosis_id == 29 || (ipd_diagnosis.diagnosis_id >= 31 && ipd_diagnosis.diagnosis_id <= 33) || (ipd_diagnosis.diagnosis_id >= 36 && ipd_diagnosis.diagnosis_id <= 38) || ipd_diagnosis.diagnosis_id == 40 || 
+				ipd_diagnosis.diagnosis_id == 41 || (ipd_diagnosis.diagnosis_id >= 48 && ipd_diagnosis.diagnosis_id <= 50) ||
+				ipd_diagnosis.diagnosis_id == 52 ||
+				ipd_diagnosis.diagnosis_id == 55 ||
+				ipd_diagnosis.diagnosis_id == 65 ||
+				ipd_diagnosis.diagnosis_id == 73 ||
+				(ipd_diagnosis.diagnosis_id >= 79 &&
+				ipd_diagnosis.diagnosis_id <= 81)) ? '' : (ipd_diagnosis.total_under_one_month | currency:'':0) }}</td>
+				
+				<td style="text-align:right;" ng-class="{not_applicable: ipd_diagnosis.diagnosis_id == 6 || (ipd_diagnosis.diagnosis_id >= 16 && ipd_diagnosis.diagnosis_id <= 18) || (ipd_diagnosis.diagnosis_id >= 20 && ipd_diagnosis.diagnosis_id <= 22) ||
+				ipd_diagnosis.diagnosis_id == 24 || (ipd_diagnosis.diagnosis_id >= 36 && ipd_diagnosis.diagnosis_id <= 38) || 
+				ipd_diagnosis.diagnosis_id == 41 ||
+				(ipd_diagnosis.diagnosis_id >= 66 &&
+				ipd_diagnosis.diagnosis_id <= 68)}">{{ (ipd_diagnosis.diagnosis_id == 6 || (ipd_diagnosis.diagnosis_id >= 16 && ipd_diagnosis.diagnosis_id <= 18) || (ipd_diagnosis.diagnosis_id >= 20 && ipd_diagnosis.diagnosis_id <= 22) ||
+				ipd_diagnosis.diagnosis_id == 24 || (ipd_diagnosis.diagnosis_id >= 36 && ipd_diagnosis.diagnosis_id <= 38) || 
+				ipd_diagnosis.diagnosis_id == 41 ||
+				(ipd_diagnosis.diagnosis_id >= 66 &&
+				ipd_diagnosis.diagnosis_id <= 68)) ? '' : (ipd_diagnosis.male_under_one_year | currency:'':0) }}</td>
+                <td style="text-align:right;" ng-class="{not_applicable: ipd_diagnosis.diagnosis_id == 6 || (ipd_diagnosis.diagnosis_id >= 16 && ipd_diagnosis.diagnosis_id <= 18) || (ipd_diagnosis.diagnosis_id >= 20 && ipd_diagnosis.diagnosis_id <= 22) ||
+				ipd_diagnosis.diagnosis_id == 24 || (ipd_diagnosis.diagnosis_id >= 36 && ipd_diagnosis.diagnosis_id <= 38) || 
+				ipd_diagnosis.diagnosis_id == 41 ||
+				(ipd_diagnosis.diagnosis_id >= 66 &&
+				ipd_diagnosis.diagnosis_id <= 68)}">{{ (ipd_diagnosis.diagnosis_id == 6 || (ipd_diagnosis.diagnosis_id >= 16 && ipd_diagnosis.diagnosis_id <= 18) || (ipd_diagnosis.diagnosis_id >= 20 && ipd_diagnosis.diagnosis_id <= 22) ||
+				ipd_diagnosis.diagnosis_id == 24 || (ipd_diagnosis.diagnosis_id >= 36 && ipd_diagnosis.diagnosis_id <= 38) || 
+				ipd_diagnosis.diagnosis_id == 41 ||
+				(ipd_diagnosis.diagnosis_id >= 66 &&
+				ipd_diagnosis.diagnosis_id <= 68)) ? '' : (ipd_diagnosis.female_under_one_year | currency:'':0) }}</td>
+                <td style="text-align:right; font-weight:bold" ng-class="{not_applicable: ipd_diagnosis.diagnosis_id == 6 || (ipd_diagnosis.diagnosis_id >= 16 && ipd_diagnosis.diagnosis_id <= 18) || (ipd_diagnosis.diagnosis_id >= 20 && ipd_diagnosis.diagnosis_id <= 22) ||
+				ipd_diagnosis.diagnosis_id == 24 || (ipd_diagnosis.diagnosis_id >= 36 && ipd_diagnosis.diagnosis_id <= 38) || 
+				ipd_diagnosis.diagnosis_id == 41 ||
+				(ipd_diagnosis.diagnosis_id >= 66 &&
+				ipd_diagnosis.diagnosis_id <= 68)}">{{ (ipd_diagnosis.diagnosis_id == 6 || (ipd_diagnosis.diagnosis_id >= 16 && ipd_diagnosis.diagnosis_id <= 18) || (ipd_diagnosis.diagnosis_id >= 20 && ipd_diagnosis.diagnosis_id <= 22) ||
+				ipd_diagnosis.diagnosis_id == 24 || (ipd_diagnosis.diagnosis_id >= 36 && ipd_diagnosis.diagnosis_id <= 38) || 
+				ipd_diagnosis.diagnosis_id == 41 ||
+				(ipd_diagnosis.diagnosis_id >= 66 &&
+				ipd_diagnosis.diagnosis_id <= 68)) ? '' : (ipd_diagnosis.total_under_one_year | currency:'':0) }}</td>
+				
+				<td style="text-align:right;" ng-class="{not_applicable: ipd_diagnosis.diagnosis_id == 6 || (ipd_diagnosis.diagnosis_id >= 16 && ipd_diagnosis.diagnosis_id <= 18) || (ipd_diagnosis.diagnosis_id >= 20 && ipd_diagnosis.diagnosis_id <= 22) || ipd_diagnosis.diagnosis_id == 24 || (ipd_diagnosis.diagnosis_id >= 37 &&  
+				ipd_diagnosis.diagnosis_id <= 38) || (ipd_diagnosis.diagnosis_id >= 66 &&  
+				ipd_diagnosis.diagnosis_id <= 68)}">{{ (ipd_diagnosis.diagnosis_id == 6 || (ipd_diagnosis.diagnosis_id >= 16 && ipd_diagnosis.diagnosis_id <= 18) || (ipd_diagnosis.diagnosis_id >= 20 && ipd_diagnosis.diagnosis_id <= 22) || ipd_diagnosis.diagnosis_id == 24 || (ipd_diagnosis.diagnosis_id >= 37 &&  
+				ipd_diagnosis.diagnosis_id <= 38) || (ipd_diagnosis.diagnosis_id >= 66 &&  
+				ipd_diagnosis.diagnosis_id <= 68)) ? '' : (ipd_diagnosis.male_under_five_year | currency:'':0) }}</td>
+                <td style="text-align:right;" ng-class="{not_applicable: ipd_diagnosis.diagnosis_id == 6 || (ipd_diagnosis.diagnosis_id >= 16 && ipd_diagnosis.diagnosis_id <= 18) || (ipd_diagnosis.diagnosis_id >= 20 && ipd_diagnosis.diagnosis_id <= 21) || ipd_diagnosis.diagnosis_id == 24 || (ipd_diagnosis.diagnosis_id >= 37 &&  
+				ipd_diagnosis.diagnosis_id <= 38) || (ipd_diagnosis.diagnosis_id >= 66 &&  
+				ipd_diagnosis.diagnosis_id <= 68)}">{{ (ipd_diagnosis.diagnosis_id == 6 || (ipd_diagnosis.diagnosis_id >= 16 && ipd_diagnosis.diagnosis_id <= 18) || (ipd_diagnosis.diagnosis_id >= 20 && ipd_diagnosis.diagnosis_id <= 21) || ipd_diagnosis.diagnosis_id == 24 || (ipd_diagnosis.diagnosis_id >= 37 &&  
+				ipd_diagnosis.diagnosis_id <= 38) || (ipd_diagnosis.diagnosis_id >= 66 &&  
+				ipd_diagnosis.diagnosis_id <= 68)) ? '' : (ipd_diagnosis.female_under_five_year  | currency:'':0) }}</td>
+                <td style="text-align:right; font-weight:bold" ng-class="{not_applicable: ipd_diagnosis.diagnosis_id == 6 || 
+				ipd_diagnosis.diagnosis_id == 6 || (ipd_diagnosis.diagnosis_id >= 16 && ipd_diagnosis.diagnosis_id <= 18) || (ipd_diagnosis.diagnosis_id >= 20 && ipd_diagnosis.diagnosis_id <= 21) || ipd_diagnosis.diagnosis_id == 24 || (ipd_diagnosis.diagnosis_id >= 37 &&  
+				ipd_diagnosis.diagnosis_id <= 38) || (ipd_diagnosis.diagnosis_id >= 66 &&  
+				ipd_diagnosis.diagnosis_id <= 68)}">{{ (ipd_diagnosis.diagnosis_id == 6 || (ipd_diagnosis.diagnosis_id >= 16 && ipd_diagnosis.diagnosis_id <= 18) || (ipd_diagnosis.diagnosis_id >= 20 && ipd_diagnosis.diagnosis_id <= 21) || ipd_diagnosis.diagnosis_id == 24 || (ipd_diagnosis.diagnosis_id >= 37 &&  
+				ipd_diagnosis.diagnosis_id <= 38) || (ipd_diagnosis.diagnosis_id >= 66 &&  
+				ipd_diagnosis.diagnosis_id <= 68)) ? '' : (ipd_diagnosis.total_under_five_year | currency:'':0) }}</td>
+				
+				<td style="text-align:right;" ng-class="{not_applicable: ipd_diagnosis.diagnosis_id == 6 || ipd_diagnosis.diagnosis_id == 20 || ipd_diagnosis.diagnosis_id == 21 || ipd_diagnosis.diagnosis_id == 22 || (ipd_diagnosis.diagnosis_id >= 42 && 
+				ipd_diagnosis.diagnosis_id <= 43) || (ipd_diagnosis.diagnosis_id >= 66 &&  
+				ipd_diagnosis.diagnosis_id <= 68)}">{{ (ipd_diagnosis.diagnosis_id == 6 || ipd_diagnosis.diagnosis_id == 20 || ipd_diagnosis.diagnosis_id == 21 || ipd_diagnosis.diagnosis_id == 22 || (ipd_diagnosis.diagnosis_id >= 42 && 
+				ipd_diagnosis.diagnosis_id <= 43) || (ipd_diagnosis.diagnosis_id >= 66 &&  
+				ipd_diagnosis.diagnosis_id <= 68)) ? '' : (ipd_diagnosis.male_above_five_under_sixty | currency:'':0) }}</td>
+                <td style="text-align:right;" ng-class="{not_applicable: ipd_diagnosis.diagnosis_id == 6 || (ipd_diagnosis.diagnosis_id >= 42 && 
+				ipd_diagnosis.diagnosis_id <= 43) || (ipd_diagnosis.diagnosis_id >= 66 &&  
+				ipd_diagnosis.diagnosis_id <= 68)}">{{ (ipd_diagnosis.diagnosis_id == 6 || (ipd_diagnosis.diagnosis_id >= 42 && 
+				ipd_diagnosis.diagnosis_id <= 43) || (ipd_diagnosis.diagnosis_id >= 66 &&  
+				ipd_diagnosis.diagnosis_id <= 68)) ? '' : (ipd_diagnosis.female_above_five_under_sixty | currency:'':0 )}}</td>
+                <td style="text-align:right; font-weight:bold" ng-class="{not_applicable: ipd_diagnosis.diagnosis_id == 6 || (ipd_diagnosis.diagnosis_id >= 42 && 
+				ipd_diagnosis.diagnosis_id <= 43) || (ipd_diagnosis.diagnosis_id >= 66 &&  
+				ipd_diagnosis.diagnosis_id <= 68)}">{{ (ipd_diagnosis.diagnosis_id == 6 || (ipd_diagnosis.diagnosis_id >= 42 && 
+				ipd_diagnosis.diagnosis_id <= 43) || (ipd_diagnosis.diagnosis_id >= 66 &&  
+				ipd_diagnosis.diagnosis_id <= 68)) ? '' : (ipd_diagnosis.total_above_five_under_sixty | currency:'':0 )}}</td>
+				
+				<td style="text-align:right;" ng-class="{not_applicable: ipd_diagnosis.diagnosis_id == 6 || ipd_diagnosis.diagnosis_id == 20 || ipd_diagnosis.diagnosis_id == 21 || ipd_diagnosis.diagnosis_id == 22 || (ipd_diagnosis.diagnosis_id >= 42 && 
+				ipd_diagnosis.diagnosis_id <= 43) || (ipd_diagnosis.diagnosis_id >= 66 &&  
+				ipd_diagnosis.diagnosis_id <= 68)}">{{ (ipd_diagnosis.diagnosis_id == 6 || ipd_diagnosis.diagnosis_id == 20 || ipd_diagnosis.diagnosis_id == 21 || ipd_diagnosis.diagnosis_id == 22 || (ipd_diagnosis.diagnosis_id >= 42 && 
+				ipd_diagnosis.diagnosis_id <= 43) || (ipd_diagnosis.diagnosis_id >= 66 &&  
+				ipd_diagnosis.diagnosis_id <= 68)) ? '' : (ipd_diagnosis.male_above_sixty | currency:'':0) }}</td>
+                <td style="text-align:right;" ng-class="{not_applicable: ipd_diagnosis.diagnosis_id == 6 || (ipd_diagnosis.diagnosis_id >= 42 && 
+				ipd_diagnosis.diagnosis_id <= 43) || (ipd_diagnosis.diagnosis_id >= 66 &&  
+				ipd_diagnosis.diagnosis_id <= 68)}">{{ (ipd_diagnosis.diagnosis_id == 6 || (ipd_diagnosis.diagnosis_id >= 42 && 
+				ipd_diagnosis.diagnosis_id <= 43) || (ipd_diagnosis.diagnosis_id >= 66 &&  
+				ipd_diagnosis.diagnosis_id <= 68)) ? '' : (ipd_diagnosis.female_above_sixty | currency:'':0) }}</td>
+                <td style="text-align:right; font-weight:bold" ng-class="{not_applicable: ipd_diagnosis.diagnosis_id == 6 || (ipd_diagnosis.diagnosis_id >= 42 && 
+				ipd_diagnosis.diagnosis_id <= 43) || (ipd_diagnosis.diagnosis_id >= 66 &&  
+				ipd_diagnosis.diagnosis_id <= 68)}">{{ (ipd_diagnosis.diagnosis_id == 6 || (ipd_diagnosis.diagnosis_id >= 42 && 
+				ipd_diagnosis.diagnosis_id <= 43) || (ipd_diagnosis.diagnosis_id >= 66 &&  
+				ipd_diagnosis.diagnosis_id <= 68)) ? '' : (ipd_diagnosis.total_above_sixty | currency:'':0) }}</td>
+				
+				<td style="text-align:right; font-weight:bold" ng-class="{not_applicable: ipd_diagnosis.diagnosis_id == 6 || ipd_diagnosis.diagnosis_id == 20 || ipd_diagnosis.diagnosis_id == 21 || ipd_diagnosis.diagnosis_id == 22 || (ipd_diagnosis.diagnosis_id >= 42 && 
+				ipd_diagnosis.diagnosis_id <= 43) || (ipd_diagnosis.diagnosis_id >= 66 &&  
+				ipd_diagnosis.diagnosis_id <= 68)}">{{ (ipd_diagnosis.diagnosis_id == 6 || ipd_diagnosis.diagnosis_id == 20 || ipd_diagnosis.diagnosis_id == 21 || ipd_diagnosis.diagnosis_id == 22 || (ipd_diagnosis.diagnosis_id >= 42 && 
+				ipd_diagnosis.diagnosis_id <= 43) || (ipd_diagnosis.diagnosis_id >= 66 &&  
+				ipd_diagnosis.diagnosis_id <= 68)) ? '' : (ipd_diagnosis.grand_total_male | currency:'':0) }}</td>
+                <td style="text-align:right; font-weight:bold" ng-class="{not_applicable: ipd_diagnosis.diagnosis_id == 6 || (ipd_diagnosis.diagnosis_id >= 42 && 
+				ipd_diagnosis.diagnosis_id <= 43) || (ipd_diagnosis.diagnosis_id >= 66 &&  
+				ipd_diagnosis.diagnosis_id <= 68)}">{{ (ipd_diagnosis.diagnosis_id == 6 || (ipd_diagnosis.diagnosis_id >= 42 && 
+				ipd_diagnosis.diagnosis_id <= 43) || (ipd_diagnosis.diagnosis_id >= 66 &&  
+				ipd_diagnosis.diagnosis_id <= 68)) ? '' : (ipd_diagnosis.grand_total_female)}}</td>
+                <td style="text-align:right; font-weight:bold" ng-class="{not_applicable: ipd_diagnosis.diagnosis_id == 6 || (ipd_diagnosis.diagnosis_id >= 42 && 
+				ipd_diagnosis.diagnosis_id <= 43) || (ipd_diagnosis.diagnosis_id >= 66 &&  
+				ipd_diagnosis.diagnosis_id <= 68)}">{{ (ipd_diagnosis.diagnosis_id == 6 || (ipd_diagnosis.diagnosis_id >= 42 && 
+				ipd_diagnosis.diagnosis_id <= 43) || (ipd_diagnosis.diagnosis_id >= 66 &&  
+				ipd_diagnosis.diagnosis_id <= 68)
+				) ? '' : (ipd_diagnosis.grand_total | currency:'':0) }}</td>
+            </tr>
+
+
+
+        </table>
+</div>
+</div>
+
+    </md-dialog-content>
+</md-dialog>

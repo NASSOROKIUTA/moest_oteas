@@ -1,0 +1,197 @@
+ <md-content class="md-padding">
+				
+				 <vertical-tabs >
+                            				
+							
+							
+				<vertical-tab-pane title="Employment Permit">
+				
+				<div layout-gt-sm="row">
+				         <md-input-container class="md-block" flex-gt-sm>
+                            <label>Regions</label>
+                         <md-select ng-change="getCouncil(apps.regions)" ng-model="apps.regions" required>
+                         <md-option  ng-repeat="region in regions" value="{{region.id}}" >{{region.region_name}}</md-option>
+                        
+					</md-select>
+                          </md-input-container>
+				
+                         <md-input-container class="md-block" flex-gt-sm>
+                            <label>Council</label>
+                 <md-select ng-change="getSubjects()" ng-model="apps.council" required>
+                 <md-option ng-repeat="council in councils" value="{{council.id}}">{{council.council_name}}</md-option>
+                          
+						   </md-input-container>
+                         
+                          <md-input-container class="md-block" flex-gt-sm>
+                            <label>Gender</label>
+                            <md-select ng-model="apps.gender" required>
+                           <md-option value="">--GENDER--</md-option>
+                           <md-option value="M">Male</md-option>
+                           <md-option value="F">Female</md-option>          
+					       </md-select>
+                          </md-input-container> 
+
+						  <md-input-container class="md-block" flex-gt-sm>
+                            <label>Department</label>
+                            <md-select ng-change="showSubjects(apps.dept_id)" ng-model="apps.dept_id" required>
+                           <md-option value="">--DEPTS--</md-option>
+                           <md-option value="1">Primary</md-option>
+                           <md-option value="2">Secondary</md-option>          
+					       </md-select>
+                          </md-input-container> 
+						  
+		  <md-input-container class="md-block" flex-gt-sm ng-if="showSubject">
+          <label>Teaching Subject</label>
+          <md-select ng-model="apps.subject" required>
+          <md-option value="{{subject.id}}" ng-repeat="subject in subjects">{{subject.subject_name}}</md-option>
+          </md-select>
+          </md-input-container>
+		  
+		  <md-input-container class="md-block" flex-gt-sm>
+          <label>Permit</label>
+         <input ng-model="apps.permits">
+          </md-input-container>
+						  
+						  
+						  
+                        </div> 
+														
+								
+       
+          <md-button class="md-raised md-primary pull-right" ng-click="savePermit(apps)">Save</md-button>
+       
+        
+				                             
+                            </vertical-tab-pane>
+	
+	<vertical-tab-pane title="List of Permits Registered">
+	 
+				<div layout="row">
+				 <md-input-container class="md-block" flex-gt-sm>
+                   <label>Filter By:</label>
+                <md-select ng-model="apps.fieldName" required>
+                <md-option value="department_name">BY DEPARTMENT</md-option>
+                <md-option value="council_name">BY COUNCIL NAME</md-option>
+                </md-option>
+                        
+                           </md-input-container>
+       
+        <md-input-container class="md-block" flex-gt-sm>
+        <label>Filter By:</label>
+        <input type="text" ng-model="apps.filter_by">
+        </md-input-container>
+		
+        <md-input-container class="md-block" flex-gt-sm>
+        <md-button class="md-raised md-primary" ng-click="getPermits(apps)">Search</md-button>
+        </md-input-container>
+      
+        </div>
+		<span ng-if="permits.length ==0 "> <h3 align="center"> NO RESULTS FOUND BASED ON THIS SEARCH KEYWORD</h3>  </span>
+		
+		
+		 <table  ng-if="permits.length >0 " class="table table-bordered" border="1" width="100%">
+                                                        <caption> <b class="">
+                                                            <div  class="text-center"><h8>THE UNITED REPUBLIC OF TANZANIA</h8></div>
+                                                            <div  class="text-center"><h8> PRESIDENTS OFFICE REGIONAL ADMINISTRATION AND LOCAL GOVERNMENT</h8></div>
+                                                            <div  class="text-center"> <img alt="image" class="img-circle" src="/img/arm.png" width="40px" height="40px" /></div>
+
+                                                            <div  class="text-center"> </div>
+                                                            <div  class="text-center"><h8> <i>LIST OF PERMITS BASED ON SEARCH RESULTS</i></h8></div>
+                                                                                                        <hr>
+
+                                                           
+                                                            <P></P>
+                                                            <P></P>
+                                                            <P></P>
+                                                           
+                                                           
+                                                            <hr>
+                                                        </caption>
+                         <tr style="background-color:#c1c1c1">
+ <th rowspan="2">No.</th>  <th rowspan="2" align="center">COUNCIL NAME</th><th colspan="3" style="align:center;">GENDER</th><th rowspan="2">DEPARTMENT</th> </tr>  
+ <tr><th>M</th><th>F</th><th>TOTAL</th>  </tr>
+     <tr ng-repeat="permit in permits track by $index"><td>{{$index+1}}</td><td>{{permit.council_name}}</td><td>{{permit.male}} <span ng-if="permit.male==null">0</span></td>
+	 <td>{{permit.female}} <span ng-if="permit.female==null">0</span></td> <td>{{permit.total_permits}}</td> <td>{{permit.department_name}}</td></tr>
+
+
+                                                    </table>
+		
+				                             
+                            </vertical-tab-pane>
+							<vertical-tab-pane title="College Registration">
+				
+				 <div layout-gt-sm="row">
+                        <md-input-container class="md-block" flex-gt-sm>
+                            <label>State Name</label>
+                            <input type="text" ng-model="modules.module">
+                        </md-input-container>
+                        <md-input-container class="md-block" flex-gt-sm>
+                            <label>Menu Title</label>
+                            <input type="text" ng-model="modules.title">
+                        </md-input-container>
+                        <md-input-container class="md-block" flex-gt-sm>
+                            <label>Icons</label>
+                            <input type="text" ng-model="modules.glyphicons" uib-typeahead=" icon as icon.icon_name for icon in icons | filter:$viewValue | limitTo:8" >
+                        </md-input-container>
+                    </div>
+                    <div layout-gt-sm="row">
+                        <section layout="row" layout-sm="column" layout-align="center center" layout-wrap>
+                            <md-button class="md-raised md-primary" ng-click="saveModules(modules)">SAVE</md-button>
+                        </section>
+                    </div>
+                                                           
+                            </vertical-tab-pane>	
+							
+							<vertical-tab-pane title="Employ Permits">
+				
+				 	<div layout="row">
+       
+         <md-input-container class="md-block" flex-gt-sm>
+                            <label>Facility Code</label>
+                            <input type="text" ng-model="facility_code">
+         </md-input-container>
+        <md-input-container class="md-block" flex-gt-sm>
+        <md-button class="md-raised md-primary" ng-click="synchronizeFacilityCentrally(facility_code)">Download</md-button>
+        </md-input-container>
+      
+        </div>             
+                            </vertical-tab-pane>	
+							
+		<vertical-tab-pane title="Applications">
+				
+				 	<div layout="row">
+       
+         <md-input-container class="md-block" flex-gt-sm>
+                            <label>BASE URL</label>
+                            <input type="text" ng-model="api.ip_address">
+         </md-input-container> 
+		 
+		 <md-input-container class="md-block" flex-gt-sm>
+                            <label>PUBLIC KEYS</label>
+                            <input type="text" ng-model="api.public_keys">
+         </md-input-container> 
+		 <md-input-container class="md-block" flex-gt-sm>
+                            <label>PRIVATE KEYS</label>
+                            <input type="text" ng-model="api.private_keys">
+         </md-input-container>
+         		    <md-select ng-model="selectedChart_"+{{selectedApi}}    placeholder="Select" class="md-no-underline">
+          <md-option ng-repeat="api_type in api_types" ng-click="getApiType(api_type.id)">{{api_type.TemplateName}}</md-option>
+          </md-select>
+		  
+      	
+        <md-input-container class="md-block" flex-gt-sm>
+        <md-button class="md-raised md-primary" ng-click="saveIpAddress(api)">SAVE</md-button>
+        </md-input-container>
+      
+        </div>             
+                            </vertical-tab-pane>	
+							
+							
+							   </vertical-tabs >
+				
+				
+				
+                   
+                </md-content>
+           
+</div>

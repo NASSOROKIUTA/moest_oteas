@@ -1,0 +1,135 @@
+<!--left sidebar section starts-->
+<style>
+	.docs-logo> img {
+    height: 100px;
+    width: auto;
+    display: block;
+    -webkit-transform-origin: 50% 0;
+    transform-origin: 50% 0;
+    -webkit-transform: scale(1.2);
+    transform: scale(1.2);
+}
+.nav-header {
+    background-color: teal;
+    border-bottom: 1px solid #267ED5;
+    -webkit-flex-shrink: 0;
+    flex-shrink: 0;
+    z-index: 2;
+}
+a.docs-logo {
+    border-bottom: none;
+}
+
+		.headerlogo
+{
+	color: #fff;
+	padding: 1em 1.25em;
+	background-image: url("/img/oteas_header.jpg");
+	background-repeat: no-repeat;
+	background-size: 100%;
+    color:white;
+    text-align:center;
+    padding:5px;
+    height:5px;
+}
+
+#sec-two {
+  background-color: blue;
+  height: 10px;
+  width: 100%;
+}
+#sec-three {
+  background-color: yellow;
+  height: 10px;
+  width: 100%;
+}
+#sec-one {
+  background-color: black;
+  height: 10px;
+  width: 100%;
+}
+#sec-four {
+  background-color: green;
+  height: 55px;
+  width: 100%;
+}
+
+.login-form-container{
+position:relative;
+top:-10px;
+}
+</style>
+
+</perfect-scrollbar>
+</md-sidenav>
+
+
+<div layout="column" class="relative" layout-fill role="main">
+	
+    <div class="headerlogo">
+	 
+
+</div>
+
+<div id="sec-four">
+ <section class="pull-right" layout="row" layout-sm="column" layout-align="center center" layout-wrap>
+     
+     </section>
+
+<span flex style="color:white;"><h2 align="center">ONLINE TEACHERS APPLICATION SYSTEM -(OTEAS)</h2></span>
+</div>
+
+<div id="sec-three">
+</div>
+<div id="sec-one">
+</div>
+
+<div class="headerTitle">
+</div>
+
+ <md-content layout-padding>
+ 
+     <div class="login-form-container bg-login"  layout="row" layout-align="center center">
+
+    <form name="form" class="login-form md-whiteframe-z2" style="border-radius:10px;background-color:white;border-top:2px solid blue;border-bottom:2px solid green;" novalidate ng-submit="auth.login()">
+
+        <div class="logo-container"> 
+<img src="/img/thumb_gov_tanzania_logo.png" alt="" class="img-responsive center-block">		
+            <div class="logo-text">
+                <h2 style="font-size:18px; font-weight:600;">LOGIN FORM </h2>
+            </div>
+        </div>
+        <md-content layout-padding layout="column">
+            <md-input-container>
+                <label>Username</label>
+                <input value="" autocomplete="off" type="email" name="email" ng-model="auth.email" required md-autofocus autofocus/>
+                <div ng-messages="form.email.$error">
+                    <div ng-message="required">Can not be blank.</div>
+                </div>
+            </md-input-container>
+
+            <md-input-container>
+                <label>Password</label>
+                <input autocomplete="new-password" value="" autocomplete="off" type="password" name="password" ng-model="auth.password" required/>
+                <div ng-messages="form.password.$error">
+                    <div ng-message="required">Can not be blank.</div>
+                </div>
+            </md-input-container>
+        </md-content>
+        <div ng-if="Loads" layout="row" layout-sm="column" layout-align="space-around">
+            <md-progress-circular md-mode="indeterminate"></md-progress-circular>
+        </div>
+        <md-button ng-disabled="form.$invalid" type="submit" class="md-raised md-primary">Sign In</md-button>
+    </form>
+
+</div>
+
+	 
+	 
+  </md-content>
+
+</div>
+
+
+    
+</div>

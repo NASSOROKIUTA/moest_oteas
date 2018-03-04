@@ -1,0 +1,18 @@
+id,college_reg_number,college_name,college_status,ownership_status,registration_status,college_address,education_level,focalname,email
+1,1,UNIVERSITY OF DAR-ES-SALAAM,1,1,3,DOM,3,NASSORO ,nassoro.mohamed@tamisemi.go.tz
+2,2,UNIVERSITY OF MBEYA,1,2,3,DOM,3,NASSORO ,nassoro.mohamed@tamisemi.go.tz
+3,3,SOKOINE UNIVERSITY OF AGRICULTURE,1,1,3,DOM,3,NASSORO ,nassoro.mohamed@tamisemi.go.tz
+4,4,THE OPEN UNIVERSITY OF TANZANIA,1,1,3,DOM,3,NASSORO ,nassoro.mohamed@tamisemi.go.tz
+5,5,ARDHI UNIVERSITY,1,1,3,DOM,3,NASSORO ,nassoro.mohamed@tamisemi.go.tz
+6,6,STATE UNIVERSITY OF ZANZIBAR,1,1,3,DOM,3,NASSORO ,nassoro.mohamed@tamisemi.go.tz
+7,7,MZUMBE UNIVERSITY,1,1,3,DOM,3,NASSORO ,nassoro.mohamed@tamisemi.go.tz
+8,8,NELSON MANDELA INSTUTE OF TECHNOLOGY,1,1,3,DOM,3,NASSORO ,nassoro.mohamed@tamisemi.go.tz
+9,9,UNIVERSITY OF DODOMA,1,1,3,DOM,3,NASSORO ,nassoro.mohamed@tamisemi.go.tz
+10,10,MBEYA UNIVERSITY OF SCIENCE AND TECHNOLOGY,1,2,3,DOM,3,NASSORO ,nassoro.mohamed@tamisemi.go.tz
+11,11,TUMAINI UNIVERSITY MAKUMIRA,1,2,3,DOM,3,NASSORO ,nassoro.mohamed@tamisemi.go.tz
+12,12,ST.AUGUSTINE UNIVERSITY OF TANZANIA,1,2,3,DOM,3,NASSORO ,nassoro.mohamed@tamisemi.go.tz
+13,13,ZANZIBAR UNIVERSITY,1,2,3,DOM,3,NASSORO ,nassoro.mohamed@tamisemi.go.tz
+14,14,MOUNT MERU UNIVERSITY,1,2,3,DOM,3,NASSORO ,nassoro.mohamed@tamisemi.go.tz
+15,15,UNIVERSITY OF ARUSHA,1,2,3,DOM,3,NASSORO ,nassoro.mohamed@tamisemi.go.tz
+16,16,TEOFILI KISANJI UNIVERSITY,1,2,3,DOM,3,NASSORO ,nassoro.mohamed@tamisemi.go.tz
+17,17,MUSLIM UNIVERSITY OF MOROGORO,1,2,3,DOM,3,NASSORO ,nassoro.mohamed@tamisemi.go.tz

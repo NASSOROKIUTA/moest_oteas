@@ -1,0 +1,168 @@
+<!--left sidebar section starts-->
+<style>
+	.docs-logo> img {
+    height: 100px;
+    width: auto;
+    display: block;
+    -webkit-transform-origin: 50% 0;
+    transform-origin: 50% 0;
+    -webkit-transform: scale(1.2);
+    transform: scale(1.2);
+}
+.nav-header {
+    background-color: teal;
+    border-bottom: 1px solid #267ED5;
+    -webkit-flex-shrink: 0;
+    flex-shrink: 0;
+    z-index: 2;
+}
+a.docs-logo {
+    border-bottom: none;
+}
+
+		.headerlogo
+{
+	color: #fff;
+	padding: 1em 1.25em;
+	background-image: url("/img/oteas_header.jpg");
+	background-repeat: no-repeat;
+	background-size: 100%;
+    color:white;
+    text-align:center;
+    padding:65px;
+    height:5px;
+}
+
+#sec-two {
+  background-color: blue;
+  height: 10px;
+  width: 100%;
+}
+#sec-three {
+  background-color: yellow;
+  height: 10px;
+  width: 100%;
+}
+#sec-one {
+  background-color: black;
+  height: 10px;
+  width: 100%;
+}
+#sec-four {
+  background-color: rgb(0,150,136);
+  height: 55px;
+  width: 100%;
+}
+
+.login-form-container{
+position:relative;
+top:-10px;
+}
+.topMost{
+  position: absolute;
+    top: 0px;
+    right: 0px;
+    font-size: 18px;
+}
+
+
+</style>
+
+</perfect-scrollbar>
+</md-sidenav>
+
+
+<div layout="column" class="relative" layout-fill role="main">
+	
+    <div class="headerlogo">
+	 
+ <div layout="row">
+   <md-button class="md-raised md-primary topMost" ng-click="loginForm()">LOGIN</md-button>
+  </div>
+</div>
+
+<div id="sec-four">
+ <section class="pull-right" layout="row" layout-sm="column" layout-align="center center" layout-wrap>
+     
+     </section>
+
+<span flex style="color:white;"><h2 align="center">ONLINE TEACHERS APPLICATION SYSTEM -(OTEAS)</h2> 
+						</span>
+</div>
+
+<div id="sec-three">
+</div>
+<div id="sec-one">
+</div>
+
+<div class="headerTitle">
+</div>
+
+ <md-content layout-padding>
+ 
+ <!--   APPLICATION FORM START HERE..        -->
+ 
+ 
+  <div layout="row">
+                         
+                          <div flex="100">
+                              <md-card>
+                              
+                                  <md-card-content>
+								  <h2 align='center'>APPLICATION FORM</h2>
+								  <div layout-gt-sm="row">
+                         <md-input-container class="md-block" flex-gt-sm>
+                            <label>Colleges</label>
+                            <md-select ng-model="apps.college" ng-click="getFacilities()" required>
+                              <md-option value="">Please select college</md-option>
+               <md-option ng-repeat="college in colleges" value="{{college.id}}">{{college.college_name}}</md-option>
+                              </md-select>
+                          </md-input-container>
+                          <md-input-container class="md-block" flex-gt-sm>
+                            <label>Admission Number</label>
+                            <input type="text" ng-model="apps.admn_no" required>
+                          </md-input-container>
+                          <md-input-container class="md-block" flex-gt-sm>
+                            <label>Graduation Year</label>
+                            <md-select ng-model="apps.grad_year" ng-click="getFacilities()" required>
+                           <md-option value="">Please select Year</md-option>
+                     <md-option ng-repeat="college_year in college_years" value="{{college_year}}">{{college_year}}</md-option>
+                     </md-select>
+                          </md-input-container>
+                        </div> 
+						
+						
+						<div layout-gt-sm="row">
+                         
+                          <md-input-container class="md-block" flex-gt-sm>
+                            <label>Form Four Index Number</label>
+                            <input type="text" ng-model="apps.index_number" required>
+                          </md-input-container>
+                          <md-input-container class="md-block" flex-gt-sm>
+                            <label>Graduation Year</label>
+                            <md-select ng-model="apps.form_grad_year" ng-click="getFacilities()" required>
+                           <md-option value="">Please select Year</md-option>
+                              <md-option ng-repeat="school_year in school_years" value="{{school_year}}">{{school_year}}</md-option>  </md-select>
+                          </md-input-container>
+                        </div>
+						 <md-button class="md-raised md-primary pull-right" ng-click="saveApp(apps)">SAVE</md-button>
+								  
+                                  </md-card-content>
+								  </md-card>
+								  </div>
+ 
+ 
+   
+ 
+						
+			
+                       
+	 
+	 
+  </md-content>
+
+</div>
+
+
+    
+</div>

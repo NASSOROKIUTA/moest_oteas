@@ -1,0 +1,109 @@
+<md-dialog aria-label="Mango (Fruit)" ng-controller="paymentsController">
+    <form name="projectForm" autocomplete="off" ng-cloak>
+        <md-toolbar>
+            <div class="md-toolbar-tools">
+                <h2>CORPSE SERVICES PAYMENTS:{{selectedCorpse.first_name}}{{selectedCorpse.middle_name}}{{selectedCorpse.last_name}}{{selectedCorpse.corpse_record_number}}</h2>
+                <span flex></span>
+                <md-button class="md-icon-button" ng-click="cancel()">
+                    <md-icon md-svg-src="/svg/ic_close_24px.svg" aria-label="Close dialog"></md-icon>
+                </md-button>
+            </div>
+        </md-toolbar>
+
+        <md-dialog-content>
+            <div class="md-dialog-content">
+
+                <md-content class="md-padding">
+                    <div layout="row">
+                        <div flex="100">
+                            <md-input-container class="md-block">
+                                <input data-toggle="tooltip" title="search corpse here..." type="text" placeholder="Click here to search Corpse "
+                                       uib-typeahead="corpse as corpse.first_name+' '+corpse.middle_name+''+corpse.last_name+' '+corpse.corpse_record_number for corpse in showCorpse($viewValue) |filter:$viewValue |limitTo:5" ng-model="selectedCorpse"
+                                       autocomplete="off">
+                            </md-input-container>
+                        </div>
+                    </div>
+                    <div layout="row">
+                        <div flex="60">
+                            <md-input-container class="md-block">
+                                <input type="text" id="item2" placeholder="Search Items" ng-model="corpseItem"
+                                       uib-typeahead="item as item.item_name+' '+item.price for item in corpseItems($viewValue) | filter:$viewValue | limitTo:5" autocomplete="off">
+                            </md-input-container>
+                        </div>
+                        <div flex="20">
+                            <md-input-container class="md-block">
+                                <input type="number" id="qty2" ng-model="quantity" placeholder="Quantity" min="0">
+                            </md-input-container>
+                        </div>
+                        <div flex="20">
+                            <md-input-container class="md-block">
+                                <md-button class="md-raised md-primary" ng-click="addCorpseItem(selectedCorpse,corpseItem,quantity)">Add</md-button>
+                            </md-input-container>
+                        </div>
+
+                    </div>
+
+                    <div layout="row" ng-if="corpseData.length>0">
+                        <table class="mdl-data-table mdl-js-data-table" width="100%" >
+                            <thead>
+                            <tr>
+                                <td><strong>Item Name</strong></td>
+                                <td class="text-center"><strong>Unit Price</strong></td>
+                                <td class="text-center"><strong>Quantity</strong></td>
+                                <td class="text-right"><strong>Sub Total</strong></td>
+                                <td class="text-right"><strong>Action</strong></td>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr ng-repeat="item in corpseData">
+                                <td>{{item.item_name}}</td>
+                                <td class="text-center">{{item.price}}</td>
+                                <td class="text-center">{{item.quantity}}</td>
+                                <td class="text-right">{{item.sub_total | currency : 'Tshs ' : 2}}</td>
+                                <td><span ng-click="removecorpseItem(item)" style="cursor: pointer">Remove</span></td>
+                            </tr>
+                            <tr>
+                                <td class="emptyrow"></td>
+
+                                <td class="emptyrow"></td>
+                                <td class="emptyrow text-center"><strong>Grand Total</strong></td>
+                                <td class="emptyrow text-right">{{toto | currency : 'Tshs ' : 2}}</td>
+                                <td class="emptyrow"></td>
+                            </tr>
+                            </tbody>
+                        </table>
+
+
+                    </div>
+                    <md-button type="submit" class="md-raised md-primary pull-right" ng-click="processCorpseSales(selectedCorpse,payment)" ng-if="corpseData.length>0">Process</md-button>
+
+
+            </div>
+        </md-dialog-content>
+
+        <md-dialog-actions layout="row">
+            <span flex></span>
+            <md-button ng-click="cancel()">
+                Cancel
+            </md-button>
+
+        </md-dialog-actions>
+    </form>
+</md-dialog>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

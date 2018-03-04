@@ -1,0 +1,642 @@
+
+<form autocomplete="off">
+    <div ng-cloak>
+        <md-content>
+            <md-tabs md-dynamic-height md-border-bottom>
+                <md-tab label="Equipments" ng-click="setTabEquipments(1)">
+
+                    <md-content class="md-padding">
+					
+					
+					 <vertical-tabs >
+                            <vertical-tab-pane title="Equipments Registration">
+                                <div layout="row">
+                                  <div flex="100">
+                                      <div layout="row">
+									  <md-input-container class="md-block" flex-gt-sm>
+                                    <label>Equipment Name</label>
+                                    <input type="text" ng-model="device.equip_name" ng-click="getLabDepartments()">
+                                </md-input-container>
+                                <md-input-container class="md-block" flex-gt-sm>
+                                    <label>Equipment status</label>
+                                     <md-select ng-model="device.equip_status" ng-click="setTabEquipments()">
+                                        <md-option value="">Equipment status</md-option>                                 
+                                    
+                                        <md-option  ng-repeat="getEquipementStatus in getEquipementStatuses" ng-value="getEquipementStatus.id">{{getEquipementStatus.status_name}}</md-option>
+                                     </md-select>
+                                   </md-input-container>
+
+                                 <md-input-container class="md-block" flex-gt-sm>
+                                    <label>Reagent to be used</label>
+                                    <input type="text" ng-model="device.reagents">
+                                </md-input-container>
+
+                                <md-input-container class="md-block" flex-gt-sm>
+                                    <label>Sub departments</label>
+                                    
+                                  <md-select  ng-model="device.subdepartment"  ng-click="getLabDepartments()">
+                                       <md-option value="">sub departments</md-option>                                       
+                                        <md-option  ng-repeat="labDepartment in labDepartments"    ng-value="labDepartment.id">{{labDepartment.sub_department_name}} </md-option>
+                                     </md-select>
+                                   
+                                </md-input-container>
+
+                            </div>
+                                <section layout="row" layout-sm="column" layout-align="center center" layout-wrap>
+                                 <md-button class="md-raised md-primary" ng-click="addDevices(device)">SAVE</md-button>
+                            </section>
+
+                                    </div>
+									</div>
+
+                              
+                            </vertical-tab-pane> 
+							
+							<vertical-tab-pane title="Equipment List">
+                                <div layout="row">
+                               <table class="table table-bordered table-striped">
+                        <thead>
+                        <tr>
+                            <th sortable="code" class="sortable mdl-data-table__cell--non-numeric">
+                                <span>No.</span>
+                            </th>
+                            <th class="st-sort-disable th-dropdown">
+                             EQUIPMENT NAME
+                            </th>
+                            <th sortable="placed" class="sortable">
+                                <span>DESCRIPTIONS</span>
+                            </th>
+
+                            
+                            <th  class="sortable">
+                                <span>ON/OFF</span>
+                            </th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr grid-item ng-repeat="equipementList in equipementLists track by $index"  >
+                            <td class="mdl-data-table__cell--non-numeric">
+                               {{$index+1}}
+                            </td>
+                            <td >{{equipementList.equipment_name}}</td>
+                            <td >{{equipementList.status_name}}</td>
+                             <td>
+			
+			<md-switch ng-model="switch" ng-checked={{equipementList.on_off}} 
+			ng-click="changeEquipStatus(equipementList,switch)"
+			class="md-warn" ng-true-value="1" ng-false-value="0">
+	
+  </md-switch>
+			</td> 
+                                
+                               </tr>
+                        </tbody>
+                    </table>     
+								   
+								   
+								   
+                                </div>                              
+                            </vertical-tab-pane>
+							</vertical-tabs>
+
+                        <!-- <h3 class="md-display-1">Search re-attended
+                            patients</h3> -->
+                        <!-- register patient  -->
+                           <div  role="form">
+                               <md-content class="md-padding" style="padding:2em;">
+                                <div layout="row">
+                                   
+                                    
+                                </div>
+                            </md-content>
+
+
+
+
+
+
+
+
+</form>
+</div>
+<!-- end register patient -->
+</md-content>
+
+</md-tab>
+<md-tab label="Lab Tests" ng-click="setTabResultsAprrove(4)">
+
+     <md-content class="md-padding" style="padding:2em;">
+	 
+	  <vertical-tabs >
+                            <vertical-tab-pane title="Tests Panels Registration">
+                                <div layout="row">
+                                   <md-input-container >
+                                    <label>Panel Name</label>
+                                    <input ng-click="getEquipementList()" type="text" ng-model="test.name">
+                                </md-input-container>
+                                <md-input-container >
+                                    <label>Equipment</label>
+                                     <md-select ng-model="test.equipment_id" ng-click="getEquipementList()">
+                                     <md-option  ng-repeat="equipementList in equipementLists"    ng-value="equipementList.id"> {{equipementList.equipment_name}} </md-option>
+                                    </md-select>
+
+                                </md-input-container>
+                                    
+									<md-input-container >
+                                        <md-button class="md-raised md-primary" ng-click="addLabPanel(test)">SAVE</md-button>
+                                    </md-input-container>
+                                </div>
+
+                              
+                            </vertical-tab-pane> 
+							
+							<vertical-tab-pane title="Components Registration">
+                                 <div layout-gt-sm="row">
+                                <md-input-container class="md-block" flex-gt-sm>
+                                    <label>Test Panel</label>
+                                    <input uib-typeahead ="panel as panel.panel_name for panel in showSearchPanels($viewValue) | filter:$viewValue" type="text" ng-model="testPanel.panel">
+                                </md-input-container>
+                                <md-input-container class="md-block" flex-gt-sm>
+                                    <label>Component Name</label>
+                                            <input  type="text" ng-model="testPanel.name">
+                           
+                                </md-input-container>
+                               
+                            </div>
+
+                             <div layout-gt-sm="row">
+                                <md-input-container class="md-block" flex-gt-sm>
+                                    <label>Minimum</label>
+                                    <input  type="text" ng-model="testPanel.minimum_limit">
+                                </md-input-container>
+                                <md-input-container class="md-block" flex-gt-sm>
+                                    <label>Maximum</label>
+                                           <input  type="text" ng-model="testPanel.maximum_limit">
+                           
+                                </md-input-container>
+
+                                  <md-input-container class="md-block" flex-gt-sm>
+                                    <label>SI Units</label>
+                                           <input  type="text" ng-model="testPanel.si_units">
+                           
+                                </md-input-container>
+                               
+                            </div>    
+ <div layout="row">
+                                   
+                                    
+									<md-input-container >
+                                        <md-button class="md-raised md-primary" ng-click="addLabTestPanel(testPanel)">SAVE</md-button>
+                                    </md-input-container>
+                                </div>              							
+                            </vertical-tab-pane>
+							
+							<vertical-tab-pane title="Single Test Registration">
+                                <div layout="row">
+                                    <md-input-container >
+                                        <label>TEST NAME</label>
+                                        <input ng-model="singleTest.name">
+                                    </md-input-container>
+									<md-input-container >
+                                    <label>Equipment</label>
+                                     <md-select ng-model="singleTest.equipment_id" ng-click="getEquipementList()">
+                                     <md-option  ng-repeat="equipementList in equipementLists"    ng-value="equipementList.id"> {{equipementList.equipment_name}} </md-option>
+                                    </md-select>
+
+                                </md-input-container>
+									                                    
+									<md-input-container >
+                                        <md-button class="md-raised md-primary" ng-click="addSingleTest(singleTest)">SAVE</md-button>
+                                    </md-input-container>
+                                </div>                              
+                            </vertical-tab-pane>
+							
+							
+							
+				<vertical-tab-pane title="Registered Tests">
+				
+				<div layout="row">
+                                   
+                                <md-input-container class="md-block">
+                                    <label>Equipment List Registered</label>
+                                     <md-select ng-model="test.equipment_id" ng-click="getEquipementList()">
+                                     <md-option  ng-repeat="equipementList in equipementLists"    ng-value="equipementList.id"> {{equipementList.equipment_name}} </md-option>
+                                    </md-select>
+
+                                </md-input-container>
+                                    
+									<md-input-container >
+                                        <md-button class="md-raised md-primary" ng-click="getLabTestPerMachine(test)">GET TEST LIST</md-button>
+                                    </md-input-container>
+                                </div>
+                                <div layout="row">
+                               <table class="table table-bordered table-striped">
+                        <thead>
+                        <tr>
+                            <th sortable="code" class="sortable mdl-data-table__cell--non-numeric">
+                                <span>No.</span>
+                            </th>
+                            <th class="st-sort-disable th-dropdown">
+                             LAB TEST NAME
+                            </th>
+                            <th sortable="placed" class="sortable">
+                                <span>EQUIPMENT NAME</span>
+                            </th> 
+							<th sortable="placed" class="sortable">
+                                <span>EQUIPMENT STATUS</span>
+                            </th>
+
+                            
+                            <th  class="sortable">
+                                <span>OPTIONS</span>
+                            </th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr grid-item ng-repeat="registeredTest in registeredTests track by $index"  >
+                            <td class="mdl-data-table__cell--non-numeric">
+                               {{$index+1}}
+                            </td>
+                            <td >{{registeredTest.item_name}}</td>
+                            <td >{{registeredTest.equipment_name}}</td>
+                            <td >{{registeredTest.status_name}}</td>
+                             <td>
+	 
+   <md-button class="md-raised md-primary"  ng-click="changeEquip(registeredTest)">Change Machine</md-button>
+			</td> 
+                                
+                               </tr>
+                        </tbody>
+                    </table>     
+								   
+								   
+								   
+                                </div>                              
+                            </vertical-tab-pane>
+							<vertical-tab-pane title="Unavailable Tests">
+				
+				<div layout="row">
+                                    <md-input-container >
+                                        <label>Choose Start Date</label>
+                                        <input ng-model="pef.start" datetime-picker date-format="yyyy-MM-dd HH:mm:ss" />
+                                    </md-input-container>
+                                    <md-input-container >
+                                        <label>Choose End Date</label>
+                                        <input ng-model="pef.end" datetime-picker date-format="yyyy-MM-dd HH:mm:ss" />
+                                    </md-input-container>
+                                    <md-input-container >
+                                        <md-button class="md-raised md-primary" ng-click="getUnavailableTests(pef)">Search</md-button>
+                                    </md-input-container>
+                                </div>
+                                <div layout="row">
+                               <table class="table table-bordered table-striped">
+                        <thead>
+                        <tr>
+                            <th sortable="code" class="sortable mdl-data-table__cell--non-numeric">
+                                <span>No.</span>
+                            </th>
+                            <th class="st-sort-disable th-dropdown">
+                             LAB TEST NAME
+                            </th>
+                            
+							<th sortable="placed" class="sortable">
+                                <span>EQUIPMENT/REAGENT STATUS</span>
+                            </th>
+							<th sortable="placed" class="sortable">
+                                <span>PATIENT NAME</span>
+                            </th>
+							<th sortable="placed" class="sortable">
+                                <span>DOCTOR ORDERED</span>
+                            </th>
+							<th sortable="placed" class="sortable">
+                                <span>TIME REQUESTED</span>
+                            </th>
+
+                            
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr grid-item ng-repeat="unAvailableTest in unAvailableTests track by $index"  >
+                            <td class="mdl-data-table__cell--non-numeric">
+                               {{$index+1}}
+                            </td>
+                            <td >{{unAvailableTest.item_name}}</td>
+                             <td >{{unAvailableTest.status_name}}</td>
+                             <td >{{unAvailableTest.patient_name}}</td>
+							 <td >{{unAvailableTest.doctor_name}}</td>
+							 <td >{{unAvailableTest.created_at}}</td>
+                           
+                            
+                                
+                               </tr>
+                        </tbody>
+                    </table>     
+								   
+								   
+								   
+                                </div>                              
+                            </vertical-tab-pane>	
+							
+							
+							   </vertical-tabs >
+							
+							
+                                
+                            </md-content>
+</md-tab>
+<md-tab label="Tests Prices">
+    <md-content class="md-padding" ng-controller="itemPriceController">
+        <md-input-container class="md-block">
+            <input type="text" typeahead-on-select="" ng-model="item_price.selectedItem" uib-typeahead ="item as item.item_name  for item in itemLabSearch($viewValue) | limitTo:8 | filter:$viewValue" placeholder="Search for any Lab test to set price" uib-typeahead="patient as patient.fullname+', '+patient.membership_number+', '+patient.mobile_number+' ,'+patient.medical_record_number for patient in getInsuarancePatients($viewValue) |filter:$viewValue |limitTo:5"
+                   ng-model="selectedPatient" typeahead-on-select="verification(selectedPatient.membership_number)">
+        </md-input-container>
+
+                      
+                                                             
+
+        <div layout-gt-sm="row">
+                                <md-input-container class="md-block" flex-gt-sm  ng-repeat="category in payment_sub_categories" ng-if="category.main_category != 'Exemption'">
+                                    <label class="  control-label">{{category.sub_category_name}}:</label>
+                                    <input  type="text" id="{{category.sub_category_name.replace(' ', '_')}}" >
+                                    <input type="text"   id="status_{{category.sub_category_name.replace(' ', '_')}}" class="hidden" value="active" />
+                                                                   
+                                </md-input-container>
+                                
+                            </div>
+
+
+                             <div layout-gt-sm="row">
+                                <md-input-container class="md-block" flex-gt-sm>
+                                    <label> Starting  Year</label>
+                                <md-datepicker ng-model="item_price.startingFinancialYear"></md-datepicker>                              
+                                </md-input-container>
+
+                                 <md-input-container class="md-block" flex-gt-sm>
+                                    <label> Ending   Year</label>
+                                <md-datepicker ng-model="item_price.endingFinancialYear"></md-datepicker>                              
+                                </md-input-container>
+
+
+                                 <md-input-container class="md-block" flex-gt-sm>
+                                 <section layout="row" layout-sm="column" layout-align="center center" layout-wrap>
+                                 <md-button class="md-raised md-primary" ng-click="item_price_registration(item_price)">SAVE</md-button>
+                                </section>
+                               
+                               
+                                 </md-input-container>
+
+               
+                            </div>
+
+
+
+
+                            
+
+
+    </md-content>
+</md-tab>
+<md-tab label="ALLOCATE TEST">
+   <md-content class="md-padding" ng-controller="itemPriceController">
+  
+        <md-input-container class="md-block">
+            <input type="text" typeahead-on-select="" ng-model="test.selectedItem" uib-typeahead ="item as item.item_name  for item in itemLabSearch($viewValue) | limitTo:8 | filter:$viewValue" placeholder="Search for any Lab test to set price" uib-typeahead="patient as patient.fullname+', '+patient.membership_number+', '+patient.mobile_number+' ,'+patient.medical_record_number for patient in getInsuarancePatients($viewValue) |filter:$viewValue |limitTo:5"
+                   ng-model="selectedPatient" typeahead-on-select="verification(selectedPatient.membership_number)">
+        </md-input-container>
+
+                      
+                                                             
+
+							<div layout-gt-sm="row">
+								<md-input-container class="md-block" flex-gt-sm>
+                                    <label>Equipment</label>
+                                     <md-select ng-model="test.equipment_id" ng-click="getEquipementList()">
+                                     <md-option  ng-repeat="equipementList in equipementLists"    ng-value="equipementList.id"> {{equipementList.equipment_name}} </md-option>
+                                    </md-select>
+                                </md-input-container>  
+
+								<md-input-container class="md-block" flex-gt-sm>
+                                    <label>Test Category</label>
+                                     <md-select ng-model="test.category">
+                                  <md-option  ng-value="1"> Single Test </md-option>   <md-option  ng-value="2"> Panel Test </md-option>
+                                    </md-select>
+                                </md-input-container> 
+					
+								  <md-input-container class="md-block" flex-gt-sm ng-if="test.category==2">
+                                    <label>Component Name</label>
+                                            <input  type="text" ng-model="test.name">
+                           
+                                </md-input-container>                        
+                            </div>
+
+							 <div layout-gt-sm="row">
+                                <md-input-container class="md-block" flex-gt-sm>
+                                    <label>Minimum</label>
+                                    <input  type="text" ng-model="testPanel.minimum_limit">
+                                </md-input-container>
+                                <md-input-container class="md-block" flex-gt-sm>
+                                    <label>Maximum</label>
+                                           <input  type="text" ng-model="test.maximum_limit">
+                           
+                                </md-input-container>
+
+                                  <md-input-container class="md-block" flex-gt-sm>
+                                    <label>SI Units</label>
+                                           <input  type="text" ng-model="test.si_units">
+                           
+                                </md-input-container>
+                               
+                            </div>
+							
+							
+
+                             <div layout-gt-sm="row">
+                                 <md-input-container class="md-block" flex-gt-sm>
+                                 <section layout="row" layout-sm="column" layout-align="center center" layout-wrap>
+      <md-button class="md-raised md-primary" ng-click="allocateTestToLab(equipementList,test)">SAVE</md-button>
+                                </section>
+                               
+                               
+                                 </md-input-container>
+
+               
+                            </div>
+
+
+
+
+                            
+
+
+    </md-content>
+</md-tab>
+
+
+
+<md-tab label="Users Configurations" ng-click="getLabDepartments()">
+     
+ <md-content class="md-padding">
+  <div class="col-sm-4"  style="cursor:pointer;" ng-repeat="labDepartment in  labDepartments" ng-click="getUsersFromLabSections(labDepartment.id)">
+        <span >  <span class="mdl-chip mdl-chip--contact mdl-chip--deletable">
+        <span class="mdl-chip__contact mdl-color--teal mdl-color-text--white">A</span>
+    <span class="mdl-chip__text"  >{{labDepartment.sub_department_name}}</span></span>
+  </span>
+ </div>	 
+</md-content>
+            
+</md-tab>
+
+<md-tab label="Reports">
+     
+ <md-content class="md-padding">
+  
+ <!--vertical tabs start-->
+        <vertical-tabs >
+            <vertical-tab-pane title="Staff Perfomances">
+                <div layout="row">
+                    <md-input-container >
+                        <label>Choose Start Date</label>
+                        <input ng-model="pef.start" datetime-picker date-format="yyyy-MM-dd HH:mm:ss" />
+                    </md-input-container>
+                    <md-input-container >
+                        <label>Choose End Date</label>
+                        <input ng-model="pef.end" datetime-picker date-format="yyyy-MM-dd HH:mm:ss" />
+                    </md-input-container>
+                    <md-input-container >
+                        <md-button class="md-raised md-primary" ng-click="getPermanceAtLab(pef)">Search</md-button>
+                    </md-input-container>
+                </div>
+
+                <div layout="row">
+
+<div flex="85" >
+
+                        <table class="table table-bordered table-striped" ng-if="staffPerformances.length > 0">
+                            <thead>
+                            <tr>
+                                
+                                <th >S/No</th>
+                                <th >Staff Name</th>
+                               
+                                <th >Number of Tests Perfomed</th>
+
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr ng-repeat="staffPerformance in staffPerformances track by $index"  >
+                                <td class="mdl-data-table__cell--non-numeric">
+                                  {{ $index+ 1}}
+                                </td>
+                                <td >{{staffPerformance.posted_by}}</td>
+                                <td >{{staffPerformance.test_number}}</td>
+                               
+
+                            </tr>
+                            </tbody>
+                        </table>
+
+                    </div>
+                   
+
+                </div>
+
+            </vertical-tab-pane>
+ <vertical-tab-pane title="Sample Status">
+                <div layout="row">
+                    <md-input-container >
+                        <label>Choose Start Date</label>
+                        <input ng-model="pef.start" datetime-picker date-format="yyyy-MM-dd HH:mm:ss" />
+                    </md-input-container>
+                    <md-input-container >
+                        <label>Choose End Date</label>
+                        <input ng-model="pef.end" datetime-picker date-format="yyyy-MM-dd HH:mm:ss" />
+                    </md-input-container>
+                    <md-input-container >
+                        <md-button class="md-raised md-primary" ng-click="getSampleStatus(pef)">Search</md-button>
+                    </md-input-container>
+                </div>
+
+                <div layout="row" ng-click="getStaffPerfomance(pef)">
+
+                    <div flex="85" >
+
+                        <table class="table table-bordered table-striped" ng-if="sampleStatuses.length > 0">
+                            <thead>
+                            <tr>
+                                
+                                <th >S/No</th>
+                                <th >Sample #</th>
+                                <th >Sample Types</th>
+                                <th >Sample Section</th>
+                                <th >Test Name</th>
+                                <th >Medical Record Number</th>
+                                <th >Sample Status</th>
+                                <th >Requested Time</th>
+
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr ng-repeat="sampleStatus in sampleStatuses track by $index"  >
+                                <td class="mdl-data-table__cell--non-numeric">
+                                  {{ $index+ 1}}
+                                </td>
+                                <td >{{sampleStatus.sample_no}}</td>
+                                <td >{{sampleStatus.sample_types}}</td>
+                                <td >{{sampleStatus.sub_department_name}}</td>
+                                <td >{{sampleStatus.item_name}}</td>
+                                <td >{{sampleStatus.medical_record_number}}</td>
+                                <td >
+								
+							{{sampleStatus.sample_status}}
+								
+								</td>
+								<td >{{sampleStatus.created_at}}</td>
+
+                            </tr>
+                            </tbody>
+                        </table>
+
+                    </div>
+
+                </div>
+
+            </vertical-tab-pane>
+
+
+
+        </vertical-tabs>
+        <!--vertical tabs end-->
+  
+</md-content>
+            
+</md-tab>
+
+</md-tabs>
+</md-content>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

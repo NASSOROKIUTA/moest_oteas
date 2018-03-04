@@ -1,0 +1,225 @@
+ <md-content class="md-padding">
+				
+				 <vertical-tabs >
+                            				
+							
+							
+				<vertical-tab-pane title="School Registration">
+				
+				<div layout-gt-sm="row">
+				         <md-input-container class="md-block" flex-gt-sm>
+                            <label>Centre Number</label>
+                        <input type="text" ng-model="apps.centre_number"required>
+                          </md-input-container>
+				
+                         <md-input-container class="md-block" flex-gt-sm>
+                            <label>School Level</label>
+                            <md-select ng-model="apps.school_level" required>
+                           <md-option ng-repeat="schoollevel in school_levels" value="{{schoollevel.id}}">{{schoollevel.school_level}}</md-option>
+                          
+						   </md-input-container>
+                         
+                          <md-input-container class="md-block" flex-gt-sm>
+                            <label>Teaching Language</label>
+                            <md-select ng-model="apps.language" required>
+                           <md-option value="1" selected>Swahili</md-option>
+                           <md-option value="2">English</md-option>
+                    
+					</md-select>
+                          </md-input-container>
+                        </div> 
+						
+						<div layout-gt-sm="row">
+				         <md-input-container class="md-block" flex-gt-sm>
+                            <label>School Name</label>
+                       <input type="text" ng-model="apps.school_name"required>
+                          </md-input-container>
+				
+                         <md-input-container class="md-block" flex-gt-sm>
+                            <label>Special needs</label>
+                          <md-select ng-model="apps.is_special_need" ng-change="getSpecialNeeds(apps.is_special_need)" required>
+                           <md-option value="0" selected>No</md-option>
+                           <md-option value="1">Yes</md-option>
+                          </md-input-container>
+                         
+                          <md-input-container ng-if="show_special_needs" class="md-block" flex-gt-sm>
+                            <label>Special Needs required</label>
+                     <md-select ng-model="apps.special_needs_type"  required>
+                           <md-option  value="">--SELECT--</md-option>
+  <md-option ng-repeat="special_need in special_needs" value="{{special_need.id}}">{{special_need.special_need}}</md-option>
+                           
+					</md-select>
+                          </md-input-container>
+                        </div> 
+						
+						<div layout-gt-sm="row">
+				         <md-input-container class="md-block" flex-gt-sm>
+                            <label>School Location</label>
+                        <input type="text" ng-model="apps.school_location"required>
+                          </md-input-container>
+				
+                         <md-input-container class="md-block" flex-gt-sm>
+                            <label>Day/Boarding</label>
+                          <md-select ng-model="apps.day_boarding" required>
+                         <md-option value="1" selected>Day School</md-option>
+                         <md-option value="2" selected>Boarding School</md-option>
+                         <md-option value="3" selected>Day and Boarding</md-option>
+                           </md-input-container>
+                         
+                          <md-input-container class="md-block" flex-gt-sm>
+                            <label>Boys/Girls</label>
+                           <md-select ng-model="apps.boys_girls"  required>
+                           <md-option value="">--SELECT--</md-option>
+                           <md-option value="1">Core</md-option>
+                           <md-option value="2">Boys</md-option>
+                           <md-option value="3">Girls</md-option>
+                           
+					</md-select>
+                          </md-input-container>
+						  <md-input-container  class="md-block" flex-gt-sm>
+                            <label>Distance to HQ (KM)</label>
+                        <input type="text" ng-model="apps.distance_km"required>
+                      
+                          </md-input-container>
+                        </div> 
+				
+				<div layout-gt-sm="row">
+				        			
+                   <md-input-container class="md-block" flex-gt-sm>
+                   <label>Department</label>
+                   <md-select ng-model="apps.department_id" required>
+                   <md-option value="1" selected>Primary School</md-option>
+                   <md-option value="2" selected>Secondary School</md-option>
+                        
+                           </md-input-container>
+       </div>
+       
+          <md-button class="md-raised md-primary pull-right" ng-click="saveSchool(apps)">Save</md-button>
+       
+        
+				                             
+                            </vertical-tab-pane>
+	
+	<vertical-tab-pane title="List of Schools Registered">
+	 
+				<div layout="row">
+				 <md-input-container class="md-block" flex-gt-sm>
+                   <label>Filter By:</label>
+                <md-select ng-model="apps.fieldName" required>
+                <md-option value="centre_number">BY CENTRE NUMBER</md-option>
+                <md-option value="school_name">BY SCHOOL NAME</md-option>
+                <md-option value="special_need">BY SPECIAL NEED TYPE</md-option>
+                        
+                           </md-input-container>
+       
+        <md-input-container class="md-block" flex-gt-sm>
+        <label>Filter By:</label>
+        <input type="text" ng-model="apps.filter_by">
+        </md-input-container>
+		
+        <md-input-container class="md-block" flex-gt-sm>
+        <md-button class="md-raised md-primary" ng-click="getSchool(apps)">Search</md-button>
+        </md-input-container>
+      
+        </div>
+		<span ng-if="schools.length ==0 "> <h3 align="center"> NO RESULTS FOUND BASED ON THIS SEARCH KEYWORD</h3>  </span>
+		
+		
+		 <table  ng-if="schools.length >0 " class="table table-bordered" border="1" width="100%">
+                                                        <caption> <b class="">
+                                                            <div  class="text-center"><h8>THE UNITED REPUBLIC OF TANZANIA</h8></div>
+                                                            <div  class="text-center"><h8> PRESIDENTS OFFICE REGIONAL ADMINISTRATION AND LOCAL GOVERNMENT</h8></div>
+                                                            <div  class="text-center"> <img alt="image" class="img-circle" src="/img/arm.png" width="40px" height="40px" /></div>
+
+                                                            <div  class="text-center"> </div>
+                                                            <div  class="text-center"><h8> <i>LIST OF SCHOOL BASED ON SEARCH RESULTS</i></h8></div>
+                                                                                                        <hr>
+
+                                                           
+                                                            <P></P>
+                                                            <P></P>
+                                                            <P></P>
+                                                           
+                                                           
+                                                            <hr>
+                                                        </caption>
+
+                                                         <tr style="background-color:#c1c1c1">
+ <th>No.</th>  <th>SCHOOL NAME</th><th>CENTRE NUMBER</th><th>COUNCIL</th><th>REGION</th> <th>ACTION</th> </tr>
+     <tr ng-repeat="school in schools track by $index"><td>{{$index+1}}</td><td>{{school.school_name}}</td><td>{{school.centre_number}}</td><td>{{school.council_name}}</td><td>{{school.region_name}}</td> <td>   <md-button class="md-raised md-primary" ng-click="editSchool(school)">Edit</md-button>
+                            </td>  </tr>
+
+
+                                                    </table>
+		
+				                             
+                            </vertical-tab-pane>
+				<vertical-tab-pane title="Number of Teachers :Primary ">
+				 <div layout-gt-sm="row">
+				<md-input-container class="md-block" flex>
+                             
+    <input type="file"  name="file"   ng-files="getExcelFiles($files)" >
+                </md-input-container>
+				
+				<md-input-container>
+
+  <md-button class="md-raised md-primary pull-right" ng-click="teachersRequirements()">Upload</md-button>   
+   </md-input-container>
+                        </div> 
+				 
+                                                                           
+               </vertical-tab-pane>	
+							
+		<vertical-tab-pane title="Number of Teachers: Secondary">
+				
+				 	<div layout-gt-sm="row">
+				<md-input-container class="md-block" flex>
+                             
+    <input type="file"  name="file"   ng-files="getExcelFiles($files)" >
+                </md-input-container>
+				
+				<md-input-container>
+
+  <md-button class="md-raised md-primary pull-right" ng-click="teachersRequirementsSecondary()">Upload</md-button>   
+   </md-input-container>
+                        </div>         
+                            </vertical-tab-pane>	
+							
+		<vertical-tab-pane title="Teachers Requirements">
+				
+				 	<div layout="row">
+       
+         <md-input-container class="md-block" flex-gt-sm>
+                            <label>BASE URL</label>
+                            <input type="text" ng-model="api.ip_address">
+         </md-input-container> 
+		 
+		 <md-input-container class="md-block" flex-gt-sm>
+                            <label>PUBLIC KEYS</label>
+                            <input type="text" ng-model="api.public_keys">
+         </md-input-container> 
+		 <md-input-container class="md-block" flex-gt-sm>
+                            <label>PRIVATE KEYS</label>
+                            <input type="text" ng-model="api.private_keys">
+         </md-input-container>
+         		    <md-select ng-model="selectedChart_"+{{selectedApi}}    placeholder="Select" class="md-no-underline">
+          <md-option ng-repeat="api_type in api_types" ng-click="getApiType(api_type.id)">{{api_type.TemplateName}}</md-option>
+          </md-select>
+		  
+      	
+        <md-input-container class="md-block" flex-gt-sm>
+        <md-button class="md-raised md-primary" ng-click="saveIpAddress(api)">SAVE</md-button>
+        </md-input-container>
+      
+        </div>             
+                            </vertical-tab-pane>	
+							
+							
+							   </vertical-tabs >
+				
+				
+				
+                   
+                </md-content>
+           
+</div>

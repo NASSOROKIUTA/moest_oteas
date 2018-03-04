@@ -1,0 +1,41 @@
+<md-dialog>
+    <md-toolbar>
+        <p>{{"Names: " +patientBills[0].first_name}} {{patientBills[0].middle_name}} {{patientBills[0].last_name}}&nbsp;&nbsp;&nbsp;  {{"MRN: "+patientBills[0].medical_record_number}}&nbsp;&nbsp;&nbsp; {{"DoB: "+patientBills[0].dob}}&nbsp;&nbsp;&nbsp;  {{"Gender: "+patientBills[0].gender}}</p>
+    </md-toolbar>
+    <md-dialog-content>
+        <table class="mdl-data-table mdl-js-data-table mdl-data-table--selectable mdl-shadow--2dp" width="100%">
+            <thead>
+            <th>Item Name</th>
+            <th >Unit Price</th>
+            <th >Quantity</th>
+            <th >Discount</th>
+            <th >Sub Total</th>
+            </thead>
+            <tbody>
+            <tr ng-repeat="item in patientBills">
+                <td>{{item.item_name}}</td>
+                <td class="text-center">{{item.unit_price}}</td>
+                <td class="text-center">{{item.quantity}}</td>
+                <td class="text-center">{{item.discount}}</td>
+                <td class="text-right">{{item.price*item.quantity - item.discount | currency : 'Tshs ' : 2}}</td>
+            </tr>
+            <tr>
+                <td class="emptyrow"></td>
+                <td class="emptyrow"></td>
+                <td class="emptyrow"></td>
+                <td class="emptyrow text-center"><strong>Grand Total</strong></td>
+                <td class="emptyrow text-right"><strong>{{toto() | currency : 'Tshs ' : 2}}</strong></td>
+            </tr>
+            <tr>
+                <td class="emptyrow"></td>
+                <td class="emptyrow"></td>
+                <td class="emptyrow"></td>
+                <td class="emptyrow"></td>
+                <td class="emptyrow text-right">
+                    <button class="mdl-button mdl-js-button mdl-button--raised pull-right" ng-click="proccessBill(patientBills)">Process Bill</button>
+                    <button class="mdl-button mdl-js-button mdl-button--raised pull-right" ng-click="cancelBillWindow()">Cancel</button>
+            </tr>
+            </tbody>
+        </table>
+    </md-dialog-content>
+</md-dialog>
