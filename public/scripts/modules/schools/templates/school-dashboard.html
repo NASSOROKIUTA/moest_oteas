@@ -1,0 +1,84 @@
+ <md-content class="md-padding">
+<md-tabs md-dynamic-height md-border-bottom>
+
+ <md-tab label="Schools Registered">
+         <md-content class="md-padding">
+         <div layout="row">
+         <md-input-container class="md-block" flex-gt-sm>
+         <label>Filter By:</label>
+         <md-select ng-model="apps.fieldName" required>
+         <md-option value="centre_number">BY CENTRE NUMBER</md-option>
+         <md-option value="school_name">BY SCHOOL NAME</md-option>
+         <md-option value="special_need">BY SPECIAL NEED TYPE</md-option>
+         </md-input-container>       
+         <md-input-container class="md-block" flex-gt-sm>
+         <label>Filter By:</label>
+         <input type="text" ng-model="apps.filter_by">
+         </md-input-container>   
+         <md-input-container class="md-block" flex-gt-sm>
+         <md-button class="md-raised md-primary" ng-click="getSchool(apps)">Search</md-button>
+         </md-input-container>      
+         </div>
+
+          <span ng-if="schools.length ==0 "> <h3 align="center"> NO RESULTS FOUND BASED ON THIS SEARCH KEYWORD</h3>  </span>
+    
+    
+     <table  ng-if="schools.length >0 " class="table table-bordered">
+                                                        <caption> <b class="">
+                                                            <div  class="text-center"><h8>THE UNITED REPUBLIC OF TANZANIA</h8></div>
+                                                            <div  class="text-center"><h8> PRESIDENTS OFFICE REGIONAL ADMINISTRATION AND LOCAL GOVERNMENT</h8></div>
+                                                            <div  class="text-center"> <img alt="image" class="img-circle" src="/img/arm.png" width="40px" height="40px" /></div>
+
+                                                            <div  class="text-center"> </div>
+                                                            <div  class="text-center"><h8> <i>LIST OF SCHOOL BASED ON SEARCH RESULTS</i></h8></div>
+                                                                                                        <hr>
+
+                                                           
+                                                            <hr>
+                                                        </caption>
+
+                                                         <tr style="background-color:#c1c1c1">
+ <th>No.</th>  <th>SCHOOL NAME</th><th>CENTRE NUMBER</th><th>COUNCIL</th><th>REGION</th> <th>ACTION</th> </tr>
+     <tr ng-repeat="school in schools track by $index"><td>{{$index+1}}</td><td>{{school.school_name}}</td><td>{{school.centre_number}}</td><td>{{school.council_name}}</td><td>{{school.region_name}}</td> <td>   <md-button class="md-raised md-primary" ng-click="editSchool(school)">Edit</md-button>
+                            </td>  </tr>
+
+
+                                                    </table>  
+
+
+         </md-content>
+         </md-tab>
+
+       <md-tab label="Teachers Requirements">
+        <md-content class="md-padding">
+        <div layout-gt-sm="row">
+        <md-input-container class="md-block" flex>                             
+        <input type="file"  name="file"   ng-files="getExcelFiles($files)" >
+        </md-input-container>        
+        <md-input-container>
+        <md-button class="md-raised md-primary pull-right" ng-click="teachersRequirements()">Upload</md-button>   
+       </md-input-container>
+       </div>                   
+       </md-content>
+       </md-tab>
+
+                <md-tab label="School Registration">
+                  <md-content class="md-padding">
+        <div layout-gt-sm="row">
+        <md-input-container class="md-block" flex>                             
+        <input type="file"  name="file"   ng-files="getExcelFiles($files)" >
+        </md-input-container>        
+        <md-input-container>
+        <md-button class="md-raised md-primary pull-right" ng-click="teachersRequirements()">Upload</md-button>   
+       </md-input-container>
+       </div>                   
+       </md-content>
+       </md-tab>
+       </md-tabs>
+       
+         
+        
+                   
+                </md-content>
+           
+</div>

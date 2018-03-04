@@ -24,20 +24,7 @@
 
         var user = $rootScope.currentUser;
         var user_name = $rootScope.currentUser.id;
-        var facility_id = $rootScope.currentUser.facility_id;
-		$scope.selectedApi=1;
-		$scope.api_types=[{"id":1,"TemplateName":"Facility Download"},
-            {"id":2,"TemplateName":"Facility Synchronize"},
-            {"id":3,"TemplateName":"Users Synchronize"},
-            {"id":4,"TemplateName":"NHIF Verification"},
-            {"id":5,"TemplateName":"NHIF Claims"},
-            {"id":6,"TemplateName":"Post Refferal"},
-            {"id":7,"TemplateName":"Receive Refferal"},
-            {"id":8,"TemplateName":"Data Backup"},
-            {"id":9,"TemplateName":"EMR Integration"}
-			
-			];
-
+       
 		$scope.displayUserInfo=function(item){			
 			$scope.selectedUser=item;
             console.log($scope.selectedUser);			
@@ -722,13 +709,6 @@ console.log(item);
                
             });
         }
-
-        $scope.getFacilities = function () {
-            $http.get('/api/facility_list').then(function (data) {
-                $scope.facilities = data.data;
-
-            });
-        };
 
         $scope.getSystemActivity = function () {
             $http.get('/api/getSystemActivity').then(function (data) {
@@ -2459,12 +2439,8 @@ console.log(item);
             $scope.councils=data.data;
 
         });
-        //facility_type_registration  CRUD
-
-        $http.get('/api/facility_type_list').then(function(data) {
-            $scope.facility_types=data.data;
-
-        });
+        
+       
 
         $scope.facility_type_registration=function (facility_type) {
             ////console.log(facility_type)
@@ -2780,17 +2756,9 @@ console.log(item);
                 $scope.departments=data.data;
 
             });
-        }
+        };
 
-//displaying department when browser loading
-        $http.get('/api/department_list').then(function(data) {
-            $scope.departments=data.data;
-
-        });
-
-        //  update
-
-
+     
         $scope.department_update=function (department) {
             ////console.log(department)
 
