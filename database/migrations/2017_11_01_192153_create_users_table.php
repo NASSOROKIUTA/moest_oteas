@@ -27,8 +27,8 @@ class CreateUsersTable extends Migration
             $table->foreign('user_type')->references('id')->on('tbl_proffesionals'); 
 			$table->integer('council_id',false,true)->nullable()->length(11)->unsigned();
             $table->foreign('council_id')->references('id')->on('tbl_councils'); 			
-			$table->uuid('applicant_id')->nullable();
-            $table->foreign('applicant_id')->references('id')->on('tbl_applicants');
+			$table->string('applicant_id',20);
+        $table->foreign('applicant_id')->references('applicant_id')->on('tbl_applicants');
             $table->integer('department_id',false,true)->length(11)->nullable()->unsigned();
             $table->foreign('department_id')->references('id')->on('tbl_departments');
             $table->rememberToken();

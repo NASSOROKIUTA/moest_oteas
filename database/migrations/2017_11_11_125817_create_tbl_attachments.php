@@ -18,8 +18,8 @@ class CreateTblAttachments extends Migration
             $table->primary('id');
             $table->string('describtion',60);
             $table->string('file_path',50);
-            $table->uuid('applicant_id');
-            $table->foreign('applicant_id')->references('id')->on('tbl_applicants');
+           $table->string('applicant_id',20);
+        $table->foreign('applicant_id')->references('applicant_id')->on('tbl_applicants');
             $table->timestamps();
         });
     }

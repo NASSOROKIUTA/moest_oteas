@@ -23,7 +23,8 @@ class CreateTblForSchools extends Migration
 	   $table->foreign('department_id')->references('id')->on('tbl_departments');
 	   $table->integer('residence_id',false,true)->length(11)->nullable()->unsigned();
 	   $table->foreign('residence_id')->references('id')->on('tbl_residences');
-	   $table->integer('school_level',false,true)->length(11)->unsigned();
+	   $table->integer('double_shift',false,true)->length(1)->default(0);
+       $table->integer('school_level',false,true)->length(11)->unsigned();
        $table->foreign('school_level')->references('id')->on('tbl_school_levels');
 	   $table->string('school_name',80)->nullable();
 	   $table->integer('special_needs',false,true)->length(1)->default(0);

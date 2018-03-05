@@ -19,9 +19,9 @@ class CreateTblForApplications extends Migration
      $table->foreign('school_id')->references('centre_number')->on('tbl_schools');
      $table->integer('subject_id',false,true)->length(11)->nullable()->unsigned();
      $table->foreign('subject_id')->references('id')->on('tbl_teaching_subjects');
-     $table->uuid('applicant_id');
-     $table->foreign('applicant_id')->references('id')->on('tbl_applicants');	 
-	 $table->integer('priority',false,true)->length(1)->unsigned();
+     $table->string('applicant_id',20);
+     $table->foreign('applicant_id')->references('applicant_id')->on('tbl_applicants');
+     $table->integer('priority',false,true)->length(1)->unsigned();
 	 $table->integer('selected',false,true)->length(1)->default(0);
 	 $table->integer('lock_applicant',false,true)->length(1)->default(0);
 	 $table->integer('council_id',false,true)->length(11)->unsigned();

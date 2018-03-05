@@ -16,8 +16,8 @@ class CreateTblForTeachersAppliations extends Migration
         Schema::create('tbl_choices', function (Blueprint $table) {
         $table->uuid('id');
         $table->primary('id');
-		$table->uuid('applicant_id')->nullable();
-        $table->foreign('applicant_id')->references('id')->on('tbl_applicants');
+		$table->string('applicant_id',20);
+        $table->foreign('applicant_id')->references('applicant_id')->on('tbl_applicants');
         $table->integer('region_id',false,true)->length(11)->unsigned();
         $table->foreign('region_id')->references('id')->on('tbl_regions');
 		$table->integer('priority',false,true)->length(1)->unsigned()->nullable();

@@ -188,7 +188,7 @@ Route::group(['prefix' => 'api'], function()
    Route::get('downloadExcel/{type}', 'MaatwebsiteDemoController@downloadExcel');
    Route::post('importExcel', 'MaatwebsiteDemoController@importExcel');
    Route::post('schoolUpload', 'excel\excelController@schoolUpload');
-   Route::post('teachersRequirementPerSchool', 'excel\excelController@teachersRequirementPerSchool');
+   Route::post('teachersRequirementPerSchool', 'schools\SchoolsController@teachersRequirementPerSchool');
    Route::post('secondaryTeachersRequirementPerSchool', 'excel\excelController@secondaryTeachersRequirementPerSchool');
    Route::get('downloadExcel/{type}', 'excel\excelController@downloadExcel');
 });

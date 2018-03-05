@@ -44,15 +44,21 @@
             };
 
             // SEND THE FILES.
-            $http(request).then(function (data) {
-                //console.log(request);
-             return sweetAlert('',data.data,'success');
-
-
-            })
-                .then(function () {
+            $http(request).then(function (responses) {
+            	if(responses.data.status==200){
+            	  return sweetAlert('',responses.data.message,'success');
+            	}
+            	else{
+            	 return sweetAlert('',responses.data.message,'error');	
+            	}
+                 
+              }).then(function () {
+                	 
                 });
+            	               
         };
+
+        /**
 		
 		$scope.teachersRequirementsSecondary = function () {
 
@@ -73,9 +79,13 @@
 
 
             })
-                .then(function () {
+                .error(function (error) {
+                	  return sweetAlert('','something went wrong','error');
+                }).finally(function (error) {
+                	  return sweetAlert('','something went wrong','error');
                 });
         };
+        **/
 			
 			$scope.saveSchool=function(school){
 				if(angular.isDefined(school.centre_number)==false){

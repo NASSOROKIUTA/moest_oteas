@@ -18,8 +18,8 @@ class CreateTblMajoringSubjects extends Migration
         $table->primary('id');
 		$table->integer('subject_id',false,true)->length(11)->unsigned()->nullable();
         $table->foreign('subject_id')->references('id')->on('tbl_teaching_subjects');   
-		$table->uuid('applicant_id')->nullable();
-        $table->foreign('applicant_id')->references('id')->on('tbl_applicants');    
+		$table->string('applicant_id',20);
+        $table->foreign('applicant_id')->references('applicant_id')->on('tbl_applicants');
         $table->timestamps();
         });
     }

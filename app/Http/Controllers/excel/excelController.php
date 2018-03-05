@@ -63,17 +63,16 @@ class excelController extends Controller
 			 //echo count($results); return;
 			 $r=0;
 			while($r < count($results)){
-			 $first_name=$results[$r]['firstname'];
-             $middlename=$results[$r]['middlename'];
-             $lastname=$results[$r]['lastname'];
+			 $first_name=$results[$r]['first_name'];
+             $middlename=$results[$r]['middle_name'];
+             $lastname=$results[$r]['last_name'];
              $sex=$results[$r]['sex'];
-             $form_four=$results[$r]['form_four_index'];
+             $form_four=$results[$r]['form_four_index_number'];
              $form_four_certification_year=$results[$r]['certification_year'];
-             $college_admission=$results[$r]['college_admission'];
+             $college_admission=$results[$r]['college_admission_number'];
              $year_graduated=$results[$r]['graduated_year'];
              $dob=$results[$r]['dob'];
-             $id=$results[$r]['id'];
-			 
+            
 			 
 	$duplicates=Tbl_applicant::where('form_four_index',$form_four)
 	             ->where('year_certified',$form_four_certification_year)->get()->count();

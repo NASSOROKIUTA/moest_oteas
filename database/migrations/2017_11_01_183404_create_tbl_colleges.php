@@ -16,20 +16,20 @@ class CreateTblColleges extends Migration
         Schema::create('tbl_colleges', function (Blueprint $table) {
             $table->uuid('id');
             $table->primary('id');
-            $table->string('college_reg_number',90);
+            $table->string('college',20)->index()->nullable();
             $table->string('college_name',180);
             $table->string('email',45)->nullable();
             $table->string('focalname',45)->nullable();
             $table->string('college_address',85)->nullable();
-        $table->integer('education_level')->length(11)->unsigned()->nullable();
-		$table->foreign('education_level')->references('id')->on('tbl_education_levels');
+            $table->integer('education_level')->length(11)->unsigned()->nullable();
+        $table->foreign('education_level')->references('id')->on('tbl_education_levels');
         $table->integer('ownership_status')->length(11)->unsigned()->nullable();
-		$table->foreign('ownership_status')->references('id')->on('tbl_ownerships');
+        $table->foreign('ownership_status')->references('id')->on('tbl_ownerships');
         $table->integer('registration_status')->length(11)->unsigned()->nullable();
-		$table->foreign('registration_status')->references('id')->on('tbl_college_status_registrations');
+        $table->foreign('registration_status')->references('id')->on('tbl_college_status_registrations');
         $table->integer('college_status')->length(11)->unsigned()->nullable();
-		$table->foreign('college_status')->references('id')->on('tbl_college_types');
-           
+        $table->foreign('college_status')->references('id')->on('tbl_college_types');
+
             $table->timestamps();
         });
     }

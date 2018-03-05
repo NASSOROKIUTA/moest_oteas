@@ -14,8 +14,7 @@ class CreateTblApplicants extends Migration
     public function up()
     {
         Schema::create('tbl_applicants', function (Blueprint $table) {
-           $table->uuid('id');
-            $table->primary('id');
+            $table->increments('id');
             $table->string('first_name',80)->nullable();
             $table->string('middle_name',80)->nullable();
             $table->string('last_name',80)->nullable();
@@ -25,10 +24,10 @@ class CreateTblApplicants extends Migration
             $table->string('year_graduated',4);
             $table->string('form_four_index',16);
             $table->string('year_certified',4);
+            $table->string('applicant_id',20)->index()->unique();
             $table->string('email',50)->nullable();
             $table->string('mobile_number',15)->nullable();
-            $table->integer('residence_id',false,true)->length(11)->unsigned()->nullable();
-            $table->uuid('college_id')->nullable();
+            $table->integer('residence_id',false,true)->length(11)->unsigned()->nullable();       
             $table->foreign('residence_id')->references('id')->on('tbl_residences');
 			$table->integer('priority',false,true)->default(0)->length(1)->unsigned();
             $table->integer('sne',false,true)->length(1)->default(0);
@@ -36,11 +35,13 @@ class CreateTblApplicants extends Migration
             $table->foreign('marital_id')->references('id')->on('tbl_maritals');
 			$table->integer('department_id',false,true)->length(11)->unsigned()->nullable();
             $table->foreign('department_id')->references('id')->on('tbl_departments');
-           $table->integer('status',false,true)->length(1)->default(1);
-		   $table->integer('region_birth',false,true)->length(11)->unsigned()->nullable();
+            $table->integer('status',false,true)->length(1)->default(1);
+		    $table->integer('region_birth',false,true)->length(11)->unsigned()->nullable();
             $table->foreign('region_birth')->references('id')->on('tbl_regions');
-            $table->foreign('college_id')->references('id')->on('tbl_colleges');
-            $table->integer('occupation_id',false,true)->length(11)->unsigned()->nullable();
+            $table->integer('occupation_id',false,true)->length(10)->unsigned()->nullable();
+            $table->foreign('occupation_id')->references('id')->on('tbl_occupations');
+            $table->string('college',20)->nullable();
+            $table->foreign('college')->references('college')->on('tbl_colleges');
             $table->timestamps();
         });
     }
