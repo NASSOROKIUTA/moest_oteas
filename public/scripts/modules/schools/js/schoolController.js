@@ -30,9 +30,14 @@
 				
 			};
 			
+            $scope.calaculateSchoolRequirements = function(resetAction){
+            var dataToPost ={action_type:resetAction.resets};
+            $http.post('/api/calaculateSchoolRequirements',dataToPost).then(function(data) {   
+                      return sweetAlert("Successfully Calculated Requirements", "", "success");                    
+                }); 
+            };
 			
 			$scope.teachersRequirements = function () {
-
             var request = {
                 method: 'POST',
                 url: '/api/teachersRequirementPerSchool',
@@ -57,6 +62,33 @@
                 });
             	               
         };
+
+$scope.schoolRegisterTemplate= function () {
+
+            var request = {
+                method: 'POST',
+                url: '/api/schoolRegisterTemplate',
+                data: formdata,
+                headers: {
+                    'Content-Type': undefined
+                }
+
+            };
+            // SEND THE FILES.
+            $http(request).then(function (responses) {
+                if(responses.data.status==200){
+                  return sweetAlert('',responses.data.message,'success');
+                }
+                else{
+                 return sweetAlert('',responses.data.message,'error');  
+                }
+                 
+              }).then(function () {
+                     
+                });
+                               
+        };
+
 
         /**
 		
@@ -137,6 +169,19 @@ return 	sweetAlert(data.data.data,'','success');
 			
 			    });
 			};
+
+        $scope.getSchoolRequirements=function(keyWord){
+            if(angular.isDefined(keyWord)==false){
+                    return sweetAlert('Please Select KeyWord ','','error');
+            } 
+                var filter_by=keyWord.filter_by;
+                var fieldName=keyWord.fieldName;
+                var postData={searchWord:filter_by,field_name:fieldName};                
+                $http.post('/api/getSchoolRequirements',postData).then(function(data) {                     
+                  $scope.schoolsRequirements=data.data;            
+                });
+            };
+
           
 		  
 		  

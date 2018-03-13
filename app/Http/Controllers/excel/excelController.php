@@ -17,7 +17,6 @@ class excelController extends Controller
      */
 	public function importExport()
 	{
-		return view('importExport');
 	}
 
 	/**
@@ -25,23 +24,20 @@ class excelController extends Controller
      *
      * @var array
      */
-	public function downloadExcel(Request $request, $type)
+	public function downloadExcel(Request $request)
 	{
+		
 		$data = Tbl_applicant::get()->toArray();
-  Excel::create('applicants', function($excel) use ($data) {
+		$path=basename(__DIR__)."/../../../public/downloads/";
+ return Excel::create('applicants', function($excel) use ($data) {
  $excel->sheet('applicants', function($sheet) use ($data){
 			$sheet->fromArray($data);
 	        });
-		})->store('xls')->export('xls');
+		})->store('xls', storage_path('../public/excel'))->export('xls');
+ 
+ // ->store('xls')->export('xls');
 		
-		header('Content-Disposition: attachment;filename="applicants.xls"');
-        header('Cache-Control: max-age=0');
-        header('Cache-Control: max-age=1');
-        header('Expires: Mon, 26 Jul 1997 05:00:00 GMT'); // Date in the past
-        header('Last-Modified: '.gmdate('D, d M Y H:i:s').' GMT'); // always modified
-        header('Cache-Control: cache, must-revalidate'); // HTTP/1.1
-        header('Pragma: public'); // HTTP/1.0
-		
+				
 	}
 	
 	
@@ -69,9 +65,13 @@ class excelController extends Controller
              $sex=$results[$r]['sex'];
              $form_four=$results[$r]['form_four_index_number'];
              $form_four_certification_year=$results[$r]['certification_year'];
+             $applicant_id=$form_four."/".$form_four_certification_year;
              $college_admission=$results[$r]['college_admission_number'];
              $year_graduated=$results[$r]['graduated_year'];
+             $department_id=$results[$r]['department'];
+             $college_graduated=$results[$r]['college_graduated'];
              $dob=$results[$r]['dob'];
+             $sne=$results[$r]['sne'];
             
 			 
 	$duplicates=Tbl_applicant::where('form_four_index',$form_four)
@@ -81,11 +81,15 @@ class excelController extends Controller
 	                        'middle_name'=>$middlename,
 							'last_name'=>$lastname,
 							'gender'=>$sex,
+							'applicant_id'=>$applicant_id,
 							'registration_number'=>$college_admission,
 							'year_graduated'=>$year_graduated,
 							'form_four_index'=>$form_four,
+							'department_id' => $department_id,
+							'college'      =>$college_graduated,
 							'dob'=>$dob,
-							'year_certified'=>$form_four_certification_year
+							'year_certified'=>$form_four_certification_year,
+							'sne'=>$sne
 							]);
 		$imports=true;
 	

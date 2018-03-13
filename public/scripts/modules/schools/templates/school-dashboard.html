@@ -24,23 +24,15 @@
     
     
      <table  ng-if="schools.length >0 " class="table table-bordered">
-                                                        <caption> <b class="">
-                                                            <div  class="text-center"><h8>THE UNITED REPUBLIC OF TANZANIA</h8></div>
-                                                            <div  class="text-center"><h8> PRESIDENTS OFFICE REGIONAL ADMINISTRATION AND LOCAL GOVERNMENT</h8></div>
-                                                            <div  class="text-center"> <img alt="image" class="img-circle" src="/img/arm.png" width="40px" height="40px" /></div>
-
-                                                            <div  class="text-center"> </div>
-                                                            <div  class="text-center"><h8> <i>LIST OF SCHOOL BASED ON SEARCH RESULTS</i></h8></div>
-                                                                                                        <hr>
-
-                                                           
-                                                            <hr>
-                                                        </caption>
-
-                                                         <tr style="background-color:#c1c1c1">
- <th>No.</th>  <th>SCHOOL NAME</th><th>CENTRE NUMBER</th><th>COUNCIL</th><th>REGION</th> <th>ACTION</th> </tr>
-     <tr ng-repeat="school in schools track by $index"><td>{{$index+1}}</td><td>{{school.school_name}}</td><td>{{school.centre_number}}</td><td>{{school.council_name}}</td><td>{{school.region_name}}</td> <td>   <md-button class="md-raised md-primary" ng-click="editSchool(school)">Edit</md-button>
-                            </td>  </tr>
+                <caption> <b class="">                                                         
+                <div  class="text-center"> </div>
+                <div  class="text-center"><h8> <i>LIST OF SCHOOL BASED ON SEARCH RESULTS</i></h8></div>
+                </caption>
+    <tr style="background-color:#c1c1c1">
+ <th>No.</th>  <th>SCHOOL NAME</th><th>COUNCIL</th><th>REGION</th> <th>CENTRE NUMBER</th> </tr>
+     <tr ng-repeat="school in schools track by $index"><td>{{$index+1}}</td>
+     <td>{{school.school_name}}</td><td>{{school.council_name}}</td>
+     <td>{{school.region_name}}</td> <td>{{school.centre_number}}</td></tr>
 
 
                                                     </table>  
@@ -51,27 +43,89 @@
 
        <md-tab label="Teachers Requirements">
         <md-content class="md-padding">
+ <vertical-tabs >
+                                            
+                            
+                            
+        <vertical-tab-pane title="Requirements Status">
+         <div layout="row">
+         <md-input-container class="md-block" flex-gt-sm>
+         <label>Filter By:</label>
+         <md-select ng-model="requirement.fieldName" required>
+         <md-option value="centre_number">BY CENTRE NUMBER</md-option>
+         <md-option value="school_name">BY SCHOOL NAME</md-option>
+         </md-input-container>       
+         <md-input-container class="md-block" flex-gt-sm>
+         <label>Filter By:</label>
+         <input type="text" ng-model="requirement.filter_by">
+         </md-input-container>   
+         <md-input-container class="md-block" flex-gt-sm>
+         <md-button class="md-raised md-primary" ng-click="getSchoolRequirements(requirement)">View Requirements</md-button>
+         </md-input-container>      
+         </div>
+
+         <table  ng-if="schoolsRequirements.length >0 " class="table table-bordered">
+                                                      
+         <div  class="text-center" ng-if="schoolsRequirements.length >0" ><h8> <i>TEACHERS REQUIRED TO BE EMPLOYED PER SCHOOL</i></h8></div>                                        
+                                                            <hr ng-if="schoolsRequirements.length >0">
+                                                        </caption>
+
+         <tr style="background-color:#c1c1c1">
+         <th>No.</th><th>CENTRE NUMBER</th><th>SCHOOL NAME</th><th>COUNCIL</th><th>PTR</th>
+         <th>DEFICITY</th><th>TIME CALCULATED</th></tr>
+     <tr ng-repeat="school in schoolsRequirements track by $index"><td>{{$index+1}}</td><td>{{school.school_name}}</td><td>{{school.centre_number}}</td><td>{{school.council_name}}</td>
+        <td>{{school.ptr}}</td> <td>{{school.required_teachers}}</td> <td>{{school.created_at}}</td></tr>
+
+
+                                                    </table>  
+        </vertical-tab-pane>
+        <vertical-tab-pane title="Add School Requirements">             
         <div layout-gt-sm="row">
         <md-input-container class="md-block" flex>                             
         <input type="file"  name="file"   ng-files="getExcelFiles($files)" >
         </md-input-container>        
         <md-input-container>
         <md-button class="md-raised md-primary pull-right" ng-click="teachersRequirements()">Upload</md-button>   
+       </md-input-container>
+       </div>                      
+                            </vertical-tab-pane>    
+                            
+                            
+                               </vertical-tabs >
+
+
+
+
+                          
+       </md-content>
+       </md-tab>
+
+        <md-tab label="School Registration">
+        <md-content class="md-padding">
+        <div layout-gt-sm="row">
+        <md-input-container class="md-block" flex>                             
+        <input type="file"  name="file"   ng-files="getExcelFiles($files)" >
+        </md-input-container>        
+        <md-input-container>
+        <md-button class="md-raised md-primary pull-right" ng-click="schoolRegisterTemplate()">Upload</md-button>   
        </md-input-container>
        </div>                   
        </md-content>
        </md-tab>
 
-                <md-tab label="School Registration">
-                  <md-content class="md-padding">
-        <div layout-gt-sm="row">
-        <md-input-container class="md-block" flex>                             
-        <input type="file"  name="file"   ng-files="getExcelFiles($files)" >
-        </md-input-container>        
-        <md-input-container>
-        <md-button class="md-raised md-primary pull-right" ng-click="teachersRequirements()">Upload</md-button>   
-       </md-input-container>
-       </div>                   
+       <md-tab label="Calculate School Requirements">
+        <md-content class="md-padding">
+          <div layout="row">
+         <md-input-container class="md-block" flex-gt-sm>
+         <label>Reset Options:</label>
+         <md-select ng-model="apps.resets" required>
+         <md-option value="0">DONT RESET ALL</md-option>
+         <md-option value="1">RESET ALL REQUIREMENTS</md-option>
+         </md-input-container>       
+         <md-input-container class="md-block" flex-gt-sm>
+         <md-button class="md-raised md-primary" ng-click="calaculateSchoolRequirements(apps)">Requirements</md-button>
+         </md-input-container>      
+         </div>                 
        </md-content>
        </md-tab>
        </md-tabs>

@@ -1,6 +1,6 @@
 <style>
 .md-dialog-content{
-min-width:650px;
+min-width:1000px;
 }
 
 </style>
@@ -32,7 +32,7 @@ min-width:650px;
                             <md-autocomplete flex  flex
                             md-search-text="search"
                             md-input-name="patient"
-                            md-no-cache="false"
+                            md-no-cache="true"
                             md-items="item in getResidence(search)"
                             md-item-text="item.residence_name+' '+item.council_name"
                             md-selected-item-change="selectedResidence(item)"

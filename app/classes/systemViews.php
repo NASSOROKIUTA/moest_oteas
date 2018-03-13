@@ -6,19 +6,16 @@ use Illuminate\Support\Facades\DB;
 
 class systemViews{
 	
-	public  static function getTreatmentCharts(){
-    $sql="CREATE OR REPLACE VIEW `vw_treatment_charts` AS (SELECT t1.*,t1.timedosage AS time_given,t1.created_at AS time_recorded,t7.bed_name,t8.ward_name,t6.item_name,t2.admission_date,
-                t4.medical_record_number,CONCAT(t4.first_name,' ',t4.middle_name,' ',t4.last_name) AS patient_name,t5.bed_id,t5.ward_id,
-                t2.facility_id ,t3.name AS nurse_name,t9.dose
-          FROM `tbl_ipdtreatments` t1
-          INNER JOIN  `tbl_admissions` t2 ON t1.admission_id=t2.id
-          INNER JOIN  `tbl_prescriptions` t9 ON t2.account_id=t9.visit_id
-          INNER JOIN  `users` t3 ON t1.user_id=t3.id 
-          INNER JOIN  `tbl_patients` t4 ON t1.patient_id=t4.id 
-          INNER JOIN  `tbl_instructions` t5 ON t2.id=t5.admission_id 
-          INNER JOIN  `tbl_items` t6 ON t6.id=t1.item_id 
-          INNER JOIN  `tbl_beds` t7 ON t7.id=t5.bed_id 
-          INNER JOIN  `tbl_wards` t8 ON t7.ward_id=t8.id 
+    //OTEAS APPLICATION
+	public  static function getApplications(){
+    $sql="CREATE OR REPLACE VIEW `vw_applications` AS (SELECT t4.region_name,t4.id AS region_id,t1.required_teachers,t2.school_name,t2.council_id,t2.centre_number,t3.council_name,t1.ptr,
+    (SELECT t1.required_teachers-count(*) FROM tbl_applications t5 WHERE t5.school_id=t1.school_id GROUP BY t5.school_id LIMIT 1)  AS chance_remained,
+     t1.created_at FROM `tbl_school_requirements` t1
+           INNER JOIN tbl_schools t2 ON t1.school_id=t2.centre_number
+           INNER JOIN tbl_councils t3 ON t3.id=t2.council_id
+           INNER JOIN tbl_regions t4 ON t4.id=t3.regions_id
+           WHERE t1.ptr > 58.8
+           ORDER BY t1.ptr DESC
           )";
 
     return DB::statement($sql);

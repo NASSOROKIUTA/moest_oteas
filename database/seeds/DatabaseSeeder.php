@@ -39,9 +39,8 @@ class DatabaseSeeder extends Seeder
     public function run()   {
         Model::unguard();
 
-    
-    DB::statement('SET FOREIGN_KEY_CHECKS=0');
-    
+  
+        DB::statement('SET FOREIGN_KEY_CHECKS=0');    
         DB::table('users')->truncate();       
         DB::table('tbl_departments')->truncate();
         DB::table('tbl_proffesionals')->truncate();
@@ -62,6 +61,8 @@ class DatabaseSeeder extends Seeder
         DB::table('tbl_periods_per_weeks')->truncate();
         DB::table('tbl_class_grades')->truncate();
     DB::statement('SET FOREIGN_KEY_CHECKS=1'); 
+	
+
     
                
   $permissions= array(
@@ -179,7 +180,7 @@ $teaching_subjects= array(
                      ); 
            
   $year_limits= array(
-      ['form_four_graduation_year' => 2006,'college_graduation_year' =>2014],
+                ['form_four_graduation_year' => 2005,'college_graduation_year' =>2010],
                 
                              
                      ); 

@@ -11,6 +11,8 @@
 			var department_id = $rootScope.currentUser.department_id;
 			var applicant_id = $rootScope.currentUser.applicant_id;
 			var council_id = $rootScope.currentUser.council_id;
+			var selectedSchool ={};
+			var council_name ="";
 			
 			$scope.getApplications= function(){
 			var postData={applicant_id:applicant_id};
@@ -46,25 +48,35 @@
 				
    $http.post('/apps/getListSelectedToThisCouncil',{council_id:council_id}).then(function(data) {
 				$scope.selectedApplicantsToDEDS=data.data;		
-		});
-		
-					
-			};
+		});				
+	};
 			
 			$scope.getListSelectedToThisCouncil();
-			
-			
-			
-			
+					
 			$scope.getApplications(); //get list of applications
 			
 			$scope.selectionsDone = [];
 			
 			$scope.getSelectedCouncil= function(council_id){
+				
 				var postData={council_id:council_id};
-				$http.post('/api/getCouncil',postData).then(function(data) {
-				$scope.selectedCouncil=data.data;
+				$http.post('/api/getSchoolWithRequirements',postData).then(function(data) {
+				$scope.schools=data.data;
 				});
+			};
+
+           var focusedSchool =[];
+			$scope.getSelectedSchool = function(school){
+              if(angular.isDefined(school)==false){
+              	return sweetAlert("Please Select school","","error");
+              }
+
+              var postData={school:school};             
+               $http.post('/api/getSelectedSchool',postData).then(function(data) {
+				focusedSchool=data.data[0];
+				});
+               return focusedSchool;
+
 			};
 			
 			 $scope.removeFromSelection = function(item, objectdata) {
@@ -198,30 +210,8 @@ $http.post('/apps/saveApplicantPhoto',postData).then(function(data) {
 		
 	}
 	
-	
-							
-							
-							
-							
-							
-							
-							
-							
-							
-							
-							
-							
-							
-							
-							
-							
-							//end..
-							
-							
-				
-            
-							
-						},
+	//end..
+		         },
 				templateUrl: '/views/templates/ded/posted_applicant.html',
                 parent: angular.element(document.body),
                 clickOutsideToClose: false,
@@ -232,9 +222,7 @@ $http.post('/apps/saveApplicantPhoto',postData).then(function(data) {
 			
 			
 			$scope.changeFromSelection = function(application, applications) {
-
-			
-			         var application=application;
+     		         var application=application;
 			         var selections=applications;
                $mdDialog.show({                 
                         controller: function ($scope) {
@@ -323,27 +311,22 @@ $http.post('/apps/saveApplicantPhoto',postData).then(function(data) {
                     return response.data;
                 });
         };
-		
+		/**
 		 $scope.selectedRegion = function (region) {
               var region_id=region.id;
               $scope.region=region;
 			  $scope.getCouncil(region_id);
         };	
 					
-							
-				$scope.saveCredentials = function (login,candidate,username) {
-                        
+		**/					
+				$scope.saveCredentials = function (login,candidate,username) {                        
 						
 		        if(angular.isDefined(login)==false){
 					return sweetAlert('Please enter Password ','','error');	
-				
-							
-						}
-						
-						if(password_retype != password){
+				}						
+				if(password_retype != password){
 		               return sweetAlert('Password mismatch','','error');					
-						}
-						
+				}						
 				var applicant_id=candidate.id;
 				var gender=candidate.gender;
 				var mobile_number=candidate.mobile_number;
@@ -407,13 +390,13 @@ $http.post('/apps/saveApplicantPhoto',postData).then(function(data) {
 						
 			};
 			
-			
-			$scope.addSelections= function(choice){
-				console.log($scope.selectedCouncil);
-				var region_name=$scope.region.region_name;
-				var region_id=$scope.region.id;
-				var council_id=choice;
-				//var council_name=choice.council_name;
+	    	$scope.addSelections= function(choice,selectedSchool){
+
+				var region_name=focusedSchool.region_name;
+				var region_id=focusedSchool.region_id;
+				var council_id=focusedSchool.council_id;
+				council_name=focusedSchool.council_name;
+				var school_name=focusedSchool.school_name;
 			if($scope.selectionsDone.length ==5){
 				 swal("Only five selections are allowed","","info");
                         return;	
@@ -434,19 +417,20 @@ $http.post('/apps/saveApplicantPhoto',postData).then(function(data) {
 					
 					
 					for (var i = 0; i < $scope.selectionsDone.length; i++)
-                    if ($scope.selectionsDone[i].council_id == choice) {
-                swal($scope.selectedCouncil[0].council_name + ' ' + "already in your selection list!","","info");
+                    if ($scope.selectionsDone[i].council_id == focusedSchool.council_id) {
+                swal(selectedSchool.council_name + ' ' + "already in your selection list!","","info");
                         return;
                     }
 				
 			$scope.selectionsDone.push({
                     "region_name": region_name,
-                    "region_id": region_id,
-                    "council_id":council_id,
-                    "council_name":$scope.selectedCouncil[0].council_name
-
+                    "region_id": focusedSchool.region_id,
+                    "council_id":focusedSchool.council_id,
+                    "council_name":council_name,
+                    "school_name":school_name,
+                    "centre_number":focusedSchool.centre_number
                 });
-				console.log($scope.selectionsDone);
+				
 			};
 			
 			
@@ -520,44 +504,70 @@ $http.post('/apps/saveApplicantPhoto',postData).then(function(data) {
 				});
 				
 			}; 
-							 //Residence
+
+  $scope.getCouncilRequirements=function(region){
+	   var postData={region_id:region};
+		$http.post('/api/getCouncilRequirements',postData).then(function(data) {
+				$scope.councilsWithRequirements=data.data;
+				});
+				
+			}; 
+										 //Residence
         $scope.getRegion = function (text) {
             return Helper.getRegion(text)
                 .then(function (response) {
                     return response.data;
                 });
         };
+
+       
+	 //Residence
+        $scope.getRegionRequirements = function (text) {
+            return Helper.getRegionRequirements(text)
+                .then(function (response) {
+                    return response.data;
+                });
+        };
+        
 		
 		 $scope.selectedRegion = function (region) {
 			 if(angular.isDefined(region)==true){
-              var region_id=region.id;
+              var region_id=region.region_id;
               $scope.region=region;
-			  $scope.getCouncil(region_id);
+			  $scope.getCouncilRequirements(region_id);
 			  
 			 }
 			  return;
-        }	
-			
-			
-			
+        };
+
+
+$scope.exportExcel = function () {
+	var requestData={filename:'applicants',fileExt:'xls'};
+	var header="application/vnd.ms-excel;";
+    $http.post('/api/downloadExcel',requestData, {responseType:'arraybuffer',headers:header
+        })
+            .then(function (response) {
+               $scope.showDownload=true;
+            });
+};
+
+
+
+
+
+
+			/**
 			
 			$scope.exportExcel=function(exportData){
 				
 					
     $http({
         method: 'GET',
-        url: '/api/downloadExcel/xls'
+        url: '/api/downloadExcel/xls',
+        headers:"application/vnd.ms-excel;"
     }).then(function (data) {
       
-	  
-	  $http.get('/api/downloadExcel/xls',{headers:"application/vnd.ms-excel;",responseType: ResponseContentType.Blob})
-      .map(response=>response.blob())
-      .catch(error=>{return Observable.throw(error)})
-	  
-	  
-	  
-					
-	    var filename="DataMining";
+	   var filename="DataMining";
 				 
 			var linkElement = document.createElement('a');
         try {
@@ -582,13 +592,13 @@ $http.post('/apps/saveApplicantPhoto',postData).then(function(data) {
 				 
 				 
     }).then(function (data) {
-        console.log(data);
+        var header = headers('content-disposition');
+    var result = header.split(';')[1].trim().split('=')[1];
+    return result.replace(/"/g, '');
     });
 			
-				
-				
-				
-			}; 
+	}; 
+			**/
 	   var formdata = new FormData();
 					
 			$scope.getExcelFiles = function ($files) {

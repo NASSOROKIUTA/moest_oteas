@@ -184,11 +184,24 @@ Route::group(['prefix' => 'api'], function()
     Route::get('residence_delete/{id}', 'Residence\ResidenceController@residence_delete');
     Route::post('residence_update', 'Residence\ResidenceController@residence_update');
    //excell
-   Route::get('importExport', 'MaatwebsiteDemoController@importExport');
-   Route::get('downloadExcel/{type}', 'MaatwebsiteDemoController@downloadExcel');
-   Route::post('importExcel', 'MaatwebsiteDemoController@importExcel');
-   Route::post('schoolUpload', 'excel\excelController@schoolUpload');
-   Route::post('teachersRequirementPerSchool', 'schools\SchoolsController@teachersRequirementPerSchool');
+    Route::get('importExport', 'MaatwebsiteDemoController@importExport');
+ 	Route::get('downloadExcel/{type}', 'MaatwebsiteDemoController@downloadExcel');
+	Route::post('importExcel', 'MaatwebsiteDemoController@importExcel');
+	Route::post('schoolUpload', 'excel\excelController@schoolUpload');
+    Route::post('teachersRequirementPerSchool', 'schools\SchoolsController@teachersRequirementPerSchool');
+    Route::post('schoolRegisterTemplate', 'schools\SchoolsController@schoolRegisterTemplate');
+    Route::post('getSchoolWithRequirements', 'schools\SchoolsController@getSchoolWithRequirements');    
+    Route::post('getRegionRequirements', 'schools\SchoolsController@getRegionRequirements');
+    Route::post('getCouncilRequirements', 'schools\SchoolsController@getCouncilRequirements');
+    Route::post('getSelectedSchool', 'schools\SchoolsController@getSelectedSchool');
+
+    
+    Route::post('calaculateSchoolRequirements', 'schools\SchoolsController@calaculateSchoolRequirements');
+    Route::post('getSchoolRequirements', 'schools\SchoolsController@getSchoolRequirements');
+    Route::post('searchResidence', 'placement\placementController@searchResidence');
+
+
+
    Route::post('secondaryTeachersRequirementPerSchool', 'excel\excelController@secondaryTeachersRequirementPerSchool');
-   Route::get('downloadExcel/{type}', 'excel\excelController@downloadExcel');
+   Route::post('downloadExcel', 'excel\excelController@downloadExcel');
 });

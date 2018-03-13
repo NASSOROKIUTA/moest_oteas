@@ -26,17 +26,17 @@ class placementController extends Controller
 	public function getApplicationLists(Request $request){
 		$sql="SELECT
     t4.*,t1.applicant_id,
-    MAX(CASE WHEN priority = 1 THEN t2.council_name ELSE NULL END) AS first_choice,
-    MAX(CASE WHEN priority = 2 THEN t2.council_name ELSE NULL END) AS second_choice,
-    MAX(CASE WHEN priority = 3 THEN t2.council_name ELSE NULL END) AS third_choice,
-    MAX(CASE WHEN priority = 4 THEN t2.council_name ELSE NULL END) AS fourth_choice,
-    MAX(CASE WHEN priority = 5 THEN t2.council_name ELSE NULL END) AS fifth_choice
+    MAX(CASE WHEN t1.priority = 1 THEN t2.council_name ELSE NULL END) AS first_choice,
+    MAX(CASE WHEN t1.priority = 2 THEN t2.council_name ELSE NULL END) AS second_choice,
+    MAX(CASE WHEN t1.priority = 3 THEN t2.council_name ELSE NULL END) AS third_choice,
+    MAX(CASE WHEN t1.priority = 4 THEN t2.council_name ELSE NULL END) AS fourth_choice,
+    MAX(CASE WHEN t1.priority = 5 THEN t2.council_name ELSE NULL END) AS fifth_choice
    
 FROM
      tbl_applications t1
 	 INNER JOIN tbl_councils t2 ON t1.council_id=t2.id
 	 INNER JOIN tbl_regions t3 ON t3.id=t2.regions_id
-	 INNER JOIN tbl_applicants t4 ON t4.id=t1.applicant_id
+	 INNER JOIN tbl_applicants t4 ON t4.applicant_id=t1.applicant_id
 GROUP BY
     t1.applicant_id
 ORDER BY t1.created_at DESC 
@@ -75,13 +75,15 @@ for($starting_year_college=$year_limit[0]->college_graduation_year;$starting_yea
 		$form_grad_year = $request->form_grad_year;
 		$grad_year = $request->grad_year;
 		$index_number = $request->index_number;
+		$unique_index=$index_number."/".$form_grad_year;
 	
-     	$sql="SELECT * FROM tbl_applicants t1 
-		WHERE t1.registration_number='".$admn_no."'
-		AND   t1.year_graduated='".$grad_year."'
-		AND   t1.form_four_index='".$index_number."'
-		AND   t1.year_certified='".$form_grad_year."'";
-		
+     	$sql="SELECT t1.*,t2.college_name,t2.email,
+     	      TIMESTAMPDIFF(YEAR,dob, CURRENT_DATE) AS age 
+     	      FROM tbl_applicants t1 
+     	      INNER JOIN tbl_colleges t2 ON  t2.college=t1.college
+		      WHERE t1.registration_number='".$admn_no."'
+		      AND   t1.year_graduated='".$grad_year."'
+		      AND   t1.applicant_id='".$unique_index."'";		
 		$responses[]= DB::SELECT($sql);
 		
 		if(count($responses[0]) > 0){
@@ -89,10 +91,7 @@ for($starting_year_college=$year_limit[0]->college_graduation_year;$starting_yea
 		}else{
 		$responses[]=0;	
 		}
-		
-		$responses[]=Tbl_college::where('id',$college_id)->get();
-		
-		return $responses;
+			return $responses;
 		
 	}
 	
@@ -135,10 +134,11 @@ for($starting_year_college=$year_limit[0]->college_graduation_year;$starting_yea
 		
 	}
 	else{	
+		//check duplcates..
     foreach($request->selections AS $selection){
     Tbl_application::create([
       'council_id'=>$selection['council_id'],
-      //'subject_id'=>$selection['subject_id'],
+      'school_id'=>$selection['centre_number'],
       'applicant_id'=>$request['applicant_id'],
       'priority'=>$priority     
     ]);
@@ -282,19 +282,11 @@ for($starting_year_college=$year_limit[0]->college_graduation_year;$starting_yea
 						 $starter++;
 						 
 		}
-		  
-	     
-		 }
+		}
 	  }		 
 		  
 	  }
-	  
-	  
-	    
-	  
-	  
-	  
-	  }
+	 }
 	  }
 	     
 	  }
@@ -324,11 +316,7 @@ for($starting_year_college=$year_limit[0]->college_graduation_year;$starting_yea
 	  INNER JOIN tbl_teaching_subjects  t2 ON t1.subject_id=t2.id
 	  WHERE t2.department_id=1 GROUP BY t2.department_id"; 
 	  $number_of_periods=DB::SELECT($sql);
-	  
 	  $total_periods=$number_of_periods[0]->number_of_periods;
-	  
-	  
-	  
 	  $requirements_per_council="SELECT t1.school_id,t2.council_id,
 	  CEIL(SUM((((t1.students_taking/45) * $total_periods )/25)-t4.teachers_number)) AS requireired_teachers FROM  tbl_teachers_requirements t1
 	  INNER JOIN tbl_schools  t2 ON t1.school_id=t2.id
@@ -372,20 +360,9 @@ for($starting_year_college=$year_limit[0]->college_graduation_year;$starting_yea
 	  }		 
 		  
 	  }
-	  
-	  
-	    
-	  
-	  
-	  
+
 	  }
 	  }
-	     
-	     //stream ---01  mikondo   
-	     //stream ---01
-	  
-	  
-	 
 	
 	}
 	}
@@ -438,7 +415,7 @@ for($starting_year_college=$year_limit[0]->college_graduation_year;$starting_yea
 	$sql="SELECT t2.*,t3.regions_id	,t1.updated_at,t3.council_name,
 	      t4.region_name,t1.id AS application_id ,t1.council_id 
 	      FROM  tbl_applications t1 
-	      INNER JOIN tbl_applicants t2 ON t1.applicant_id=t2.id
+	      INNER JOIN tbl_applicants t2 ON t1.applicant_id=t2.applicant_id
 	      INNER JOIN tbl_councils t3 ON t3.id=t1.council_id	
 	      INNER JOIN tbl_regions t4 ON t4.id=t3.regions_id
 
@@ -456,10 +433,10 @@ for($starting_year_college=$year_limit[0]->college_graduation_year;$starting_yea
 	$sql="SELECT t2.*,t5.college_name,t3.regions_id	,t1.updated_at,t3.council_name,
 	      t4.region_name,t1.id AS application_id ,t1.council_id 
 	      FROM  tbl_applications t1 
-	      INNER JOIN tbl_applicants t2 ON t1.applicant_id=t2.id
+	      INNER JOIN tbl_applicants t2 ON t1.applicant_id=t2.applicant_id
 	      INNER JOIN tbl_councils t3 ON t3.id=t1.council_id	
 	      INNER JOIN tbl_regions t4 ON t4.id=t3.regions_id
-	      INNER JOIN tbl_colleges t5 ON t5.id=t2.college_id
+	      INNER JOIN tbl_colleges t5 ON t5.id=t2.college
 
            WHERE t1.selected=1 GROUP BY t1.applicant_id";
 		   
@@ -494,11 +471,11 @@ for($starting_year_college=$year_limit[0]->college_graduation_year;$starting_yea
 		  (SELECT created_at FROM tbl_attendance_reports t6 WHERE t6.applicant_id=t1.applicant_id LIMIT 1) AS time_reported,
 		  t1.council_id 
 	      FROM  tbl_applications t1 
-	      INNER JOIN tbl_applicants t2 ON t1.applicant_id=t2.id
+	      INNER JOIN tbl_applicants t2 ON t1.applicant_id=t2.applicant_id
 	      INNER JOIN tbl_schools t6 ON t6.id=t1.school_id
 	      INNER JOIN tbl_councils t3 ON t3.id=t1.council_id	
 	      INNER JOIN tbl_regions t4 ON t4.id=t3.regions_id
-	      INNER JOIN tbl_colleges t5 ON t5.id=t2.college_id
+	      INNER JOIN tbl_colleges t5 ON t5.id=t2.college
 
            WHERE t1.selected=1 AND t1.council_id='".$request->council_id."' GROUP BY t1.applicant_id";
 		   
@@ -517,15 +494,30 @@ for($starting_year_college=$year_limit[0]->college_graduation_year;$starting_yea
 	}
 		   	
   }
+
+  public function searchResidence(Request $request){
+  	  $residenceKey=$request->name;
+  	  $sql="SELECT t1.*,t2.council_name FROM tbl_residences t1
+  	        INNER JOIN tbl_councils t2 ON t1.council_id=t2.id
+  	        WHERE t1.residence_name LIKE '%".$residenceKey."%' LIMIT 5";
+  	        return DB::SELECT($sql);
+  }
 	
 	public function saveAddress(Request $request){
 		
 		$applicant_id = $request->applicant_id;
 		$residence_id = $request->residence_id;
+		if(!isset($request->mobile_number)){
+		return response()->json(
+                  ['data' =>'Mobile number must be provided',
+                   'status' => 0
+               ]
+           );
+	   }
 		$mobile_number = $request->mobile_number;
 		$email = $request->email;
 		     			
-		return Tbl_applicant::where('id',$applicant_id)->update([
+		return Tbl_applicant::where('applicant_id',$applicant_id)->update([
 		'residence_id'=>$residence_id,
 		'email'=>$email,
 		'mobile_number'=>$mobile_number	
@@ -629,10 +621,13 @@ for($starting_year_college=$year_limit[0]->college_graduation_year;$starting_yea
 	   $searchWord=$request->searchWord;
    		
 		$query="SELECT * FROM `vw_schools` WHERE `".$request->field_name."` LIKE '%".$searchWord."%'";
-		
-		return DB::SELECT($query);
+
+        return DB::SELECT($query);
 		
 	}
+
+
+
 	
 	public function getAvailableChances(Request $request){
 		
