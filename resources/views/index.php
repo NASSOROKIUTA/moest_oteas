@@ -112,10 +112,7 @@
    <script src="/scripts/modules/permits/permitsController.js"></script>
    <script src="/scripts/modules/applicants/applicantsController.js"></script>
    <script src="/scripts/services/webcam.min.js"></script>
-   <script src="/scripts/services/ng-camera.js"></script>
-	
-   
-   
+   <script src="/scripts/services/ng-camera.js"></script> 
    
     <script src="/scripts/authController.js"></script>
     <script src="/scripts/admin/rolesController.js"></script>

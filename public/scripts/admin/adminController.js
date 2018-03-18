@@ -695,7 +695,14 @@ console.log(item);
 			else if(user.password !=user.retype_password){
 				return  sweetAlert("Password mismatch", "", "error");
 			}
-			var postData={proffesionals_id:user.proffesionals_id,email:user.email,department_id:1,password:user.password,gender:user.gender,mobile_number:user.mobile_number,name:user.name,council_id:$scope.council.id};
+
+              var council_id=null;
+            if(angular.isDefined($scope.council)==true){
+              council_id= $scope.council.id;
+            }
+
+
+			var postData={proffesionals_id:user.proffesionals_id,email:user.email,department_id:1,password:user.password,gender:user.gender,mobile_number:user.mobile_number,name:user.name,council_id:council_id};
 
           $http.post('/api/user_registration',postData).then(function (data) {
 				

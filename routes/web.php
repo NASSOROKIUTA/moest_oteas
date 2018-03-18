@@ -79,17 +79,6 @@ Route::group(['prefix' => 'api'], function()
 	Route::post('update_country_name', 'Country\CountryController@update_country_name');
 	Route::get('deletecountry/{id}', 'Country\CountryController@deletecountry');
 	
-	//Tribe Routes
-	Route::post('tribe_registration', 'Tribe\TribeController@tribe_registration');
-	Route::get('gettribe_name', 'Tribe\TribeController@gettribe_name');
-	Route::post('updatetribe', 'Tribe\TribeController@updatetribe');
-	Route::get('deletetribe/{id}', 'Tribe\TribeController@deletetribe');
-	
-	// Marital Routes
-	Route::post('marital_registration', 'Marital\MaritalController@marital_registration');
-	Route::get('getmarital_status', 'Marital\MaritalController@getmarital_status');
-	Route::post('updatemaritalstatus', 'Marital\MaritalController@updatemaritalstatus');
-	Route::get('deletemaritalstatus/{id}', 'Marital\MaritalController@deletemaritalstatus');
 	
 	
   ///residence routes

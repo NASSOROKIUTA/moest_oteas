@@ -46,7 +46,6 @@
 			.icon("reported_to_councils", "/svg/Appointment.svg", 512)           
             .icon("applicants_registration", "/svg/addModules.svg", 512)
             .icon("normalRegistration", "/svg/normalRegistration.svg", 512)
-            .icon("treatmentDepartment", "/svg/treatmentDepartment.svg", 512)
             .icon("system", "/svg/system.svg", 512)           
             .icon("notifications", "/svg/notifications.svg", 512);
         function redirectWhenLoggedOut($q, $injector) {
@@ -155,25 +154,7 @@
                 templateUrl: '/views/admin_template.html',
                 controller: 'adminController'
             })
-            .state('addPermRole', {
-                url: '/addPermRole',
-                parent: 'master',
-                templateUrl: '/views/addPermRole.html',
-                controller: 'rolesController as roles'
-            })
-			 .state('addUserImage', {
-                url: '/addUserImage',
-                parent: 'master',
-                templateUrl: '/views/addUserImage.html',
-                controller: 'rolesController as roles'
-            })
-            .state('addPermUser', {
-                url: '/addPermUser',
-                parent: 'master',
-                templateUrl: '/views/addPermUser.html',
-                controller: 'rolesController as roles'
-            })
-            
+           		            
             .state('UsersList', {
                 url: '/UsersList',
                 parent: 'master',
