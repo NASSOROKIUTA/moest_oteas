@@ -86,8 +86,10 @@ class DatabaseSeeder extends Seeder
     
   ['module' => 'applicants_registration','glyphicons'=>'fa fa-home fa-3x','title'=>'Applicants Management','main_menu'=>1,'keyGenerated' =>Hash::make('applicants_registration')], 
   
-  ['module' => 'reported_to_councils','glyphicons'=>'fa fa-home fa-3x','title'=>'Fist Appointments','main_menu'=>1,'keyGenerated' =>Hash::make('reported_to_councils')],
-         
+  ['module' => 'reported_to_councils','glyphicons'=>'fa fa-home fa-3x','title'=>'First Appointments','main_menu'=>1,'keyGenerated' =>Hash::make('reported_to_councils')],
+     
+      ['module' => 'primary_applicants_registration','glyphicons'=>'fa fa-home fa-3x','title'=>'Primary Teachers','main_menu'=>1,'keyGenerated' =>Hash::make('primary_applicants_registration')],
+     
                 
                      );
 

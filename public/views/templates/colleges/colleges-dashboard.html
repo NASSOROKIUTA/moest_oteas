@@ -1,0 +1,90 @@
+ <md-content class="md-padding">
+				
+				 <vertical-tabs >
+                            				
+							
+							
+				
+	
+	<vertical-tab-pane title="Colleges Registered">
+	 
+				<div layout="row">
+				 <md-input-container class="md-block" flex-gt-sm>
+                   <label>Filter By:</label>
+                <md-select ng-model="apps.fieldName" required>
+                <md-option value="college_name">BY COLLEGE NAME</md-option>
+                <md-option value="college">BY REGISTRATION NUMBER</md-option>
+                </md-option>
+                        
+                           </md-input-container>
+       
+        <md-input-container class="md-block" flex-gt-sm>
+        <label>Filter By:</label>
+        <input type="text" ng-model="apps.filter_by">
+        </md-input-container>
+		
+        <md-input-container class="md-block" flex-gt-sm>
+        <md-button class="md-raised md-primary" ng-click="getCollegesRegistered(apps)">Search</md-button>
+        </md-input-container>
+      
+        </div>
+		<span ng-if="colleges.length ==0 "> 
+    <h3 align="center"> NO RESULTS FOUND BASED ON THIS SEARCH KEYWORD</h3>  </span>
+		
+		
+		 <table  ng-if="colleges.length >0" class="table table-bordered" border="1" width="100%">
+                                                        <caption> <b class="">
+                                                            <div  class="text-center"><h8>THE UNITED REPUBLIC OF TANZANIA</h8></div>
+                                                            <div  class="text-center"><h8> PRESIDENTS OFFICE REGIONAL ADMINISTRATION AND LOCAL GOVERNMENT</h8></div>
+                                                            <div  class="text-center"> <img alt="image" class="img-circle" src="/img/arm.png" width="40px" height="40px" /></div>
+
+                                                            <div  class="text-center"> </div>
+                                                            <div  class="text-center"><h8> <i>LIST OF COLLEGE REGISTERED</i></h8></div>
+                                                                                                        <hr>
+
+                                                           
+                                                            <P></P>
+                                                            <P></P>
+                                                            <P></P>
+                                                           
+                                                           
+                                                            <hr>
+                                                        </caption>
+                        <tr style="background-color:#c1c1c1">
+   <th>No.</th>  
+   <th>COLLEGE NAME</th>
+   <th>REG #</th>
+   <th>FOCAL PERSON</th> </tr>  
+<tr ng-repeat="college in colleges track by $index">
+  <td>{{$index+1}}</td>
+  <td>{{college.college_name}}</td>
+  <td>{{college.college}}</td>  
+ <td>{{college.focalname}}</td>
+
+</tr>
+    </table>
+		
+				                             
+                            </vertical-tab-pane>
+							<vertical-tab-pane title="College Registration">				
+				      <div layout-gt-sm="row">
+             <md-input-container class="md-block" flex>                             
+             <input type="file"  name="file"   ng-files="getExcelFiles($files)" >
+             </md-input-container>
+        
+            <md-input-container>
+            <md-button class="md-raised md-primary pull-right" ng-click="saveColleges()">
+            Upload
+            </md-button>   
+            </md-input-container>
+            </div>                                                            
+           </vertical-tab-pane>	
+							
+				   </vertical-tabs >
+				
+				
+				
+                   
+                </md-content>
+           
+</div>

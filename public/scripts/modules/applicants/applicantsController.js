@@ -14,19 +14,17 @@
 			var selectedSchool ={};
 			var council_name ="";
 			
-			$scope.getApplications= function(){
-			var postData={applicant_id:applicant_id};
-		$http.post('/apps/getApplications',postData).then(function(data) {
-				$scope.applications=data.data;
-				
-		});
-		
-		$http.post('/apps/getApplicationLists').then(function(data) {
-				$scope.getApplicationLists=data.data;
-				
-		});
-						
-			};
+			$scope.getApplications= function(){	
+			  var postData={department_id:department_id};
+			  if(department_id==null){
+			  	return sweetAlert("Sorry You are not authorized to view any list of applications","Contact Administrator");
+			  }				
+		      $http.post('/apps/getApplicationLists',postData).then(function(data) {
+				$scope.getApplicationLists=data.data;				
+		           });						
+		    }();
+
+
 			
 			$scope.getListSelectedToCouncils= function(){
 			$http.post('/apps/getListSelectedToCouncils').then(function(data) {
@@ -53,8 +51,7 @@
 			
 			$scope.getListSelectedToThisCouncil();
 					
-			$scope.getApplications(); //get list of applications
-			
+				
 			$scope.selectionsDone = [];
 			
 			$scope.getSelectedCouncil= function(council_id){
@@ -362,15 +359,27 @@ $http.post('/apps/saveApplicantPhoto',postData).then(function(data) {
 				});
 				
 			};
+
+			$scope.setGender=function(gender){
+              $scope.gender=gender;
+			};
+
 			
 			$scope.makePlacementPrimary= function(selections){
-			var postData={selections:selections,user_id:user_id};
+				if(angular.isDefined($scope.gender)==false){
+					return sweetAlert("Please Select Gender","","error");
+				}
+			  var postData={gender:$scope.gender,selections:selections,user_id:user_id};
 		$http.post('/apps/makePlacementPrimary',postData).then(function(data) {
 			$scope.application=data.data;
-			return sweetAlert("Placement ,was successfully Saved","","success");
+			return swal(data.data,"","info");
+                        
+				
 				});
 				
 			};
+
+
 			
 			$scope.makePlacementPrimarySchool= function(selections){
 			var postData={selections:selections,user_id:user_id};
@@ -380,7 +389,7 @@ $http.post('/apps/saveApplicantPhoto',postData).then(function(data) {
 				});
 				
 			};
-			
+			/**
 			$scope.getApplications= function(){
 			var postData={applicant_id:applicant_id};
 		$http.post('/apps/getApplications',postData).then(function(data) {
@@ -389,6 +398,7 @@ $http.post('/apps/saveApplicantPhoto',postData).then(function(data) {
 		});
 						
 			};
+			**/
 			
 	    	$scope.addSelections= function(choice,selectedSchool){
 
@@ -436,7 +446,7 @@ $http.post('/apps/saveApplicantPhoto',postData).then(function(data) {
 			
 			$scope.addRegionsForPlacement= function(){
 				var region_name=$scope.region.region_name;
-				var region_id=$scope.region.id;
+				var region_id=$scope.region.region_id;
 			
 			if($scope.selectionsDone.length > 5){
 				 swal("Not more than five regions are allowed at once to make placement to run","","info");

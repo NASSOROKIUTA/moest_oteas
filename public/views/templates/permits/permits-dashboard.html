@@ -118,75 +118,43 @@
 		
 				                             
                             </vertical-tab-pane>
-							<vertical-tab-pane title="College Registration">
+							<vertical-tab-pane title="Generate Suggested Permits">
 				
 				 <div layout-gt-sm="row">
                         <md-input-container class="md-block" flex-gt-sm>
-                            <label>State Name</label>
-                            <input type="text" ng-model="modules.module">
-                        </md-input-container>
-                        <md-input-container class="md-block" flex-gt-sm>
-                            <label>Menu Title</label>
-                            <input type="text" ng-model="modules.title">
-                        </md-input-container>
-                        <md-input-container class="md-block" flex-gt-sm>
-                            <label>Icons</label>
-                            <input type="text" ng-model="modules.glyphicons" uib-typeahead=" icon as icon.icon_name for icon in icons | filter:$viewValue | limitTo:8" >
+                            <label>Select Regions</label>
+                           
+ <md-select ng-change="getCouncil(permits.regions)" ng-model="permits.regions" required>
+                  <md-option  value="0" selected>------- All MainLand Tanzania Regions ----</md-option>
+                  <md-option  ng-repeat="region in regions" value="{{region.id}}" >{{region.region_name}}</md-option>
+                        
+          </md-select>
+
+                             </md-input-container>
+                         <md-input-container class="md-block" flex-gt-sm>
+                            <md-button class="md-raised md-primary" ng-click="generatePermits()">EXECUTE</md-button>
                         </md-input-container>
                     </div>
-                    <div layout-gt-sm="row">
-                        <section layout="row" layout-sm="column" layout-align="center center" layout-wrap>
-                            <md-button class="md-raised md-primary" ng-click="saveModules(modules)">SAVE</md-button>
-                        </section>
-                    </div>
+                   
                                                            
                             </vertical-tab-pane>	
 							
-							<vertical-tab-pane title="Employ Permits">
+							<vertical-tab-pane title="Load Permits From Excel">
 				
-				 	<div layout="row">
-       
-         <md-input-container class="md-block" flex-gt-sm>
-                            <label>Facility Code</label>
-                            <input type="text" ng-model="facility_code">
-         </md-input-container>
-        <md-input-container class="md-block" flex-gt-sm>
-        <md-button class="md-raised md-primary" ng-click="synchronizeFacilityCentrally(facility_code)">Download</md-button>
-        </md-input-container>
-      
-        </div>             
+				  <div layout-gt-sm="row">
+             <md-input-container class="md-block" flex>                             
+             <input type="file"  name="file"   ng-files="getExcelFiles($files)" >
+             </md-input-container>
+        
+            <md-input-container>
+            <md-button class="md-raised md-primary pull-right" ng-click="saveColleges()">
+            Upload
+            </md-button>   
+            </md-input-container>
+            </div>                     
                             </vertical-tab-pane>	
 							
-		<vertical-tab-pane title="Applications">
 				
-				 	<div layout="row">
-       
-         <md-input-container class="md-block" flex-gt-sm>
-                            <label>BASE URL</label>
-                            <input type="text" ng-model="api.ip_address">
-         </md-input-container> 
-		 
-		 <md-input-container class="md-block" flex-gt-sm>
-                            <label>PUBLIC KEYS</label>
-                            <input type="text" ng-model="api.public_keys">
-         </md-input-container> 
-		 <md-input-container class="md-block" flex-gt-sm>
-                            <label>PRIVATE KEYS</label>
-                            <input type="text" ng-model="api.private_keys">
-         </md-input-container>
-         		    <md-select ng-model="selectedChart_"+{{selectedApi}}    placeholder="Select" class="md-no-underline">
-          <md-option ng-repeat="api_type in api_types" ng-click="getApiType(api_type.id)">{{api_type.TemplateName}}</md-option>
-          </md-select>
-		  
-      	
-        <md-input-container class="md-block" flex-gt-sm>
-        <md-button class="md-raised md-primary" ng-click="saveIpAddress(api)">SAVE</md-button>
-        </md-input-container>
-      
-        </div>             
-                            </vertical-tab-pane>	
-							
-							
 							   </vertical-tabs >
 				
 				

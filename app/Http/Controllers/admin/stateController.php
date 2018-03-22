@@ -110,6 +110,8 @@ DB::connection($mysql_only_connect)->statement("CREATE DATABASE ".$database." DE
 		systemViews::residencesView();	
 		systemViews::assignedPerms();
 		systemViews::getApplications();
+		systemViews::createPermits();
+		
         }
 	 
 	 

@@ -186,6 +186,7 @@ class SchoolsController extends Controller
              WHERE t1.region_name LIKE '%".$searchWord."%'
                 AND t1.chance_remained >0 
                 OR t1.chance_remained IS NULL
+                GROUP BY t1.region_id
                   ORDER BY t1.ptr DESC LIMIT 5
                       ";
                       return DB::SELECT($sql);

@@ -14,8 +14,7 @@ class CreateTblColleges extends Migration
     public function up()
     {
         Schema::create('tbl_colleges', function (Blueprint $table) {
-            $table->uuid('id');
-            $table->primary('id');
+            $table->increments('id');
             $table->string('college',20)->index()->nullable();
             $table->string('college_name',180);
             $table->string('email',45)->nullable();

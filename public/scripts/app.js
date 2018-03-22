@@ -22,7 +22,6 @@
 		'webcam',
 		
     ]);
-
     angular.module('authApp').config(function($stateProvider, $urlRouterProvider, $authProvider, $httpProvider, $provide, $mdThemingProvider, $mdIconProvider, $mdDateLocaleProvider,cfpLoadingBarProvider) {
         $mdDateLocaleProvider.formatDate = function(date) {
 				return moment(date).format('YYYY-MM-DD');
@@ -30,15 +29,14 @@
 		
 		cfpLoadingBarProvider.includeSpinner = false;
 
-
         $mdThemingProvider.theme('default')
             .primaryPalette('teal')
             .accentPalette('red');
-        $mdIconProvider.defaultIconSet("/svg/avatars.svg",
-            128)
+        $mdIconProvider.defaultIconSet("/svg/avatars.svg",128)
             .icon("menu", "/svg/menu.svg", 512)
             .icon("dashboard", "/svg/home.svg", 512)
             .icon("schoolSettings", "/svg/addViews.svg", 512)
+            .icon("primary_applicants_registration", "/svg/home.svg", 512)            
             .icon("logout", "/svg/logout.svg", 512)
             .icon("default_profile", "/svg/default_profile.svg", 512)
             .icon("permits", "/svg/addRoles.svg", 512)
@@ -47,7 +45,9 @@
             .icon("applicants_registration", "/svg/addModules.svg", 512)
             .icon("normalRegistration", "/svg/normalRegistration.svg", 512)
             .icon("system", "/svg/system.svg", 512)           
-            .icon("notifications", "/svg/notifications.svg", 512);
+            .icon("notifications", "/svg/notifications.svg", 512)
+            .icon("collegeSettings", "/svg/notifications.svg", 512);
+            
         function redirectWhenLoggedOut($q, $injector) {
             return {
                 responseError: function(rejection) {
@@ -129,10 +129,26 @@
                templateUrl: '/views/templates/permits/permits-dashboard.html',
                 controller: 'permitsController'
             })
+
+            .state('collegeSettings', {
+                url: '/collegeSettings',
+                parent: 'master',
+               templateUrl: '/views/templates/colleges/colleges-dashboard.html',
+                controller: 'collegeController'
+            })
+
+            
 			.state('applicants_registration', {
                 url: '/applicants_registration',
                 parent: 'master',
                templateUrl: '/views/templates/applicants/applicants-dashboard.html',
+                controller: 'applicantsController'
+            })
+
+                .state('primary_applicants_registration', {
+                url: '/primary_applicants_registration',
+                parent: 'master',
+               templateUrl: '/views/templates/applicants/primary-applicants-dashboard.html',
                 controller: 'applicantsController'
             })
 			.state('reported_to_councils', {

@@ -111,6 +111,7 @@
    <script src="/scripts/modules/schools/js/schoolController.js"></script>
    <script src="/scripts/modules/permits/permitsController.js"></script>
    <script src="/scripts/modules/applicants/applicantsController.js"></script>
+   <script src="/scripts/modules/colleges/collegeController.js"></script>   
    <script src="/scripts/services/webcam.min.js"></script>
    <script src="/scripts/services/ng-camera.js"></script> 
    

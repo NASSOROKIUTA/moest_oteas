@@ -39,6 +39,11 @@ Route::group(['prefix' => 'apps'], function()
 Route::group(['prefix' => 'api'], function()
 {
 	Route::post('getAvailableChances', 'placement\placementController@getAvailableChances');
+    Route::post('getCollegesRegistered', 'colleges\CollegesController@getCollegesRegistered');
+    Route::post('saveColleges', 'colleges\CollegesController@saveColleges');
+
+
+	
 	Route::post('searchCouncil', 'User\UsersRegistrationController@searchCouncil');
     Route::get('update', 'System_Updates\Updater_Init@Init');  	
     Route::resource('authenticate', 'AuthenticateController', ['only' => ['index']]);

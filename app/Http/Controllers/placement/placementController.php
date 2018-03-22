@@ -24,23 +24,32 @@ class placementController extends Controller
 	
 	
 	public function getApplicationLists(Request $request){
+		$department_id=$request->department_id;
+		//$department_id=1;
 		$sql="SELECT
     t4.*,t1.applicant_id,
-    MAX(CASE WHEN t1.priority = 1 THEN t2.council_name ELSE NULL END) AS first_choice,
-    MAX(CASE WHEN t1.priority = 2 THEN t2.council_name ELSE NULL END) AS second_choice,
-    MAX(CASE WHEN t1.priority = 3 THEN t2.council_name ELSE NULL END) AS third_choice,
-    MAX(CASE WHEN t1.priority = 4 THEN t2.council_name ELSE NULL END) AS fourth_choice,
-    MAX(CASE WHEN t1.priority = 5 THEN t2.council_name ELSE NULL END) AS fifth_choice
+    MAX(CASE WHEN t1.priority = 1 THEN t2.council_name ELSE NULL END) AS first_council,
+    MAX(CASE WHEN t1.priority = 2 THEN t2.council_name ELSE NULL END) AS second_council,
+    MAX(CASE WHEN t1.priority = 3 THEN t2.council_name ELSE NULL END) AS third_council,
+    MAX(CASE WHEN t1.priority = 4 THEN t2.council_name ELSE NULL END) AS fourth_council,
+
+    MAX(CASE WHEN t1.priority = 1 THEN (SELECT school_name FROM tbl_schools t5 WHERE t5.centre_number=t1.school_id AND t1.priority=1 GROUP BY  t1.applicant_id LIMIT 1) ELSE NULL END) AS first_school,
+
+    MAX(CASE WHEN t1.priority = 2 THEN (SELECT school_name FROM tbl_schools t5 WHERE t5.centre_number=t1.school_id AND t1.priority=2 GROUP BY  t1.applicant_id LIMIT 1) ELSE NULL END) AS second_school,
+    MAX(CASE WHEN t1.priority = 3 THEN (SELECT school_name FROM tbl_schools t5 WHERE t5.centre_number=t1.school_id AND t1.priority=3 GROUP BY  t1.applicant_id LIMIT 1) ELSE NULL END) AS third_school,
+    MAX(CASE WHEN t1.priority = 4 THEN (SELECT school_name FROM tbl_schools t5 WHERE t5.centre_number=t1.school_id AND t1.priority=4 GROUP BY  t1.applicant_id LIMIT 1) ELSE NULL END) AS fourth_school
+  
    
 FROM
      tbl_applications t1
 	 INNER JOIN tbl_councils t2 ON t1.council_id=t2.id
 	 INNER JOIN tbl_regions t3 ON t3.id=t2.regions_id
 	 INNER JOIN tbl_applicants t4 ON t4.applicant_id=t1.applicant_id
+	 WHERE t4.department_id='".$department_id."'
 GROUP BY
     t1.applicant_id
 ORDER BY t1.created_at DESC 
-    ";
+     LIMIT 40";
 	return DB::SELECT($sql);
 		
 	}
@@ -150,41 +159,55 @@ for($starting_year_college=$year_limit[0]->college_graduation_year;$starting_yea
   
   //placement algorithm for primary schools to council
   public function makePlacementPrimary(Request $request){
+  	  if(isset($request->gender)){
+  	  	if($request->gender=="M"){
+  	  		$gender_permit="male"; 	  		
+  	  	}
+  	  	if($request->gender=="F"){
+  	  		$gender_permit="female";
+  	  	}
+  	  	$gender=$request->gender;
+        
+  	  }else{
+  	  	return "Please Specify Gender For the placement to proceed";
+  	  }
       $female_permit=0;
-      $male_permit  =0;
-     
+      $male_permit  =0;     
    if(isset($request->selections)){		
     foreach($request->selections AS $selection){
+    	try{
 		//get list of councils for selected regions, #1st step
-    $council_lists=Tbl_council::where('regions_id',$selection['region_id'])->get();
-	
-	//return $council_lists;
+    $council_lists=DB::SELECT("SELECT * FROM vw_applications t1 WHERE t1.region_id='".$selection['region_id']."'
+    	  GROUP BY t1.council_id");
+    
+	// return $council_lists;
 	   //check for employ permits for each council   #2nd step
 	foreach($council_lists AS $council_list){
 		//return $council_list;
 		 $sql="SELECT * FROM vw_permits t1 
-	      WHERE t1.council_id='".$council_list['id']."'";
+	      WHERE t1.council_id='".$council_list->council_id."'";
       $permits=DB::SELECT($sql);
 	 // return $permits;
 	  if(isset($permits[0])){
-	   $female_permit=$permits[0]->female; //No. of females to employ/KIBALI
-	   $male_permit=$permits[0]->male;   //No. of male to employ/KIBALI
+	   $gender_permit_category=$permits[0]->$gender_permit; //No. of fe/males to employ/KIBALI
+	  
 	   $council_id=$permits[0]->council_id;   //council_id
-	 //start place female...
-	  if($female_permit >0){
-	  $this->femalePlacement($council_id,$female_permit);
-	  }
-	  }
-	  
-	  
-	 
 	
-	}
+	  if($gender_permit_category >0){
+	  $this->executePlacement($council_id,$gender_permit_category,$gender);
+	  }
+	  }
+	 }
+
+}catch (\Exception $e) {       
+          return $e;
+          }
 	
 	
 	}
 		
 	}
+	return "Placement was successfully completed";
 		
   }
   
@@ -235,7 +258,7 @@ for($starting_year_college=$year_limit[0]->college_graduation_year;$starting_yea
 	   $council_id=$permits[0]->council_id; 
 	 //start place female...
 	  if($female_permit >0){
-	 // $this->femalePlacement($council_id,$female_permit);
+	 // $this->executePlacement($council_id,$female_permit);
 	  $sql="SELECT SUM(number_of_periods) AS number_of_periods FROM  tbl_periods_per_weeks t1
 	  INNER JOIN tbl_teaching_subjects  t2 ON t1.subject_id=t2.id
 	  WHERE t2.department_id=1 GROUP BY t2.department_id"; 
@@ -311,11 +334,12 @@ for($starting_year_college=$year_limit[0]->college_graduation_year;$starting_yea
 	   $council_id=$permits[0]->council_id; 
 	 //start place female...
 	  if($male_permit >0){
-	 // $this->femalePlacement($council_id,$female_permit);
+	 // $this->executePlacement($council_id,$female_permit);
 	  $sql="SELECT SUM(number_of_periods) AS number_of_periods FROM  tbl_periods_per_weeks t1
 	  INNER JOIN tbl_teaching_subjects  t2 ON t1.subject_id=t2.id
 	  WHERE t2.department_id=1 GROUP BY t2.department_id"; 
 	  $number_of_periods=DB::SELECT($sql);
+	  	  	  	  
 	  $total_periods=$number_of_periods[0]->number_of_periods;
 	  $requirements_per_council="SELECT t1.school_id,t2.council_id,
 	  CEIL(SUM((((t1.students_taking/45) * $total_periods )/25)-t4.teachers_number)) AS requireired_teachers FROM  tbl_teachers_requirements t1
@@ -374,39 +398,37 @@ for($starting_year_college=$year_limit[0]->college_graduation_year;$starting_yea
 		
   }
   
-  //female placement..
-  public function femalePlacement($council_id,$female_permit){
-	  
-	  $colleges=Tbl_college::where('education_level','<=',2)->get();
-	  $college_number=count($colleges);  //colleges total number
-	   if($college_number >0){
-		  $limit=CEIL(((1/$college_number)*$female_permit));
-	  }
-	  
-	  
-	  foreach($colleges AS $college){
-	  
-	  $sql="SELECT t1.* FROM tbl_applicants t1 
-	        INNER JOIN tbl_applications t2 ON t1.id=t2.applicant_id
-			WHERE t1.gender='F' AND t2.council_id='".$council_id."'
-			AND t1.department_id=1 AND t2.lock_applicant=0 AND t1.college_id='".$college['id']."' LIMIT	".$limit;
-			
-	  $applicants=DB::SELECT($sql);
-	 
+  //execute placement..
+  public function executePlacement($council_id,$permit,$gender){
+
+  	$sql="SELECT t1.*,t2.permits,t3.applicant_id FROM tbl_school_requirements t1 
+  	          INNER JOIN tbl_permits t2 ON t1.council_id=t2.council_id
+  	          INNER JOIN tbl_applications t3 ON t3.school_id=t1.school_id
+  	          WHERE t2.gender='".$gender."'
+  	                AND t1.council_id='".$council_id."'
+  	                AND dept_id=1
+  	                AND t3.lock_applicant=0  	          
+  	                ORDER BY t1.ptr DESC LIMIT $permit";	 			
+	  $applicants=DB::SELECT($sql);	 
 	  
 	  foreach($applicants AS $applicant){
-		  $applicant_id=$applicant->id;
-		  Tbl_application::where('applicant_id',$applicant_id)
-		                 ->where('council_id',$council_id)                  
-		                 ->where('lock_applicant',0)                  
-						 ->update(['lock_applicant'=>1,'selected'=>1]);
-		  
-	  }
-	  
-	  }
-	  
-	  
-	  
+		  $applicant_id=$applicant->applicant_id;
+		  $school_id=$applicant->school_id;
+		  $sql="SELECT required_teachers FROM tbl_school_requirements t1 WHERE t1.school_id='".$school_id."'";
+		  $school=DB::SELECT($sql);
+		  $actual_req= 0.5 * $school[0]->required_teachers;
+		  $i=0;
+		  while($i < $actual_req){		
+		  $sql=DB::statement("UPDATE tbl_applications t1
+		        SET t1.lock_applicant=1,t1.selected=1
+		        WHERE t1.applicant_id='".$applicant_id."'
+		              AND t1.school_id   ='".$school_id."'
+                      AND t1.lock_applicant=0
+		              ");
+		              $i++;
+		          }
+			  
+	  }  
 	  return "Placement was successfully completed";
   }
   
@@ -449,11 +471,11 @@ for($starting_year_college=$year_limit[0]->college_graduation_year;$starting_yea
 	$sql="SELECT t6.school_name,t2.*,t5.college_name,t3.regions_id	,t1.updated_at,t3.council_name,
 	      t4.region_name,t1.id AS application_id ,t1.council_id 
 	      FROM  tbl_applications t1 
-	      INNER JOIN tbl_applicants t2 ON t1.applicant_id=t2.id
-	      INNER JOIN tbl_schools t6 ON t6.id=t1.school_id
+	      INNER JOIN tbl_applicants t2 ON t1.applicant_id=t2.applicant_id
+	      INNER JOIN tbl_schools t6 ON t6.centre_number=t1.school_id
 	      INNER JOIN tbl_councils t3 ON t3.id=t1.council_id	
 	      INNER JOIN tbl_regions t4 ON t4.id=t3.regions_id
-	      INNER JOIN tbl_colleges t5 ON t5.id=t2.college_id
+	      INNER JOIN tbl_colleges t5 ON t5.college=t2.college
 
            WHERE t1.selected=1 GROUP BY t1.applicant_id";
 		   
@@ -526,18 +548,7 @@ for($starting_year_college=$year_limit[0]->college_graduation_year;$starting_yea
 		
 		
 	}
-	public function getPermits(Request $request){
-		
-		$sql="CREATE OR REPLACE VIEW  vw_permits AS(SELECT   t1.council_id,(SELECT t1.permits FROM tbl_permits t1 WHERE  t1.gender = 'F' AND  t1.council_id=t3.id  GROUP BY t1.gender)  AS female
-   ,(SELECT t1.permits FROM tbl_permits t1 WHERE  t1.gender = 'M' AND  t1.council_id=t3.id  GROUP BY t1.gender)  AS male,
-   (SELECT SUM(permits) FROM tbl_permits t1 WHERE t1.council_id=t3.id GROUP BY t1.dept_id) AS total_permits,
-   (SELECT t2.subject_name FROM tbl_teaching_subjects t2 WHERE t1.subject_id=t2.id LIMIT 1) AS subject_name,t3.council_name,t4.department_name
-              FROM tbl_permits t1 
-		      INNER JOIN tbl_councils t3 ON t1.council_id=t3.id
-		      INNER JOIN tbl_departments t4 ON t1.dept_id=t4.id
-              GROUP BY t1.council_id
-		    )";
-			DB::statement($sql);
+	public function getPermits(Request $request){	
 			
 		$searchWord=$request->searchWord;
    		
