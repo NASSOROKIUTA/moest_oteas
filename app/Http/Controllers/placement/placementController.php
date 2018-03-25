@@ -18,11 +18,149 @@ use App\applicants\Tbl_applicant;
 use App\applicants\Tbl_application;
 use App\applicants\Tbl_attendance_report;
 use App\User;
+use PHPJasper\PHPJasper;
 use DB;
+use Excel;
 class placementController extends Controller
 {
-	
-	
+
+	public function generateReports(Request $request){
+
+     $input ='../vendor/geekcom/phpjasper/examples/hello_world.jrxml';
+     $jasper = new PHPJasper;
+     $jasper->compile($input)->execute();
+
+     $input ='../vendor/geekcom/phpjasper/examples/hello_world.jasper';  
+     $output ='../vendor/geekcom/phpjasper/examples';    
+     $options =  [ 
+                  'format' => ['pdf'] 
+                 ];
+
+$jasper->process(
+    $input,
+    $output,
+    $options
+)->execute();
+     
+	}
+
+	public function generatePermits(Request $request){
+
+		if($request->region_id >0){
+		$sql="SELECT t1.council_id,
+		             t2.council_name,
+		             t3.region_name,
+		             SUM(t1.required_teachers/2) AS female_permit,
+		             SUM(t1.required_teachers/2) AS male_permit,
+		             SUM(t1.required_teachers) AS total_permit
+		             
+		              FROM tbl_school_requirements t1
+		              INNER JOIN tbl_councils t2 ON t1.council_id=t2.id
+		              INNER JOIN tbl_regions t3 ON t2.regions_id=t3.id
+		              WHERE t3.id='".$request->region_id."'
+		              GROUP BY t1.council_id";
+		          }
+		          else {
+		          $sql="SELECT t1.council_id,
+		             t2.council_name,
+		             t3.region_name,
+		             SUM(t1.required_teachers/2) AS female_permit,
+		             SUM(t1.required_teachers/2) AS male_permit,
+		             SUM(t1.required_teachers) AS total_permit
+		             
+		              FROM tbl_school_requirements t1
+		              INNER JOIN tbl_councils t2 ON t1.council_id=t2.id
+		              INNER JOIN tbl_regions t3 ON t2.regions_id=t3.id
+		              GROUP BY t1.council_id";
+		          }
+		$data =DB::SELECT($sql);
+		$data = json_decode(json_encode($data), true);
+       return Excel::create('EMPLOYMENTS-PERMITS-SUGEST', function($excel) use ($data) {
+       $excel->sheet('PERMITS', function($sheet) use ($data){
+     
+                $sheet->cell('A1', function($cell) {$cell->setValue('COUNCIL ID');   });
+                $sheet->cell('B1', function($cell) {$cell->setValue('COUNCIL NAME');   });
+                $sheet->cell('C1', function($cell) {$cell->setValue('REGION NAME');   });
+                $sheet->cell('D1', function($cell) {$cell->setValue('FEMALE PERMIT');   });
+                $sheet->cell('E1', function($cell) {$cell->setValue('MALE PERMIT');   });
+                $sheet->cell('F1', function($cell) {$cell->setValue('TOTAL PERMIT');   });
+                if (!empty($data)) {
+                    foreach ($data as $key => $value) {
+                        $i= $key+2;
+                        $sheet->cell('A'.$i, $value['council_id']); 
+                        $sheet->cell('B'.$i, $value['council_name']); 
+                        $sheet->cell('C'.$i, $value['region_name']); 
+                        $sheet->cell('D'.$i, $value['female_permit']); 
+                        $sheet->cell('E'.$i, $value['male_permit']); 
+                        $sheet->cell('F'.$i, $value['total_permit']); 
+                    }
+                }
+
+		//	$sheet->fromArray($data);
+	        });
+		})->store('xls', storage_path('../public/excel'))->export('xls');			
+	}
+
+
+    public function getRegisteredCandidate(Request $request){
+   $sql="SELECT t1.*
+	      FROM  tbl_applicants t1 
+	        INNER JOIN tbl_colleges t2 ON t1.college=t2.college
+            WHERE t1.applicant_id LIKE '".$request->keyword."''
+            GROUP BY t1.applicant_id";		   
+		 return DB::SELECT($sql);
+
+    }
+
+
+	public function exportAsExcel(Request $request){
+
+		$sql="SELECT t6.school_name AS shule_aendayo,CONCAT(t2.first_name,' ',t2.middle_name,' ',t2.last_name) AS jina_la_muombaji,t2.gender AS jinsi,CONCAT(t2.form_four_index,'/',t2.year_certified )AS namba_kidato_cha_4,t5.college_name AS chuo,t3.council_name AS halmashauri,t4.region_name AS mkoa 
+	      FROM  tbl_applications t1 
+	      INNER JOIN tbl_applicants t2 ON t1.applicant_id=t2.applicant_id
+	      INNER JOIN tbl_schools t6 ON t6.centre_number=t1.school_id
+	      INNER JOIN tbl_councils t3 ON t3.id=t1.council_id	
+	      INNER JOIN tbl_regions t4 ON t4.id=t3.regions_id
+	      INNER JOIN tbl_colleges t5 ON t5.college=t2.college
+
+           WHERE t1.selected=1 GROUP BY t1.applicant_id";
+		   
+		$data =DB::SELECT($sql);
+		$data = json_decode(json_encode($data), true);
+       return Excel::create('LIST-SELECTED-TO-SCHOOLS', function($excel) use ($data) {
+       $excel->sheet('SELECTION TO SCHOOL', function($sheet) use ($data){
+                $sheet->cell('A1', function($cell) {$cell->setValue('Na.');   });
+                $sheet->cell('B1', function($cell) {$cell->setValue('JINA LA MUOMBAJI');   });
+                $sheet->cell('C1', function($cell) {$cell->setValue('JINSI');   });
+                $sheet->cell('D1', function($cell) {$cell->setValue('NAMBA KIDATO CHA 4');   });
+                $sheet->cell('E1', function($cell) {$cell->setValue('CHUO ');   });
+                $sheet->cell('F1', function($cell) {$cell->setValue('MKOA');   });
+                $sheet->cell('G1', function($cell) {$cell->setValue('HALMASHAURI');   });
+                $sheet->cell('H1', function($cell) {$cell->setValue('SHULE AENDAYO');   });
+                if (!empty($data)) {
+                    foreach ($data as $key => $value) {
+                        $i= $key+2;
+
+                        $sheet->cell('A'.$i, $key+1); 
+                        $sheet->cell('B'.$i, $value['jina_la_muombaji']); 
+                        $sheet->cell('C'.$i, $value['jinsi']); 
+                        $sheet->cell('D'.$i, $value['namba_kidato_cha_4']); 
+                        $sheet->cell('E'.$i, $value['chuo']); 
+                        $sheet->cell('F'.$i, $value['mkoa']); 
+                        $sheet->cell('G'.$i, $value['halmashauri']); 
+                        $sheet->cell('H'.$i, $value['shule_aendayo']); 
+                    }
+                }
+
+		//	$sheet->fromArray($data);
+	        });
+		})->store('xls', storage_path('../public/excel'))->export('xls');			
+	}
+
+
+
+
+		
 	public function getApplicationLists(Request $request){
 		$department_id=$request->department_id;
 		//$department_id=1;

@@ -1,16 +1,20 @@
+<style type="text/css">
+.dialog-size{
+      min-height:695px;
+}
+    
+</style>
 
-<md-dialog class="fullscreen-dialog">
+<md-dialog class="dialog-size">
  <md-toolbar>
         <div class="md-toolbar-tools">
-            <div layout="row"  layout-align="space-between center">
-    <h1 align="center">WELCOME TO SYSTEM LOGIN FORM</h1>
-
-    
-</div>
-            <span flex></span>
-            <md-button class="md-icon-button" ng-click="cancel()">
-                <md-icon md-svg-src="svg/ic_close_24px.svg" aria-label="Close dialog"></md-icon>
-            </md-button>
+            
+        <span flex></span>
+        <md-button class="md-icon-button" ng-click="cancel()">
+        <md-icon md-svg-src="svg/ic_close_24px.svg" aria-label="Close dialog">  </md-icon>
+        </md-button>
+        <div layout="column" layout-align="center center">
+         </div>
         </div>
     </md-toolbar>
  <md-dialog-content>
@@ -21,7 +25,7 @@
                  
 <div  layout="row" class="login-form-container bg-login" layout-align="center center">
 
-    <form name="form" class="login-form md-whiteframe-z2" style="border-radius:10px;background-color:white;border-top:2px solid blue;border-bottom:2px solid green;" novalidate ng-submit="auth.login()">
+    <form name="form" class="login-form md-whiteframe-z2" style="border-radius:15px;background-color:white;border-top:3px solid blue;border-bottom:3px solid green;" novalidate ng-submit="auth.login()">
 
         <md-content layout-padding layout="column">
 		

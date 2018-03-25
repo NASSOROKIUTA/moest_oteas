@@ -184,6 +184,7 @@ return [
         Milon\Barcode\BarcodeServiceProvider::class,
 		Maatwebsite\Excel\ExcelServiceProvider::class,
 		Barryvdh\DomPDF\ServiceProvider::class,
+		PHPJasper\PHPJasperServiceProvider::class,
     ],
 
     /*

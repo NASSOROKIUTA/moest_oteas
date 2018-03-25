@@ -6,6 +6,39 @@
     var app = angular.module('authApp');
     app.controller('permitsController',['$scope','$http','$rootScope',
         function ($scope,$http,$rootScope) {
+
+        	var user_name = $rootScope.currentUser.id;
+        	var formdata = new FormData();
+					
+			$scope.getExcelFiles = function ($files) {
+            angular.forEach($files, function (value, key) {
+                formdata.append(key, value);
+            });
+            formdata.append('uploaded_by', user_name);
+            };
+
+            	$scope.loadPermits = function () {
+            var request = {
+                method: 'POST',
+                url: '/api/loadPermits',
+                data: formdata,
+                headers: {
+                    'Content-Type': undefined
+                }
+               };
+             // SEND THE FILES.
+              $http(request).then(function (responses) {
+            	if(responses.data.status==200){
+            	  return sweetAlert('',responses.data.data,'success');
+            	}
+            	else{
+            	 return sweetAlert('','Some data failed to be enrolled please inform admin for support','error');	
+            	}                 
+               }).then(function () {
+                	 
+                });
+            	               
+        };
 			
 	  $scope.getCouncil=function(region){
 				console.log(region);
@@ -15,6 +48,16 @@
 				});
 				
 			};  
+
+       $scope.generatePermits=function(region){
+       	var postData={region_id:region};
+		$http.post('/api/generatePermits',postData).then(function(data) {
+		 $scope.permitSuggestions=data.data;
+		 });
+				
+			};  
+
+
 
 			$scope.showSubjects=function(showStatus){
 				$scope.showSubject=false;

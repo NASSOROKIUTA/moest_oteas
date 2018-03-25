@@ -39,6 +39,9 @@ Route::group(['prefix' => 'apps'], function()
 Route::group(['prefix' => 'api'], function()
 {
 	Route::post('getAvailableChances', 'placement\placementController@getAvailableChances');
+
+	Route::post('generatePermits', 'placement\placementController@generatePermits');
+
     Route::post('getCollegesRegistered', 'colleges\CollegesController@getCollegesRegistered');
     Route::post('saveColleges', 'colleges\CollegesController@saveColleges');
 
@@ -118,6 +121,7 @@ Route::group(['prefix' => 'api'], function()
 	Route::post('getSubject', 'placement\placementController@getSubjects');
 	Route::post('savePermit', 'placement\placementController@savePermit');
 	Route::post('getPermits', 'placement\placementController@getPermits');
+	Route::post('exportAsExcel', 'placement\placementController@exportAsExcel');
 	
 	
 	//SYSTEM MENU CONTROLLER   @ NASSORO S KIUTA
@@ -193,9 +197,10 @@ Route::group(['prefix' => 'api'], function()
     Route::post('calaculateSchoolRequirements', 'schools\SchoolsController@calaculateSchoolRequirements');
     Route::post('getSchoolRequirements', 'schools\SchoolsController@getSchoolRequirements');
     Route::post('searchResidence', 'placement\placementController@searchResidence');
-
-
+    Route::post('generateReports', 'placement\placementController@generateReports');
 
    Route::post('secondaryTeachersRequirementPerSchool', 'excel\excelController@secondaryTeachersRequirementPerSchool');
    Route::post('downloadExcel', 'excel\excelController@downloadExcel');
+   Route::post('loadPermits', 'excel\excelController@loadPermits');
+   
 });

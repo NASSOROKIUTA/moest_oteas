@@ -124,7 +124,7 @@
                         <md-input-container class="md-block" flex-gt-sm>
                             <label>Select Regions</label>
                            
- <md-select ng-change="getCouncil(permits.regions)" ng-model="permits.regions" required>
+ <md-select ng-change="getCouncil(region_id)" ng-model="region_id" required>
                   <md-option  value="0" selected>------- All MainLand Tanzania Regions ----</md-option>
                   <md-option  ng-repeat="region in regions" value="{{region.id}}" >{{region.region_name}}</md-option>
                         
@@ -132,10 +132,11 @@
 
                              </md-input-container>
                          <md-input-container class="md-block" flex-gt-sm>
-                            <md-button class="md-raised md-primary" ng-click="generatePermits()">EXECUTE</md-button>
+                            <md-button class="md-raised md-primary" ng-click="generatePermits(region_id)">EXECUTE</md-button>
                         </md-input-container>
                     </div>
-                   
+                   <div ng-if="permitSuggestions.length>0"> File Generated <a href="../../../excel/EMPLOYMENTS-PERMITS-SUGEST.xls" target="_self" download="EMPLOYMENTS-PERMITS-SUGEST.xls" >Download Permits File</a>
+       </div>
                                                            
                             </vertical-tab-pane>	
 							
@@ -147,7 +148,7 @@
              </md-input-container>
         
             <md-input-container>
-            <md-button class="md-raised md-primary pull-right" ng-click="saveColleges()">
+            <md-button class="md-raised md-primary pull-right" ng-click="loadPermits()">
             Upload
             </md-button>   
             </md-input-container>

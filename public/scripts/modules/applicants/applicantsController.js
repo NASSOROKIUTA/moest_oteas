@@ -30,9 +30,27 @@
 			$http.post('/apps/getListSelectedToCouncils').then(function(data) {
 				$scope.selectedApplicants=data.data;		
 		});
-		
 					
 			};
+
+			$scope.generateReports= function(){
+			$http.post('/api/generateReports').then(function(data) {
+				$scope.reports=data.data;		
+		                });					
+			};
+
+			$scope.exportAsExcel= function(){
+			$http.post('/api/exportAsExcel').then(function(data) {
+				$scope.reports=data.data;
+               location.href = "../../../excel/LIST-SELECTED-TO-SCHOOLS.xls";
+						
+		                });					
+			};
+
+			
+
+
+			
 			
 			$scope.getListSelectedToSchools= function(){
 			$http.post('/apps/getListSelectedToSchools').then(function(data) {
@@ -302,12 +320,22 @@ $http.post('/apps/saveApplicantPhoto',postData).then(function(data) {
 			};
 
 						
-					 $scope.getRegion = function (text) {
+			$scope.getRegion = function (text) {
             return Helper.getRegion(text)
                 .then(function (response) {
                     return response.data;
                 });
         };
+
+           $scope.getRegisteredCandidate = function (text) {
+            return Helper.getRegisteredCandidate(text)
+                .then(function (response) {
+                    return response.data;
+                });
+           };
+
+
+
 		/**
 		 $scope.selectedRegion = function (region) {
               var region_id=region.id;

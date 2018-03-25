@@ -203,8 +203,19 @@
 					 	
 				   
 				   
-				   
-                </md-content>
+  <div layout-gt-sm="row">
+    <!--
+  <md-input-container>
+ <button ng-click="generateReports()" class="md-raised md-primary pull-right">Generate Report </button>	
+  </md-input-container>	
+  -->   
+ <md-input-container>
+
+ <md-button class="md-raised md-primary pull-right" ng-click="exportAsExcel()">SAVE AS Excel</md-button>
+ </md-input-container>	
+ </div>   
+              
+ </md-content>
                 </md-tab>
 				
 				
@@ -280,36 +291,23 @@
 				
 				<md-tab label="Registered List">
                 <md-content class="md-padding">
-                  <div layout-gt-sm="row">
+                 
+						<div layout="row">
                          
                             <md-autocomplete flex  flex
-                            md-search-text="search"
-                            md-input-name="patient"
+                            md-search-text="searchCandidate"
+                            md-input-name="searchCandidate"
                             md-no-cache="false"
-                            md-items="item in getRegion(search)"
+                            md-items="item in getRegisteredCandidate(searchCandidate)"
                             md-item-text="item.region_name"
                             md-selected-item-change="selectedRegion(item)"
-                            md-floating-label="Search Region"
+                            md-floating-label="Search For any Candidate"
                             md-min-length="3" md-autofocus>
                             <md-item-template>
                               <span md-highlight-text="searchText">{{item.region_name}}</span>
                             </md-item-template>
-                          </md-autocomplete>
-                         
-                          <md-input-container class="md-block" flex-gt-sm>
-                            <label>Council</label>
-           <md-select ng-model="choice" ng-change="getSelectedCouncil(choice)" required>
-                              <md-option value="">Please select Council</md-option>
-                  <md-option ng-repeat="council in councils"  value="{{council.id}}">{{council.council_name}}</md-option>
-                               </md-select>
-                          </md-input-container>
-						  <md-input-container>
-                            
- <md-button class="md-raised md-primary pull-right" ng-click="addSelections(choice)">ADD</md-button>
-
-                          </md-input-container>
-                        </div> 
-						
+                          </md-autocomplete>                  
+                        </div>  
 						
 					 <div layout-gt-sm="row">
                  	

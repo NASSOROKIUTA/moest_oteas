@@ -50,6 +50,15 @@
                     });
             },
 
+            getRegisteredCandidate : function (searchKey) {
+                var dataToPost={searchKey:searchKey};               
+                return $http.post('/api/getRegisteredCandidate',dataToPost)
+                    .then(function (response) {
+                        return response;
+                    });
+            },
+            
+
             getRegionRequirements : function (searchKey) {
                 var dataToPost={searchKey:searchKey};               
                 return $http.post('/api/getRegionRequirements',dataToPost)

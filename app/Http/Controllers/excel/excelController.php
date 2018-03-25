@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\applicants\Tbl_applicant;
 use App\schools\Tbl_teachers_requirement;
+use App\permits\Tbl_permit;
 use Excel;
 use DB;
 class excelController extends Controller
@@ -41,6 +42,113 @@ class excelController extends Controller
 	}
 	
 	
+public function loadPermits(Request $request){
+         $file =0; 
+		  while (Input::hasFile($file)) {
+			
+			$path = $request->file($file)->getRealPath();		
+
+			$data = Excel::load($path, function($reader) {})->get();
+			$records=$data->count();
+			
+			
+			for($p=1; $p<= $data->count(); $p++){
+			 Excel::load($path, function($reader) {
+             $results = $reader->get();
+			// print_r($results); return;
+                  
+              if(!isset($results[0]['council_id'])){
+               return response()->json(
+                  ['data' =>'Please Check your file, Something is wrong there.',
+                   'status' => 400
+               ]
+           );
+              }
+
+
+			 $r=0;
+			while($r < count($results)){
+			 $council_id=$results[$r]['council_id'];
+             $female_permit=$results[$r]['female_permit'];
+             $male_permit=$results[$r]['male_permit'];
+             $total_permit=$results[$r]['total_permit'];
+             $council_name=$results[$r]['council_name'];
+             $region_name=$results[$r]['region_name']; 
+
+              if( $male_permit>=0){
+              	  $duplicates=Tbl_permit::where('gender','M')
+	                 ->where('council_id', $council_id)
+                     ->where('dept_id', 1)
+	                 ->get()->count();
+       if($duplicates == 0){
+       	try{
+        Tbl_permit::create(['council_id'=>$council_id,
+	                        'permits'=>$male_permit,
+							'gender'=>'M',
+							'dept_id' =>1
+							]);
+        }catch (\Exception $e) {
+        return response()->json(
+                  ['data' =>'Some data failed to be enrolled please inform admin for support',
+                   'status' => 400
+               ]
+           );       
+              }
+        
+        
+
+               }  
+           }
+
+                if( $female_permit>=0){
+                	  $duplicates=Tbl_permit::where('gender','F')
+	                 ->where('council_id', $council_id)
+                     ->where('dept_id', 1)
+	                 ->get()->count();
+    if($duplicates == 0){
+    	try{
+        Tbl_permit::create(['council_id'=>$council_id,
+	                        'permits'=>$female_permit,
+							'gender'=>'F',
+							'dept_id' =>1
+							]);
+
+        }catch (\Exception $e) {
+        	return response()->json(
+                  ['data' =>'Some data failed to be enrolled please inform admin for support',
+                   'status' => 400
+               ]
+           );
+                 
+              }
+        
+    }
+
+               }  
+
+
+			 
+	        
+			$r++;
+			}
+			  
+			  
+               });
+			 
+			}
+			
+		
+          $file++;
+      return response()->json(
+                  ['data' =>'All records were successfully imported into database.',
+                   'status' => 200
+               ]
+           );
+	
+   }
+ }  
+
+
  public function schoolUpload(Request $request){
          $file =0; 
 		  while (Input::hasFile($file)) {
