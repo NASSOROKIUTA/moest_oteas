@@ -26,6 +26,37 @@ if (!function_exists('checkDuplicate')) {
 		}	 
    
 }
+if (!function_exists('generateBarcode')) {
+//Generate BARCODE SERIAL NUMBER
+function generateBarcode(){
+   $constant=1;
+        $sql="SELECT * FROM `tbl_barcode_generators`  ORDER BY created_at DESC LIMIT 1";
+        $BarcodeNumber = DB::SELECT($sql);
+
+           if(count($BarcodeNumber)>0){
+            $CustomerExecute =  $BarcodeNumber[0]->barcode_no;
+            if(substr($CustomerExecute,-4,4) !=date('my')){
+                $barcode_no  ='000001'.date('my');
+            }else{
+                $barcode_no=str_pad(((int)substr($CustomerExecute, -10,6)+1),6,'0',STR_PAD_LEFT).date('my');
+            }
+        }
+           else{
+               $barcode_no  ='000001'.date('my');
+           }
+
+
+
+     return $barcode_no;
+
+    }
+
+}
+
+
+
+
+
 
 if (!function_exists('customApiResponse')) {
     /**

@@ -20,9 +20,41 @@ use App\applicants\Tbl_attendance_report;
 use App\User;
 use PHPJasper\PHPJasper;
 use DB;
+use Milon\Barcode\DNS1D;
 use Excel;
+use Auth;
+use JWTAuth;
+use Tymon\JWTAuth\Exceptions\JWTException;
 class placementController extends Controller
 {
+
+	public function __construct()
+  {
+    // Apply the jwt.auth middleware to all methods in this controller
+    // except for the authenticate method. We don't want to prevent
+    // the user from retrieving their token if they don't already have it
+    $this->middleware('jwt.auth', ['except' => ['authenticate']]);
+    
+  }
+
+  public function geneateBarCode(Request $request){
+  	    $applicant_id    =$request->applicant_id;
+  	    $barcode_number  =generateBarcode();
+        $Barcodes        = new DNS1D();
+        $barcode_number  =ltrim($barcode_number, '0');
+        $barcode_number  =(float)$barcode_number;
+        //$barrcode=$Barcodes->getBarcodeHTML($sample_number_barcode,"EAN13");
+        //$barrcode=$Barcodes->getBarcodeHTML($sample_number_barcode,"C39");
+        //$barrcode=$Barcodes->getBarcodePNG($sample_number_barcode,"C39");
+        $barrcode=$Barcodes->getBarcodePNG($barcode_number,"C39");
+  }
+
+   public function getRequirementStatus(Request $request){
+     $sql="SELECT * FROM tbl_school_requirements t1 WHERE t1.school_id='".$request->centre_number."'
+      LIMIT 1";
+      return DB::SELECT($sql);
+
+   }
 
 	public function generateReports(Request $request){
 
@@ -106,7 +138,7 @@ $jasper->process(
    $sql="SELECT t1.*
 	      FROM  tbl_applicants t1 
 	        INNER JOIN tbl_colleges t2 ON t1.college=t2.college
-            WHERE t1.applicant_id LIKE '".$request->keyword."''
+            WHERE t1.applicant_id LIKE '%".$request->keyword."%'
             GROUP BY t1.applicant_id";		   
 		 return DB::SELECT($sql);
 
@@ -252,6 +284,7 @@ for($starting_year_college=$year_limit[0]->college_graduation_year;$starting_yea
     $gender=$request['gender'];
     $applicant_id=$request['applicant_id'];
     $password=bcrypt($request['password']);
+    try{
     $user=User::create([
       'name'=>$name,
       'email'=>$email,
@@ -266,6 +299,14 @@ for($starting_year_college=$year_limit[0]->college_graduation_year;$starting_yea
 	Tbl_permission_user::create(
 	['permission_id'=>8,'user_id'=>$user_id,'grant'=>1]
 	);
+}
+catch(\Exception $e){
+	  return response()->json([
+            'message' =>$applicant_id.' already used in the system. If was not you. Please contact Administrator.',
+            'status' => 500
+        ]);
+	
+}
 	
   }
   

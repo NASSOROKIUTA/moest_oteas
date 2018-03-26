@@ -28,6 +28,7 @@
                     if(data.data[0][0].age >=45){
                    	return sweetAlert('No employment permit for the applicant aged above 45years,you are '+data.data[0][0].age+'Years','','info'); 	
 		              }	
+                  $scope.apps={};
 
 				$mdDialog.show({                 
                         controller: function ($scope) {
@@ -92,6 +93,13 @@
 			$http.post('/apps/register',postData).then(function(data) {
 				$scope.results=data.data;	
 				//needs more action to re direct to login form..
+        if(data.data.status==500){
+          $scope.apps ={};
+          $mdDialog.hide();
+         return sweetAlert(data.data.message,'','error');  
+        }
+
+
 				  $scope.loginForm = function() {
 				
 				$mdDialog.show({                 

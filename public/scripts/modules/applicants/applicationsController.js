@@ -4,7 +4,7 @@
 (function () {
     'use strict';
     var app = angular.module('authApp');
-    app.controller('applicantsController',['$scope','$http','$rootScope','Helper','$mdDialog','$window',
+    app.controller('applicationsController',['$scope','$http','$rootScope','Helper','$mdDialog','$window',
         function ($scope,$http,$rootScope,Helper,$mdDialog,$window) {
 			var user_name = $rootScope.currentUser.id;
 			var user_id = $rootScope.currentUser.id;
@@ -23,18 +23,7 @@
            };
 
 			
-			$scope.getApplications= function(){	
-			  var postData={department_id:department_id};
-			  if(department_id==null){
-			  	return sweetAlert("Sorry You are not authorized to view any list of applications","Contact Administrator");
-			  }				
-		      $http.post('/apps/getApplicationLists',postData).then(function(data) {
-				$scope.getApplicationLists=data.data;				
-		           });						
-		    }();
-
-
-			
+					
 			$scope.getListSelectedToCouncils= function(){
 			$http.post('/apps/getListSelectedToCouncils').then(function(data) {
 				$scope.selectedApplicants=data.data;		
@@ -338,15 +327,7 @@ $http.post('/apps/saveApplicantPhoto',postData).then(function(data) {
 
          
 
-
-		/**
-		 $scope.selectedRegion = function (region) {
-              var region_id=region.id;
-              $scope.region=region;
-			  $scope.getCouncil(region_id);
-        };	
-					
-		**/					
+ 			
 				$scope.saveCredentials = function (login,candidate,username) {                        
 						
 		        if(angular.isDefined(login)==false){
@@ -396,31 +377,8 @@ $http.post('/apps/saveApplicantPhoto',postData).then(function(data) {
 			};
 
 			
-			$scope.makePlacementPrimary= function(selections){
-				if(angular.isDefined($scope.gender)==false){
-					return sweetAlert("Please Select Gender","","error");
-				}
-			  var postData={gender:$scope.gender,selections:selections,user_id:user_id};
-		$http.post('/apps/makePlacementPrimary',postData).then(function(data) {
-			$scope.application=data.data;
-			return swal(data.data,"","info");
-                        
-				
-				});
-				
-			};
 
-
-			
-			$scope.makePlacementPrimarySchool= function(selections){
-			var postData={selections:selections,user_id:user_id};
- $http.post('/apps/makePlacementPrimarySchool',postData).then(function(data) {
-			$scope.application=data.data;
-			return sweetAlert("Placement ,was successfully Saved","","success");
-				});
-				
-			};
-			/**
+		
 			$scope.getApplications= function(){
 			var postData={applicant_id:applicant_id};
 		$http.post('/apps/getApplications',postData).then(function(data) {
@@ -428,8 +386,8 @@ $http.post('/apps/saveApplicantPhoto',postData).then(function(data) {
 				
 		});
 						
-			};
-			**/
+			}();
+			
 			
 	    	$scope.addSelections= function(choice,selectedSchool){
 
@@ -438,103 +396,45 @@ $http.post('/apps/saveApplicantPhoto',postData).then(function(data) {
 				var council_id=focusedSchool.council_id;
 				council_name=focusedSchool.council_name;
 				var school_name=focusedSchool.school_name;
-			if($scope.selectionsDone.length ==5){
-				 swal("Only five selections are allowed","","info");
-                        return;	
-					
+				var chanceRequired=0;
+
+				if($scope.selectionsDone.length ==4){
+				 swal("Only Four selections are allowed","","info");
+                        return;						
 				}
-				
-				  var countRegion=0;
-				 for (var i = 0; i < $scope.selectionsDone.length; i++)
-                    if ($scope.selectionsDone[i].region_id == region_id) {
-                   countRegion++;
-                    } 
-					
-					if(countRegion > 1){
-					swal(" Only two councils allowed for "+region_name,"","info");
+				var countRegion=0;
+				for (var i = 0; i < $scope.selectionsDone.length; i++)
+                if ($scope.selectionsDone[i].region_id == region_id) {
+                countRegion++;
+                } 
+				if(countRegion > 1){
+					swal("Only two selections allowed for "+region_name,"","info");
                         return;	
-					}
+				}
 					
-					
-					
-					for (var i = 0; i < $scope.selectionsDone.length; i++)
-                    if ($scope.selectionsDone[i].council_id == focusedSchool.council_id) {
-                swal(selectedSchool.council_name + ' ' + "already in your selection list!","","info");
+				for (var i = 0; i < $scope.selectionsDone.length; i++)
+                if ($scope.selectionsDone[i].centre_number == focusedSchool.centre_number) {
+                swal(school_name + ' ' + "already in your selection list!","","info");
                         return;
-                    }
-				
-			$scope.selectionsDone.push({
+                }
+					var postData={centre_number:focusedSchool.centre_number};
+		$http.post('/apps/getRequirementStatus',postData).then(function(data) {
+				chanceRequired=data.data[0].required_teachers;
+			  	$scope.selectionsDone.push({
                     "region_name": region_name,
                     "region_id": focusedSchool.region_id,
                     "council_id":focusedSchool.council_id,
                     "council_name":council_name,
                     "school_name":school_name,
-                    "centre_number":focusedSchool.centre_number
+                    "centre_number":focusedSchool.centre_number,
+                    "required_teachers":chanceRequired
                 });
+			});
 				
 			};
 			
 			
-			$scope.addRegionsForPlacement= function(){
-				var region_name=$scope.region.region_name;
-				var region_id=$scope.region.region_id;
 			
-			if($scope.selectionsDone.length > 5){
-				 swal("Not more than five regions are allowed at once to make placement to run","","info");
-                        return;	
-					
-				}
-				
-				  var countRegion=0;
-				 for (var i = 0; i < $scope.selectionsDone.length; i++)
-                    if ($scope.selectionsDone[i].region_id == region_id) {
-                   countRegion++;
-                    } 
-					
-			if(countRegion >= 1){
-			swal(region_name+",Already selected in your list","","info");
-                        return;	
-					}
-					
-								
-			$scope.selectionsDone.push({
-                    "region_name": region_name,
-                    "region_id": region_id,
-                  
-                });
-				
-			};
-			$scope.schoolSelectionsDone=[];
-			$scope.addRegionsForSchoolPlacement= function(){
-				var region_name=$scope.region.region_name;
-				var region_id=$scope.region.id;
-				
-			
-			if($scope.schoolSelectionsDone.length > 5){
-				 swal("Not more than five regions are allowed at once to make placement to run","","info");
-                        return;	
-					
-				}
-				
-				  var countRegion=0;
-				 for (var i = 0; i < $scope.schoolSelectionsDone.length; i++)
-                    if ($scope.schoolSelectionsDone[i].region_id == region_id) {
-                   countRegion++;
-                    } 
-					
-			if(countRegion >= 1){
-			swal(region_name+",Already selected in your list","","info");
-                        return;	
-					}
-					
-								
-			$scope.schoolSelectionsDone.push({
-                    "region_name": region_name,
-                    "region_id": region_id,
-                  
-                });
-				
-			};
 			
 			
 			
@@ -597,220 +497,7 @@ $scope.exportExcel = function () {
 
 
 
-			/**
-			
-			$scope.exportExcel=function(exportData){
-				
-					
-    $http({
-        method: 'GET',
-        url: '/api/downloadExcel/xls',
-        headers:"application/vnd.ms-excel;"
-    }).then(function (data) {
-      
-	   var filename="DataMining";
-				 
-			var linkElement = document.createElement('a');
-        try {
-            
- var blob = new Blob([data], 
-                    {type: "application/vnd.ms-excel;"});
-			var url = window.URL.createObjectURL(blob);
- 
-            linkElement.setAttribute('href', url);
-            linkElement.setAttribute("download", filename);
- 
-            var clickEvent = new MouseEvent("click", {
-                "view": window,
-                "bubbles": true,
-                "cancelable": false
-            });
-            linkElement.dispatchEvent(clickEvent);
-        } catch (ex) {
-            console.log(ex);
-        }	 
-				 
-				 
-				 
-    }).then(function (data) {
-        var header = headers('content-disposition');
-    var result = header.split(';')[1].trim().split('=')[1];
-    return result.replace(/"/g, '');
-    });
-			
-	}; 
-			**/
-	   var formdata = new FormData();
-					
-			$scope.getExcelFiles = function ($files) {
-            angular.forEach($files, function (value, key) {
-                formdata.append(key, value);
-
-            });
-            formdata.append('uploaded_by', user_name);
-        };
 		
-		
-		// NOW UPLOAD THE FILES.
-        $scope.applicantsUpload = function () {
-
-            var request = {
-                method: 'POST',
-                url: '/api/schoolUpload',
-                data: formdata,
-                headers: {
-                    'Content-Type': undefined
-                }
-
-            };
-
-            // SEND THE FILES.
-            $http(request).then(function (data) {
-                //console.log(request);
-             return sweetAlert('',data.data,'success');
-
-
-            })
-                .then(function () {
-                });
-        }; 
-		
-		
-			
-	$scope.getSubjects=function(){
-	$http.post('/api/getSubject').then(function(data) {
-				$scope.subjects=data.data;
-		});
-				
-			};
-			
-			$scope.saveSchool=function(school){
-				if(angular.isDefined(school.centre_number)==false){
-					return sweetAlert('Please Fill Centre number','','error');
-				}
-  
-   else if(school.is_special_need ==1 && angular.isDefined(school.special_needs_type)==false){
-			return sweetAlert('Please enter Special needs ','','error');
-				}
-  
-				var centre_number=school.centre_number;
-				var council_id=3;
-				var residence_id=school.residence_id;
-				var school_level=school.school_level;
-				var school_name=school.school_name;
-				var special_needs=school.is_special_need;
-				var special_needs_type=school.special_needs_type;
-				var day_boarding=school.day_boarding;
-				var distance_km=school.distance_km;
-				var teaching_language=school.teaching_language;
-				var department_id=school.department_id;
-				var postData={department_id:department_id,centre_number:centre_number,council_id:council_id,residence_id:residence_id,school_level:school_level,school_name:school_name,special_needs:special_needs,special_needs_type:special_needs_type,day_boarding:day_boarding,distance_km:distance_km,teaching_language:teaching_language};
-				
-		$http.post('/api/saveSchool',postData).then(function(data) {
-          if(data.data.status==1){
-return 	sweetAlert(data.data.data,'','success');	
-			}
-		else{			
-			return 	sweetAlert(data.data.data,'','error');	
-			
-			}
-                    
-
-					});
-			};
-			
-			$scope.savePermit=function(permit){
-   if(angular.isDefined(permit)==false){
-					return sweetAlert('Please Fill the permits','','error');
-				}
-  
-   else if(angular.isDefined(permit.council)==false){
-			return sweetAlert('Please Select Council','','error');
-				}
-   else if(angular.isDefined(permit.gender)==false){
-			return sweetAlert('Please Select Gender','','error');
-				}
-   else if(angular.isDefined(permit.subject)==false){
-			return sweetAlert('Please Select Subject','','error');
-				} 
-	else if(angular.isDefined(permit.permits)==false){
-			return sweetAlert('Please Enter number of employees allowed','','error');
-				}
-  
-				var council_id=permit.council;
-				var subject=permit.subject;
-				var gender=permit.gender;
-				var dept_id=permit.dept_id;
-				var permits=permit.permits;
-				
-	var postData={permits:permits,dept_id:dept_id,council_id:council_id,subject_id:subject,council_id:council_id,gender:gender};
-				
-		$http.post('/api/savePermit',postData).then(function(data) {
-          if(data.data.status==1){
-return 	sweetAlert(data.data.data,'','success');	
-			}
-		else{			
-			return 	sweetAlert(data.data.data,'','error');	
-			
-			}
-                    
-
-					});
-			};
-			
-			$scope.getSchool=function(keyWord){
-				if(angular.isDefined(keyWord)==false){
-					return sweetAlert('Please Select KeyWord ','','error');
-				}
-  
-     			var filter_by=keyWord.filter_by;
-     			var fieldName=keyWord.fieldName;
-
-	    var postData={searchWord:filter_by,field_name:fieldName};
-				
-		$http.post('/api/getSchool',postData).then(function(data) {         			
-			$scope.schools=data.data;	
-			
-			    });
-			};
-			
-			$scope.getPermits=function(keyWord){
-				if(angular.isDefined(keyWord)==false){
-					return sweetAlert('Please Select KeyWord ','','error');
-				}
-  
-     			var filter_by=keyWord.filter_by;
-     			var fieldName=keyWord.fieldName;
-
-	    var postData={searchWord:filter_by,field_name:fieldName};
-				
-		$http.post('/api/getPermits',postData).then(function(data) {         			
-			$scope.permits=data.data;	
-			
-			    });
-			};
-          
-		  
-		  
-		   $http.post('/api/getRegions').then(function(data) {
-                    $scope.regions = data.data;
-                      });
-		  
-		  var patientCategory =[];
-            $scope.searchPatientCategory = function(searchKey) {
-                $http.get('/api/searchPatientCategory/'+searchKey).then(function(data) {
-                    patientCategory = data.data;
-                });
-                return patientCategory;
-            };
-            $scope.getPricedItems=function (patient_category_selected) {
-                //console.log(patient_category_selected);
-	var dataPost={patient_category:patient_category_selected,facility_id:facility_id};
-    $http.post('/api/getPricedItems',dataPost).then(function(data) {
-                    $scope.services=data.data;
-                });
-
-            };
 
             
 

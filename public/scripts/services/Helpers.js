@@ -50,9 +50,9 @@
                     });
             },
 
-            getRegisteredCandidate : function (searchKey) {
-                var dataToPost={searchKey:searchKey};               
-                return $http.post('/api/getRegisteredCandidate',dataToPost)
+            getRegisteredCandidate : function (dataToPost) {
+                    var postData={searchWord:searchWord};         
+               return $http.post('/api/getRegisteredCandidate',dataToPost)
                     .then(function (response) {
                         return response;
                     });

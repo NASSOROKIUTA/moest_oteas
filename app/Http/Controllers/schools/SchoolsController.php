@@ -180,12 +180,74 @@ class SchoolsController extends Controller
      return DB::SELECT($query);    
   }
 
+//generate excel file..
+ public function exportSchoolRequirements(Request $request){
+    $searchWord=$request->searchWord;      
+   
+       $sql="SELECT t1.centre_number,t1.school_name,0 AS total_non_sne_teachers,0 AS total_sne_teachers,
+             0 AS total_sne_pupils,0 AS total_pre_primary_students
+        FROM  tbl_schools t1 
+        INNER JOIN tbl_councils t2 ON t1.council_id=t2.id 
+             WHERE `".$request->field_name."` LIKE '%".$searchWord."%' GROUP BY t1.centre_number";
+
+    $data =DB::SELECT($sql);
+    $data = json_decode(json_encode($data), true);
+    return Excel::create('school-requirements-template', function($excel) use ($data) {
+       $excel->sheet('REQUIREMENTS TEMPLATE', function($sheet) use ($data){
+                $sheet->cell('A1', function($cell) {$cell->setValue('CENTRE NUMBER');   });
+                $sheet->cell('B1', function($cell) {$cell->setValue('SCHOOL NAME');   });
+                $sheet->cell('C1', function($cell) {$cell->setValue('TOTAL NON SNE TEACHERS');   });
+                $sheet->cell('D1', function($cell) {$cell->setValue('TOTAL SNE TEACHERS');   });
+                $sheet->cell('E1', function($cell) {$cell->setValue('TOTAL SNE PUPILS ');   });
+                $sheet->cell('F1', function($cell) {$cell->setValue('TOTAL PRE-PRIMARY STUDENTS');   });
+                $sheet->cell('G1', function($cell) {$cell->setValue('Total S1 - S7 Students');   });
+                $sheet->cell('H1', function($cell) {$cell->setValue('Number of students Standard 1');   });
+                $sheet->cell('I1', function($cell) {$cell->setValue('Number of students Standard 2');   });
+                $sheet->cell('J1', function($cell) {$cell->setValue('Number of students Standard 3');   });
+                $sheet->cell('K1', function($cell) {$cell->setValue('Number of students Standard 4');   });
+                $sheet->cell('L1', function($cell) {$cell->setValue('Number of students Standard 5');   });
+                $sheet->cell('M1', function($cell) {$cell->setValue('Number of students Standard 6');   });
+                $sheet->cell('N1', function($cell) {$cell->setValue('Number of students Standard 7');   });
+
+               
+                 if (!empty($data)) {
+                    foreach ($data as $key => $value) {
+                        $i= $key+2;
+
+                        $sheet->cell('A'.$i, $value['centre_number']); 
+                        $sheet->cell('B'.$i, $value['school_name']); 
+                        $sheet->cell('C'.$i, 0); 
+                        $sheet->cell('D'.$i, 0); 
+                        $sheet->cell('E'.$i, 0); 
+                        $sheet->cell('F'.$i, 0); 
+                        $sheet->cell('G'.$i, 0); 
+                        $sheet->cell('H'.$i, 0); 
+                        $sheet->cell('I'.$i, 0); 
+                        $sheet->cell('J'.$i, 0); 
+                        $sheet->cell('K'.$i, 0); 
+                        $sheet->cell('L'.$i, 0); 
+                        $sheet->cell('M'.$i, 0); 
+                        $sheet->cell('N'.$i, 0); 
+                                              
+                    }
+                }
+
+    //  $sheet->fromArray($data);
+          });
+    })->store('xls', storage_path('../public/excel'))->export('xls');     
+  
+
+
+  }
+
+  
+
   public function getRegionRequirements(Request $request){
     $searchWord=$request->searchKey; 
      $sql="SELECT t1.* FROM `vw_applications` t1
              WHERE t1.region_name LIKE '%".$searchWord."%'
-                AND t1.chance_remained >0 
-                OR t1.chance_remained IS NULL
+                AND (t1.chance_remained >0 
+                OR t1.chance_remained IS NULL)
                 GROUP BY t1.region_id
                   ORDER BY t1.ptr DESC LIMIT 5
                       ";
@@ -197,8 +259,8 @@ class SchoolsController extends Controller
     $region_id=$request->region_id; 
      $sql="SELECT t1.* FROM `vw_applications` t1
              WHERE t1.region_id='".$region_id."'
-                AND t1.chance_remained >0
-                OR t1.chance_remained IS NULL
+                AND (t1.chance_remained >0
+                OR t1.chance_remained IS NULL)
                 GROUP BY t1.council_id
                   ORDER BY t1.ptr DESC LIMIT 5
                       ";
@@ -210,8 +272,8 @@ class SchoolsController extends Controller
     $council_id=$request->council_id; 
      $sql="SELECT t1.* FROM `vw_applications` t1
              WHERE t1.council_id='".$council_id."'
-                AND t1.chance_remained >0
-                OR t1.chance_remained IS NULL
+                AND (t1.chance_remained >0
+                OR t1.chance_remained IS NULL)
                 GROUP BY t1.centre_number
                   ORDER BY t1.ptr DESC LIMIT 10
                       ";
@@ -223,8 +285,8 @@ class SchoolsController extends Controller
     $school=$request->school; 
      $sql="SELECT t1.* FROM `vw_applications` t1
              WHERE t1.centre_number='".$school."'
-                AND t1.chance_remained >0
-                OR t1.chance_remained IS NULL
+                AND (t1.chance_remained >0
+                OR t1.chance_remained IS NULL)
                 GROUP BY t1.centre_number
                   ORDER BY t1.ptr DESC LIMIT 1
                       ";

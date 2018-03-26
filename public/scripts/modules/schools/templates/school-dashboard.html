@@ -86,8 +86,26 @@
         </md-input-container>        
         <md-input-container>
         <md-button class="md-raised md-primary pull-right" ng-click="teachersRequirements()">Upload</md-button>   
-       </md-input-container>
-       </div>                      
+        </md-input-container>
+        </div>                      
+        </vertical-tab-pane>    
+
+         <vertical-tab-pane title="Export Requirements Template">             
+         <div layout="row">
+         <md-input-container class="md-block" flex-gt-sm>
+         <label>Filter By:</label>
+         <md-select ng-model="requirement.fieldName" required>
+         <md-option value="centre_number">BY CENTRE NUMBER</md-option>
+         <md-option value="school_name">BY SCHOOL NAME</md-option>
+         </md-input-container>       
+         <md-input-container class="md-block" flex-gt-sm>
+         <label>Filter By:</label>
+         <input type="text" ng-model="requirement.filter_by">
+         </md-input-container>   
+         <md-input-container class="md-block" flex-gt-sm>
+         <md-button class="md-raised md-primary" ng-click="exportSchoolRequirements(requirement)">View Requirements</md-button>
+         </md-input-container>      
+         </div>                     
                             </vertical-tab-pane>    
                             
                             

@@ -17,6 +17,7 @@ Route::get('/', function () {
 //gepg routes
 Route::group(['prefix' => 'apps'], function()
 {
+	Route::post('getRequirementStatus', 'placement\placementController@getRequirementStatus');	
     Route::post('getColleges','placement\placementController@getColleges');
 	Route::post('verifyApplicantInfo','placement\placementController@verifyApplicantInfo');
 	Route::post('saveAddress','placement\placementController@saveAddress');
@@ -123,7 +124,6 @@ Route::group(['prefix' => 'api'], function()
 	Route::post('getPermits', 'placement\placementController@getPermits');
 	Route::post('exportAsExcel', 'placement\placementController@exportAsExcel');
 	
-	
 	//SYSTEM MENU CONTROLLER   @ NASSORO S KIUTA
 	Route::post('adminRegistration', 'User\UsersRegistrationController@adminRegistration');
 	
@@ -196,6 +196,9 @@ Route::group(['prefix' => 'api'], function()
     
     Route::post('calaculateSchoolRequirements', 'schools\SchoolsController@calaculateSchoolRequirements');
     Route::post('getSchoolRequirements', 'schools\SchoolsController@getSchoolRequirements');
+    Route::post('exportSchoolRequirements', 'schools\SchoolsController@exportSchoolRequirements');
+
+    
     Route::post('searchResidence', 'placement\placementController@searchResidence');
     Route::post('generateReports', 'placement\placementController@generateReports');
 

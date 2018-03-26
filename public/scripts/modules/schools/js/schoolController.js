@@ -182,6 +182,19 @@ return 	sweetAlert(data.data.data,'','success');
                 });
             };
 
+            $scope.exportSchoolRequirements=function(keyWord){
+            if(angular.isDefined(keyWord)==false){
+                    return sweetAlert('Please Select KeyWord ','','error');
+            } 
+                var filter_by=keyWord.filter_by;
+                var fieldName=keyWord.fieldName;
+                var postData={searchWord:filter_by,field_name:fieldName};                
+                $http.post('/api/exportSchoolRequirements',postData).then(function(data) {                     
+                    location.href = "../../../excel/school-requirements-template.xls";           
+                });
+            };
+
+
           
 		  
 		  

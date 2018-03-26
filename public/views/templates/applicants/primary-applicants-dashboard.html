@@ -289,25 +289,40 @@
                 </md-content>
                 </md-tab>
 				
-				<md-tab label="Registered List">
+				<md-tab label="Registration">
                 <md-content class="md-padding">
-                 
-						<div layout="row">
+
+                    <div layout="row">
                          
                             <md-autocomplete flex  flex
-                            md-search-text="searchCandidate"
-                            md-input-name="searchCandidate"
+                            md-search-text="search"
+                            md-input-name="patient"
                             md-no-cache="false"
-                            md-items="item in getRegisteredCandidate(searchCandidate)"
-                            md-item-text="item.region_name"
-                            md-selected-item-change="selectedRegion(item)"
-                            md-floating-label="Search For any Candidate"
+                            md-items="item in getRegisteredCandidate(search)"
+                            md-item-text="item.first_name"
+                            md-selected-item-change="getSelectedCandidate(item)"
+                            md-floating-label="Search Candidate"
                             md-min-length="3" md-autofocus>
                             <md-item-template>
-                              <span md-highlight-text="searchText">{{item.region_name}}</span>
+                              <span md-highlight-text="searchText">{{item.first_name}}</span>
                             </md-item-template>
-                          </md-autocomplete>                  
-                        </div>  
+                          </md-autocomplete>
+                         
+                          
+                        </div> 
+                        <div layout-gt-sm="row">
+                <md-input-container class="md-block" flex>
+                             
+    <input type="file"  name="file"   ng-files="getExcelFiles($files)" >
+                </md-input-container>
+                
+                <md-input-container>
+
+  <md-button class="md-raised md-primary pull-right" ng-click="applicantsUpload()">Upload</md-button>   
+   </md-input-container>
+                        </div> 
+                 
+						
 						
 					 <div layout-gt-sm="row">
                  	
@@ -337,23 +352,7 @@
                         </div> 			   
                 </md-content>
                 </md-tab>	
-				<md-tab label="Register">
-                <md-content class="md-padding">
-                 <div layout-gt-sm="row">
-				<md-input-container class="md-block" flex>
-                             
-    <input type="file"  name="file"   ng-files="getExcelFiles($files)" >
-                </md-input-container>
-				
-				<md-input-container>
-
-  <md-button class="md-raised md-primary pull-right" ng-click="applicantsUpload()">Upload</md-button>   
-   </md-input-container>
-                        </div> 	   
-				   
-                </md-content>
-                </md-tab>
-			    </md-tabs>			       
+				</md-tabs>			       
                 </md-content>
            
 </div>

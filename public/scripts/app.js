@@ -161,7 +161,7 @@
                 url: '/applications',
                 parent: 'master',
                templateUrl: '/views/templates/applicants/application-dashboard.html',
-                controller: 'applicantsController'
+                controller: 'applicationsController'
             })
 			
             .state('system', {
@@ -239,9 +239,10 @@
                     // Preventing the default behavior allows us to use $state.go
                     // to change states
                     event.preventDefault();
-
                     // go to the "main" state which in our case is users
                     $state.go('dashboard');
+
+
                 }
 
                 if (toState.name !== "auth" && $rootScope.currentUser.length === 0) {
